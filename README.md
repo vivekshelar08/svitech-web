@@ -2,6 +2,8 @@
 
 Public nonprofit website for **SVITECH Foundation**.
 
+Production: **https://svitech.in**
+
 ## Stack
 
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS
@@ -18,38 +20,13 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy on Hostinger
 
-Suggested production URL: **https://www.svitech.in** (or root `svitech.in` / another subdomain you choose).
+Production URL: **https://svitech.in**
 
-Svitech HR already uses `svihr.svitech.in` — keep this site on a separate Node.js website + domain.
+Repo: [github.com/vivekshelar08/svitech-web](https://github.com/vivekshelar08/svitech-web) (branch `main`)
 
-### 1. Push to GitHub
+Svitech HR uses `svihr.svitech.in` — this site is the apex domain Node.js app.
 
-Create a repo (e.g. `svitech-web`) and push `main`:
-
-```bash
-git add .
-git commit -m "Initial SVITECH Foundation website"
-git remote add origin https://github.com/<your-user>/svitech-web.git
-git push -u origin main
-```
-
-Hostinger can deploy directly from GitHub — no separate deploy workflow required.
-
-### 2. DNS (`svitech.in` on Hostinger)
-
-1. **Websites** → select `svitech.in` → **DNS / DNS Zone**
-2. Add a record for your chosen host, for example:
-   - **Type:** `CNAME`
-   - **Name:** `www` (or `web`, etc.)
-   - **Target:** the hostname Hostinger shows for the Node.js site
-3. Wait for DNS propagation
-
-### 3. Node.js website
-
-1. **Websites** → **Add Website** → **Node.js**
-2. **Import from GitHub** → select this repo, branch `main`
-3. Attach the domain (e.g. `www.svitech.in`)
-4. Use these **exact** settings:
+### Deploy settings
 
 | Setting | Value |
 |---------|--------|
@@ -60,21 +37,21 @@ Hostinger can deploy directly from GitHub — no separate deploy workflow requir
 
 Use the start command exactly as shown so Hostinger binds Next.js to `$PORT`.
 
-5. Enable **HTTPS** (Hostinger usually provisions SSL automatically)
+Enable **HTTPS** (Hostinger usually provisions SSL automatically).
 
-### 4. Environment variables
+### Environment variables
 
 | Variable | Value |
 |----------|--------|
 | `NODE_ENV` | `production` |
-| `NEXT_PUBLIC_APP_URL` | `https://www.svitech.in` (your real URL) |
+| `NEXT_PUBLIC_APP_URL` | `https://svitech.in` |
 
-Redeploy after saving env vars.
+Redeploy after saving env vars **and** after pulling the latest `main` (Tailwind/PostCSS build packages are production dependencies so Hostinger installs them).
 
-### 5. Post-deploy checks
+### Post-deploy checks
 
-- Open the site URL in a browser
-- `GET /api/live` should return `{ "ok": true, ... }`
+- Open https://svitech.in
+- `GET https://svitech.in/api/live` should return `{ "ok": true, ... }`
 
 **Idle 503s?** Hostinger can sleep inactive Node apps. Point a free [UptimeRobot](https://uptimerobot.com) monitor at `/api/live` every 5 minutes.
 
