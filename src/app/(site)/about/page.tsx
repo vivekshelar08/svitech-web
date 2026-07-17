@@ -4,11 +4,8 @@ import Link from "next/link";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { about, general } = await getSiteSettings();
-  return {
-    title: "About",
-    description: about.intro.slice(0, 160) || general.seoDescription,
-  };
+  const { about } = await getSiteSettings();
+  return { title: about.seoTitle, description: about.seoDescription };
 }
 
 export default async function AboutPage() {

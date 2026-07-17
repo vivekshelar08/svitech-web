@@ -5,10 +5,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { reports } = await getSiteSettings();
-  return {
-    title: "Reports & governance",
-    description: reports.intro.slice(0, 160),
-  };
+  return { title: reports.seoTitle, description: reports.seoDescription };
 }
 
 export default async function ReportsPage() {
@@ -28,7 +25,9 @@ export default async function ReportsPage() {
       </p>
 
       <section className="mt-14 border-t border-line pt-12">
-        <h2 className="font-display text-2xl font-bold text-ink">Annual reports</h2>
+        <h2 className="font-display text-2xl font-bold text-ink">
+          {reports.annualReportsTitle}
+        </h2>
         <ul className="mt-8 divide-y divide-line border-y border-line">
           {reportList.map((report) => (
             <li
@@ -47,15 +46,12 @@ export default async function ReportsPage() {
                 href={report.fileUrl}
                 className="inline-flex bg-brand px-5 py-3 text-sm font-semibold text-white"
               >
-                Download PDF
+                {reports.downloadLabel}
               </a>
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-sm text-ink-muted">
-          Placeholder PDFs can be replaced in <code>public/reports/</code>. For tax
-          exemption / 80G documents, add them here when available.
-        </p>
+        <p className="mt-4 text-sm text-ink-muted">{reports.adminNote}</p>
       </section>
 
       <section className="mt-16 border-t border-line pt-12">
@@ -76,7 +72,7 @@ export default async function ReportsPage() {
       </section>
 
       <p className="mt-14 text-sm text-ink-muted">
-        Questions about finances or partnerships?{" "}
+        {reports.contactPrompt}{" "}
         <Link href="/contact" className="font-semibold text-brand underline">
           Contact us
         </Link>

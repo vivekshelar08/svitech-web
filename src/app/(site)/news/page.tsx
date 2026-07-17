@@ -2,25 +2,27 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPosts } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "News",
-  description: "Updates, essays, and transparency notes from SVITECH Foundation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { news } = await getSiteSettings();
+  return { title: news.seoTitle, description: news.seoDescription };
+}
 
 export default async function NewsPage() {
   const posts = await getPosts();
+  const { news } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        News
+        {news.eyebrow}
       </p>
       <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        Notes from the work.
+        {news.headline}
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        Program updates, open curriculum thinking, and how gifts turn into labs.
+        {news.intro}
       </p>
 
       <ul className="mt-14 grid gap-10 md:grid-cols-2 lg:grid-cols-3">

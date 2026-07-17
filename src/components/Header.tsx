@@ -4,28 +4,34 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { SiteLogo } from "@/components/SiteLogo";
+import type { SiteSettings } from "@/lib/site-settings-defaults";
 
-const links = [
-  { href: "/about", label: "About" },
-  { href: "/programs", label: "Programs" },
-  { href: "/impact", label: "Impact" },
-  { href: "/events", label: "Events" },
-  { href: "/news", label: "News" },
-  { href: "/get-involved", label: "Get Involved" },
-  { href: "/contact", label: "Contact" },
-];
+type HeaderProps = {
+  general: SiteSettings["general"];
+  navigation: SiteSettings["navigation"];
+};
 
-export function Header() {
+export function Header({ general, navigation }: HeaderProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const logoProps = {
+    logoUrl: general.logoUrl,
+    logoAlt: general.logoAlt,
+    logoAriaLabel: general.logoAriaLabel,
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-[color-mix(in_srgb,var(--bg)_88%,transparent)] backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 md:px-8">
-        <SiteLogo size="sm" priority onClick={() => setOpen(false)} />
+        <SiteLogo
+          {...logoProps}
+          size="sm"
+          priority
+          onClick={() => setOpen(false)}
+        />
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
-          {links.map((link) => {
+          {navigation.primaryLinks.map((link) => {
             const active =
               pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
@@ -41,19 +47,19 @@ export function Header() {
             );
           })}
           <Link
-            href="/donate"
+            href={navigation.donateHref}
             className="bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
           >
-            Donate
+            {navigation.donateLabel}
           </Link>
         </nav>
 
         <div className="flex items-center gap-2 lg:hidden">
           <Link
-            href="/donate"
+            href={navigation.donateHref}
             className="bg-accent px-4 py-2 text-sm font-semibold text-white"
           >
-            Donate
+            {navigation.donateLabel}
           </Link>
           <button
             type="button"
@@ -86,7 +92,7 @@ export function Header() {
           aria-label="Mobile"
         >
           <ul className="flex flex-col gap-1">
-            {links.map((link) => (
+            {navigation.primaryLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}

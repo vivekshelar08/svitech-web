@@ -3,31 +3,35 @@ import Image from "next/image";
 import Link from "next/link";
 import { ImpactMap } from "@/components/ImpactMap";
 import { getImpactStories } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Impact",
-  description:
-    "See where SVITECH Foundation programs create measurable community outcomes.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { impact } = await getSiteSettings();
+  return { title: impact.seoTitle, description: impact.seoDescription };
+}
 
 export default async function ImpactPage() {
   const stories = await getImpactStories();
+  const { impact } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Impact
+        {impact.eyebrow}
       </p>
       <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        Proof over pledges.
+        {impact.headline}
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        Specific places, measurable outcomes, and stories communities can verify—not
-        vague statistics.
+        {impact.intro}
       </p>
 
       <div className="mt-14">
-        <ImpactMap stories={stories} />
+        <ImpactMap
+          stories={stories}
+          mapEyebrow={impact.mapEyebrow}
+          mapHeadline={impact.mapHeadline}
+        />
       </div>
 
       <ul className="mt-16 space-y-16">
@@ -66,7 +70,7 @@ export default async function ImpactPage() {
                 href="/donate"
                 className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
               >
-                Support work like this
+                {impact.storyCtaLabel}
               </Link>
             </div>
           </li>

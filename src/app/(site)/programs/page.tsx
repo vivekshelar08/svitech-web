@@ -1,31 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPrograms } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Programs",
-  description:
-    "Digital literacy labs, open learning paths, and community tech builds from SVITECH Foundation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { programs } = await getSiteSettings();
+  return { title: programs.seoTitle, description: programs.seoDescription };
+}
 
 export default async function ProgramsPage() {
-  const programs = await getPrograms();
+  const programList = await getPrograms();
+  const { programs } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Programs
+        {programs.eyebrow}
       </p>
       <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        Practical programs that leave skills behind.
+        {programs.headline}
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        Every SVITECH Foundation program is built to be taught, remixed, and sustained by
-        the communities who use it.
+        {programs.intro}
       </p>
 
       <ul className="mt-14 divide-y divide-line border-y border-line">
-        {programs.map((program) => (
+        {programList.map((program) => (
           <li
             key={program.slug}
             className="grid gap-3 py-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)] md:gap-10"
@@ -44,7 +44,7 @@ export default async function ProgramsPage() {
                 href={`/programs/${program.slug}`}
                 className="mt-4 inline-block text-sm font-semibold text-brand"
               >
-                Learn more →
+                {programs.itemCtaLabel}
               </Link>
             </div>
           </li>
@@ -53,10 +53,10 @@ export default async function ProgramsPage() {
 
       <div className="mt-14">
         <Link
-          href="/get-involved"
+          href={programs.bottomCtaHref}
           className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
         >
-          Partner with a program
+          {programs.bottomCtaLabel}
         </Link>
       </div>
     </div>

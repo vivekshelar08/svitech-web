@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProgram, getPrograms } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateStaticParams() {
   const programs = await getPrograms();
@@ -28,11 +29,12 @@ export default async function ProgramDetailPage({
   const { slug } = await params;
   const program = await getProgram(slug);
   if (!program) notFound();
+  const { detailPages } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
       <Link href="/programs" className="text-sm font-semibold text-brand">
-        ← All programs
+        {detailPages.programsBack}
       </Link>
       {program.coverImage && (
         <div className="relative mt-8 aspect-[16/9] overflow-hidden">
@@ -61,13 +63,13 @@ export default async function ProgramDetailPage({
           href="/get-involved"
           className="bg-accent px-6 py-3.5 text-sm font-semibold text-white"
         >
-          Partner with this program
+          {detailPages.programsPartnerCta}
         </Link>
         <Link
           href="/volunteer"
           className="border border-line bg-white/70 px-6 py-3.5 text-sm font-semibold text-ink"
         >
-          Volunteer
+          {detailPages.programsVolunteerCta}
         </Link>
       </div>
     </div>

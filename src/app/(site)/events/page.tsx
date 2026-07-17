@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getEvents } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Events",
-  description:
-    "Upcoming trainings, meetups, and demo days from SVITECH Foundation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { events } = await getSiteSettings();
+  return { title: events.seoTitle, description: events.seoDescription };
+}
 
 function formatRange(startsAt: string, endsAt?: string) {
   const start = new Date(startsAt);
@@ -31,22 +31,23 @@ function formatRange(startsAt: string, endsAt?: string) {
 }
 
 export default async function EventsPage() {
-  const events = await getEvents();
+  const eventList = await getEvents();
+  const { events } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Events
+        {events.eyebrow}
       </p>
       <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        Trainings and gatherings you can join.
+        {events.headline}
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        Register online—we’ll confirm by email.
+        {events.intro}
       </p>
 
       <ul className="mt-14 space-y-10">
-        {events.map((event) => (
+        {eventList.map((event) => (
           <li
             key={event.slug}
             className="grid gap-6 border-t border-line pt-10 md:grid-cols-[240px_1fr] md:gap-10"
@@ -77,7 +78,9 @@ export default async function EventsPage() {
                 href={`/events/${event.slug}`}
                 className="mt-5 inline-block bg-accent px-5 py-3 text-sm font-semibold text-white"
               >
-                {event.registrationOpen ? "View & register" : "View details"}
+                {event.registrationOpen
+                  ? events.registerOpenCta
+                  : events.registerClosedCta}
               </Link>
             </div>
           </li>

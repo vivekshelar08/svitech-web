@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Thank you",
-  description: "Thank you for supporting SVITECH Foundation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { donateThanks } = await getSiteSettings();
+  return {
+    title: donateThanks.seoTitle,
+    description: donateThanks.seoDescription,
+  };
+}
 
 export default async function DonateThanksPage({
   searchParams,
@@ -14,33 +18,34 @@ export default async function DonateThanksPage({
   const params = await searchParams;
   const amount = params.amount ? Number(params.amount) : null;
   const monthly = params.frequency === "monthly";
+  const { donateThanks } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-20 md:px-8 md:py-28">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Thank you
+        {donateThanks.eyebrow}
       </p>
       <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-ink">
-        Your support is in motion.
+        {donateThanks.headline}
       </h1>
       <p className="mt-6 text-lg leading-relaxed text-ink-muted">
         {amount
           ? `We received your ${monthly ? "monthly" : "one-time"} gift of ₹${amount.toLocaleString("en-IN")}.`
           : "We received your gift."}{" "}
-        A receipt is on its way to your email.
+        {donateThanks.receiptNote}
       </p>
       <div className="mt-10 flex flex-wrap gap-3">
         <Link
-          href="/impact"
+          href={donateThanks.ctaPrimaryHref}
           className="bg-brand px-6 py-3.5 text-sm font-semibold text-white"
         >
-          See our impact
+          {donateThanks.ctaPrimary}
         </Link>
         <Link
-          href="/news"
+          href={donateThanks.ctaSecondaryHref}
           className="border border-line bg-white/70 px-6 py-3.5 text-sm font-semibold text-ink"
         >
-          Read the latest
+          {donateThanks.ctaSecondary}
         </Link>
       </div>
     </div>

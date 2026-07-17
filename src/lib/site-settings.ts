@@ -44,11 +44,21 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
 function revalidatePublicSite() {
   revalidatePath("/", "layout");
-  revalidatePath("/");
-  revalidatePath("/about");
-  revalidatePath("/get-involved");
-  revalidatePath("/contact");
-  revalidatePath("/reports");
+  const paths = [
+    "/",
+    "/about",
+    "/contact",
+    "/get-involved",
+    "/donate",
+    "/donate/thanks",
+    "/volunteer",
+    "/programs",
+    "/events",
+    "/news",
+    "/impact",
+    "/reports",
+  ];
+  for (const p of paths) revalidatePath(p);
 }
 
 export async function saveSiteSettings(input: unknown): Promise<SiteSettings> {

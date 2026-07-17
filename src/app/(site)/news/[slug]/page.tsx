@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, getPosts } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateStaticParams() {
   const posts = await getPosts();
@@ -28,11 +29,12 @@ export default async function NewsArticlePage({
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) notFound();
+  const { detailPages } = await getSiteSettings();
 
   return (
     <article className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
       <Link href="/news" className="text-sm font-semibold text-brand">
-        ← All news
+        {detailPages.newsBack}
       </Link>
       <p className="mt-6 text-xs text-ink-muted">
         {new Date(post.publishedAt).toLocaleDateString("en-IN", {

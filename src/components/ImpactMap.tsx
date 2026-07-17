@@ -2,14 +2,22 @@
 
 import type { ImpactStory } from "@/content/impact";
 
-export function ImpactMap({ stories }: { stories: ImpactStory[] }) {
+export function ImpactMap({
+  stories,
+  mapEyebrow,
+  mapHeadline,
+}: {
+  stories: ImpactStory[];
+  mapEyebrow: string;
+  mapHeadline: string;
+}) {
   return (
     <div className="border border-line bg-surface p-6 md:p-8">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Where we work
+        {mapEyebrow}
       </p>
       <h2 className="mt-3 font-display text-2xl font-bold text-ink md:text-3xl">
-        Impact across communities
+        {mapHeadline}
       </h2>
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {stories.map((story) => (

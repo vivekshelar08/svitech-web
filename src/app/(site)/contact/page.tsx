@@ -4,10 +4,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { contact } = await getSiteSettings();
-  return {
-    title: "Contact",
-    description: contact.intro.slice(0, 160),
-  };
+  return { title: contact.seoTitle, description: contact.seoDescription };
 }
 
 export default async function ContactPage() {
@@ -26,7 +23,7 @@ export default async function ContactPage() {
           <p className="mt-6 leading-relaxed text-ink-muted">{contact.intro}</p>
           <dl className="mt-10 space-y-5 text-sm">
             <div>
-              <dt className="font-semibold text-ink">Email</dt>
+              <dt className="font-semibold text-ink">{contact.emailLabel}</dt>
               <dd className="mt-1 text-ink-muted">
                 <a
                   href={`mailto:${general.contactEmail}`}
@@ -37,7 +34,7 @@ export default async function ContactPage() {
               </dd>
             </div>
             <div>
-              <dt className="font-semibold text-ink">Response time</dt>
+              <dt className="font-semibold text-ink">{contact.responseTimeLabel}</dt>
               <dd className="mt-1 text-ink-muted">{general.responseTime}</dd>
             </div>
           </dl>

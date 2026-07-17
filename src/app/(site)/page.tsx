@@ -4,7 +4,12 @@ import { SiteLogo } from "@/components/SiteLogo";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export default async function HomePage() {
-  const { home } = await getSiteSettings();
+  const { home, general } = await getSiteSettings();
+  const logoProps = {
+    logoUrl: general.logoUrl,
+    logoAlt: general.logoAlt,
+    logoAriaLabel: general.logoAriaLabel,
+  };
 
   return (
     <>
@@ -21,7 +26,7 @@ export default async function HomePage() {
 
         <div className="relative mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-6xl flex-col justify-end px-5 pb-16 pt-28 md:px-8 md:pb-20">
           <div className="animate-rise">
-            <SiteLogo href="" size="lg" priority />
+            <SiteLogo href="" size="lg" priority {...logoProps} />
           </div>
           <span
             className="animate-draw mt-5 block h-1 w-24 bg-brand-bright"
@@ -113,24 +118,19 @@ export default async function HomePage() {
             {home.ctaCopy}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/donate"
-              className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
-            >
-              Donate
-            </Link>
-            <Link
-              href="/volunteer"
-              className="border border-line bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
-            >
-              Volunteer
-            </Link>
-            <Link
-              href="/events"
-              className="border border-line bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
-            >
-              Upcoming events
-            </Link>
+            {home.ctaButtons.map((btn, i) => (
+              <Link
+                key={btn.href}
+                href={btn.href}
+                className={
+                  i === 0
+                    ? "bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
+                    : "border border-line bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
+                }
+              >
+                {btn.label}
+              </Link>
+            ))}
           </div>
         </div>
       </section>

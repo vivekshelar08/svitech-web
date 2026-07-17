@@ -5,8 +5,8 @@ import { getSiteSettings } from "@/lib/site-settings";
 export async function generateMetadata(): Promise<Metadata> {
   const { getInvolved } = await getSiteSettings();
   return {
-    title: "Get Involved",
-    description: getInvolved.intro.slice(0, 160),
+    title: getInvolved.seoTitle,
+    description: getInvolved.seoDescription,
   };
 }
 
@@ -54,16 +54,16 @@ export default async function GetInvolvedPage() {
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            href="/donate"
+            href={getInvolved.donateCtaPrimaryHref}
             className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
           >
-            Give now
+            {getInvolved.donateCtaPrimary}
           </Link>
           <Link
-            href="/reports"
+            href={getInvolved.donateCtaSecondaryHref}
             className="border border-line bg-white/70 px-6 py-3.5 text-sm font-semibold text-ink"
           >
-            See how gifts are used
+            {getInvolved.donateCtaSecondary}
           </Link>
         </div>
       </section>

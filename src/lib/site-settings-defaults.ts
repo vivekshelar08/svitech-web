@@ -1,5 +1,6 @@
 import { board as seedBoard } from "@/content/governance";
 
+export type NavLink = { label: string; href: string };
 export type FocusArea = { title: string; copy: string };
 export type ValueItem = { title: string; copy: string };
 export type InvolveWay = {
@@ -14,10 +15,18 @@ export type BoardMemberSetting = {
   bio: string;
 };
 
+export type PageSeo = {
+  seoTitle: string;
+  seoDescription: string;
+};
+
 export type SiteSettings = {
   general: {
     siteName: string;
     tagline: string;
+    logoUrl: string;
+    logoAlt: string;
+    logoAriaLabel: string;
     contactEmail: string;
     responseTime: string;
     footerBlurb: string;
@@ -25,6 +34,29 @@ export type SiteSettings = {
     newsletterBlurb: string;
     seoTitle: string;
     seoDescription: string;
+  };
+  theme: {
+    bg: string;
+    bgDeep: string;
+    ink: string;
+    inkMuted: string;
+    brand: string;
+    brandBright: string;
+    accent: string;
+    accentSoft: string;
+    surface: string;
+  };
+  navigation: {
+    primaryLinks: NavLink[];
+    donateLabel: string;
+    donateHref: string;
+  };
+  footer: {
+    exploreHeading: string;
+    exploreLinks: NavLink[];
+    takePartHeading: string;
+    takePartLinks: NavLink[];
+    newsletterHeading: string;
   };
   home: {
     heroHeadline: string;
@@ -48,6 +80,7 @@ export type SiteSettings = {
     approachLinkHref: string;
     ctaHeadline: string;
     ctaCopy: string;
+    ctaButtons: NavLink[];
   };
   about: {
     eyebrow: string;
@@ -65,6 +98,8 @@ export type SiteSettings = {
     governanceCopy: string;
     governanceLinkLabel: string;
     programsLinkLabel: string;
+    seoTitle: string;
+    seoDescription: string;
   };
   getInvolved: {
     eyebrow: string;
@@ -73,25 +108,126 @@ export type SiteSettings = {
     ways: InvolveWay[];
     donateHeadline: string;
     donateCopy: string;
+    donateCtaPrimary: string;
+    donateCtaPrimaryHref: string;
+    donateCtaSecondary: string;
+    donateCtaSecondaryHref: string;
+    seoTitle: string;
+    seoDescription: string;
   };
   contact: {
     eyebrow: string;
     headline: string;
     intro: string;
+    emailLabel: string;
+    responseTimeLabel: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  donate: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    bullets: string[];
+    footerNote: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  donateThanks: {
+    eyebrow: string;
+    headline: string;
+    receiptNote: string;
+    ctaPrimary: string;
+    ctaPrimaryHref: string;
+    ctaSecondary: string;
+    ctaSecondaryHref: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  volunteer: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    bullets: string[];
+    seoTitle: string;
+    seoDescription: string;
+  };
+  programs: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    itemCtaLabel: string;
+    bottomCtaLabel: string;
+    bottomCtaHref: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  events: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    registerOpenCta: string;
+    registerClosedCta: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  news: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  impact: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    mapEyebrow: string;
+    mapHeadline: string;
+    storyCtaLabel: string;
+    seoTitle: string;
+    seoDescription: string;
   };
   reports: {
     eyebrow: string;
     headline: string;
     intro: string;
     boardTitle: string;
+    annualReportsTitle: string;
+    downloadLabel: string;
+    adminNote: string;
+    contactPrompt: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
+  detailPages: {
+    programsBack: string;
+    programsPartnerCta: string;
+    programsVolunteerCta: string;
+    eventsBack: string;
+    eventsClosedNote: string;
+    newsBack: string;
   };
   board: BoardMemberSetting[];
 };
+
+const defaultNav: NavLink[] = [
+  { label: "About", href: "/about" },
+  { label: "Programs", href: "/programs" },
+  { label: "Impact", href: "/impact" },
+  { label: "Events", href: "/events" },
+  { label: "News", href: "/news" },
+  { label: "Get Involved", href: "/get-involved" },
+  { label: "Contact", href: "/contact" },
+];
 
 export const defaultSiteSettings: SiteSettings = {
   general: {
     siteName: "SVITECH Foundation",
     tagline: "Technology for Social Good",
+    logoUrl: "/svitech-logo.png",
+    logoAlt: "SVITECH Foundation — Education, Technology, Community",
+    logoAriaLabel: "SVITECH Foundation home",
     contactEmail: "hello@svitech.org",
     responseTime: "Usually within 2–3 business days",
     footerBlurb:
@@ -101,6 +237,36 @@ export const defaultSiteSettings: SiteSettings = {
     seoTitle: "SVITECH Foundation — Technology for Social Good",
     seoDescription:
       "SVITECH Foundation bridges communities with digital skills, open education, and technology that serves people first.",
+  },
+  theme: {
+    bg: "#eef3f2",
+    bgDeep: "#0c2e2f",
+    ink: "#0c2e2f",
+    inkMuted: "#4a6364",
+    brand: "#0e6b5c",
+    brandBright: "#14967f",
+    accent: "#c45c26",
+    accentSoft: "#f3e6dc",
+    surface: "#f7faf9",
+  },
+  navigation: {
+    primaryLinks: defaultNav,
+    donateLabel: "Donate",
+    donateHref: "/donate",
+  },
+  footer: {
+    exploreHeading: "Explore",
+    exploreLinks: defaultNav.filter((l) =>
+      ["/about", "/programs", "/impact", "/events", "/news"].includes(l.href),
+    ),
+    takePartHeading: "Take part",
+    takePartLinks: [
+      { label: "Donate", href: "/donate" },
+      { label: "Volunteer", href: "/volunteer" },
+      { label: "Reports", href: "/reports" },
+      { label: "Contact", href: "/contact" },
+    ],
+    newsletterHeading: "Newsletter",
   },
   home: {
     heroHeadline: "Technology that serves people first.",
@@ -143,6 +309,11 @@ export const defaultSiteSettings: SiteSettings = {
     ctaHeadline: "Ready to help us expand access?",
     ctaCopy:
       "Volunteer your skills, partner with a program, or support the work that keeps learning free and open.",
+    ctaButtons: [
+      { label: "Donate", href: "/donate" },
+      { label: "Volunteer", href: "/volunteer" },
+      { label: "Upcoming events", href: "/events" },
+    ],
   },
   about: {
     eyebrow: "About",
@@ -178,6 +349,9 @@ export const defaultSiteSettings: SiteSettings = {
       "Board members, annual reports, and financial notes are published for public review—because trust should not require a scavenger hunt.",
     governanceLinkLabel: "View reports & board",
     programsLinkLabel: "Explore our programs",
+    seoTitle: "About",
+    seoDescription:
+      "Learn how SVITECH Foundation started and why we put communities at the center of technology.",
   },
   getInvolved: {
     eyebrow: "Get involved",
@@ -207,18 +381,128 @@ export const defaultSiteSettings: SiteSettings = {
     donateHeadline: "Donate",
     donateCopy:
       "Support facilitator stipends, shared lab equipment, and free curriculum with a one-time or monthly gift.",
+    donateCtaPrimary: "Give now",
+    donateCtaPrimaryHref: "/donate",
+    donateCtaSecondary: "See how gifts are used",
+    donateCtaSecondaryHref: "/reports",
+    seoTitle: "Get Involved",
+    seoDescription:
+      "Volunteer, partner, or donate to support SVITECH Foundation’s community technology programs.",
   },
   contact: {
     eyebrow: "Contact",
     headline: "Let’s start a conversation.",
     intro:
       "Tell us about your community, your organization, or how you’d like to help. We read every message.",
+    emailLabel: "Email",
+    responseTimeLabel: "Response time",
+    seoTitle: "Contact",
+    seoDescription:
+      "Reach the SVITECH Foundation team for partnerships, volunteering, and support.",
+  },
+  donate: {
+    eyebrow: "Donate",
+    headline: "Fund skills communities can keep.",
+    intro:
+      "Your gift supports facilitator stipends, shared devices, and open learning materials—not overhead theater. Choose one-time or monthly giving.",
+    bullets: [
+      "Transparent programs and published reports",
+      "Receipt emailed after successful payment",
+      "Card, UPI, and netbanking via Razorpay",
+    ],
+    footerNote:
+      "Prefer partnership or CSR? Talk to us via contact. See impact stories and reports for how gifts are used.",
+    seoTitle: "Donate",
+    seoDescription:
+      "Support SVITECH Foundation with a one-time or monthly donation. Funds facilitator stipends, lab equipment, and open curriculum.",
+  },
+  donateThanks: {
+    eyebrow: "Thank you",
+    headline: "Your support is in motion.",
+    receiptNote: "A receipt is on its way to your email.",
+    ctaPrimary: "See our impact",
+    ctaPrimaryHref: "/impact",
+    ctaSecondary: "Read the latest",
+    ctaSecondaryHref: "/news",
+    seoTitle: "Thank you",
+    seoDescription: "Thank you for supporting SVITECH Foundation.",
+  },
+  volunteer: {
+    eyebrow: "Volunteer",
+    headline: "Share skills where they multiply.",
+    intro:
+      "Facilitate labs, mentor a cohort, translate open curriculum, or help a partner nonprofit keep their tools running.",
+    bullets: [
+      "Flexible hours; remote and in-person options",
+      "Training and curriculum kits provided",
+      "Prefer donating time and money? Also see our donate page",
+    ],
+    seoTitle: "Volunteer",
+    seoDescription:
+      "Apply to volunteer with SVITECH Foundation—teach, mentor, translate, or support community labs.",
+  },
+  programs: {
+    eyebrow: "Programs",
+    headline: "Practical programs that leave skills behind.",
+    intro:
+      "Every SVITECH Foundation program is built to be taught, remixed, and sustained by the communities who use it.",
+    itemCtaLabel: "Learn more →",
+    bottomCtaLabel: "Partner with a program",
+    bottomCtaHref: "/get-involved",
+    seoTitle: "Programs",
+    seoDescription:
+      "Digital literacy labs, open learning paths, and community tech builds from SVITECH Foundation.",
+  },
+  events: {
+    eyebrow: "Events",
+    headline: "Trainings and gatherings you can join.",
+    intro: "Register online—we’ll confirm by email.",
+    registerOpenCta: "View & register",
+    registerClosedCta: "View details",
+    seoTitle: "Events",
+    seoDescription:
+      "Upcoming trainings, meetups, and demo days from SVITECH Foundation.",
+  },
+  news: {
+    eyebrow: "News",
+    headline: "Notes from the work.",
+    intro: "Program updates, open curriculum thinking, and how gifts turn into labs.",
+    seoTitle: "News",
+    seoDescription: "Updates, essays, and transparency notes from SVITECH Foundation.",
+  },
+  impact: {
+    eyebrow: "Impact",
+    headline: "Proof over pledges.",
+    intro:
+      "Specific places, measurable outcomes, and stories communities can verify—not vague statistics.",
+    mapEyebrow: "Where we work",
+    mapHeadline: "Impact across communities",
+    storyCtaLabel: "Support work like this",
+    seoTitle: "Impact",
+    seoDescription:
+      "See where SVITECH Foundation programs create measurable community outcomes.",
   },
   reports: {
     eyebrow: "Transparency",
     headline: "Reports, board, and how we steward gifts.",
     intro: "Governance should be findable in two clicks. Here is ours.",
     boardTitle: "Board",
+    annualReportsTitle: "Annual reports",
+    downloadLabel: "Download PDF",
+    adminNote:
+      "Placeholder PDFs can be replaced in public/reports/. For tax exemption / 80G documents, add them here when available.",
+    contactPrompt: "Questions about finances or partnerships?",
+    seoTitle: "Reports & governance",
+    seoDescription:
+      "Annual reports, board information, and transparency notes from SVITECH Foundation.",
+  },
+  detailPages: {
+    programsBack: "← All programs",
+    programsPartnerCta: "Partner with this program",
+    programsVolunteerCta: "Volunteer",
+    eventsBack: "← All events",
+    eventsClosedNote: "Registration is closed.",
+    newsBack: "← All news",
   },
   board: seedBoard.map((m) => ({ ...m })),
 };

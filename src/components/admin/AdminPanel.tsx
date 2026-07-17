@@ -10,11 +10,13 @@ import { SettingsTab } from "@/components/admin/SettingsTab";
 import {
   contentTabs,
   navGroups,
+  settingsTabs,
   tabHints,
   tabLabels,
   type AdminInbox,
   type AdminTab,
   type ContentTabType,
+  type SettingsTabType,
 } from "@/components/admin/admin-types";
 
 export function AdminPanel({
@@ -211,9 +213,9 @@ export function AdminPanel({
             {contentTabs.includes(tab as ContentTabType) && (
               <ContentTab type={tab as ContentTabType} />
             )}
-            {tab === "site" && <SettingsTab section="site" />}
-            {tab === "pages" && <SettingsTab section="pages" />}
-            {tab === "board" && <SettingsTab section="board" />}
+            {settingsTabs.includes(tab as SettingsTabType) && (
+              <SettingsTab section={tab as SettingsTabType} />
+            )}
             {tab === "account" && (
               <AccountTab
                 email={email}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EventRegisterForm } from "@/components/forms/EventRegisterForm";
 import { getEvent, getEvents } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateStaticParams() {
   const events = await getEvents();
@@ -29,11 +30,12 @@ export default async function EventDetailPage({
   const { slug } = await params;
   const event = await getEvent(slug);
   if (!event) notFound();
+  const { detailPages } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
       <Link href="/events" className="text-sm font-semibold text-brand">
-        ← All events
+        {detailPages.eventsBack}
       </Link>
       <div className="relative mt-8 aspect-[16/9] overflow-hidden">
         <Image
@@ -57,7 +59,7 @@ export default async function EventDetailPage({
       {event.registrationOpen ? (
         <EventRegisterForm eventSlug={event.slug} />
       ) : (
-        <p className="mt-8 text-sm text-ink-muted">Registration is closed.</p>
+        <p className="mt-8 text-sm text-ink-muted">{detailPages.eventsClosedNote}</p>
       )}
     </div>
   );

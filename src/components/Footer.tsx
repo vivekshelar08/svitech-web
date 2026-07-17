@@ -1,77 +1,56 @@
 import Link from "next/link";
 import { SiteLogo } from "@/components/SiteLogo";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
-import { getSiteSettings } from "@/lib/site-settings";
+import type { SiteSettings } from "@/lib/site-settings-defaults";
 
-export async function Footer() {
-  const { general } = await getSiteSettings();
+export function Footer({
+  general,
+  footer,
+}: {
+  general: SiteSettings["general"];
+  footer: SiteSettings["footer"];
+}) {
+  const logoProps = {
+    logoUrl: general.logoUrl,
+    logoAlt: general.logoAlt,
+    logoAriaLabel: general.logoAriaLabel,
+  };
 
   return (
     <footer className="border-t border-line bg-bg-deep text-surface">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr_1fr_1.2fr] md:px-8">
         <div>
-          <SiteLogo size="md" />
+          <SiteLogo size="md" {...logoProps} />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
             {general.footerBlurb}
           </p>
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-            Explore
+            {footer.exploreHeading}
           </p>
           <ul className="mt-4 space-y-2 text-sm text-white/80">
-            <li>
-              <Link href="/about" className="hover:text-white">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link href="/programs" className="hover:text-white">
-                Programs
-              </Link>
-            </li>
-            <li>
-              <Link href="/impact" className="hover:text-white">
-                Impact
-              </Link>
-            </li>
-            <li>
-              <Link href="/events" className="hover:text-white">
-                Events
-              </Link>
-            </li>
-            <li>
-              <Link href="/news" className="hover:text-white">
-                News
-              </Link>
-            </li>
+            {footer.exploreLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="hover:text-white">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-            Take part
+            {footer.takePartHeading}
           </p>
           <ul className="mt-4 space-y-2 text-sm text-white/80">
-            <li>
-              <Link href="/donate" className="hover:text-white">
-                Donate
-              </Link>
-            </li>
-            <li>
-              <Link href="/volunteer" className="hover:text-white">
-                Volunteer
-              </Link>
-            </li>
-            <li>
-              <Link href="/reports" className="hover:text-white">
-                Reports
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-white">
-                Contact
-              </Link>
-            </li>
+            {footer.takePartLinks.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className="hover:text-white">
+                  {link.label}
+                </Link>
+              </li>
+            ))}
             <li>
               <a href={`mailto:${general.contactEmail}`} className="hover:text-white">
                 {general.contactEmail}
@@ -81,7 +60,7 @@ export async function Footer() {
         </div>
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-            Newsletter
+            {footer.newsletterHeading}
           </p>
           <p className="mt-4 text-sm text-white/70">{general.newsletterBlurb}</p>
           <div className="mt-4 [&_input]:border-white/20 [&_input]:bg-white/10 [&_input]:text-white [&_input]:placeholder:text-white/45">
