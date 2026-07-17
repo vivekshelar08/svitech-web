@@ -11,14 +11,20 @@ const ways = [
   {
     title: "Volunteer",
     copy: "Teach a workshop, mentor a cohort, or help translate open learning materials.",
+    href: "/volunteer",
+    cta: "Apply to volunteer",
   },
   {
     title: "Partner",
     copy: "Bring SVITECH Foundation programs to your school, library, or community organization.",
+    href: "/contact",
+    cta: "Start a partnership",
   },
   {
     title: "Advocate",
     copy: "Share our open curriculum and help more communities find tools they can trust.",
+    href: "/news",
+    cta: "Read & share",
   },
 ];
 
@@ -43,6 +49,12 @@ export default function GetInvolvedPage() {
             <p className="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">
               {way.copy}
             </p>
+            <Link
+              href={way.href}
+              className="mt-5 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
+            >
+              {way.cta}
+            </Link>
           </li>
         ))}
       </ul>
@@ -55,23 +67,22 @@ export default function GetInvolvedPage() {
           Donate
         </h2>
         <p className="mt-4 max-w-xl leading-relaxed text-ink-muted">
-          Your support funds facilitator stipends, shared lab equipment, and free
-          curriculum that stays open for everyone. This demo site uses a contact
-          path—connect payment later when you’re ready.
+          Support facilitator stipends, shared lab equipment, and free curriculum with
+          a one-time or monthly gift.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
-            href="/contact"
+            href="/donate"
             className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
           >
-            Talk to us about giving
+            Give now
           </Link>
-          <a
-            href="mailto:hello@svitech.org?subject=I%20want%20to%20support%20SVITECH%20Foundation"
+          <Link
+            href="/reports"
             className="border border-line bg-white/70 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
           >
-            Email hello@svitech.org
-          </a>
+            See reports
+          </Link>
         </div>
       </section>
     </div>

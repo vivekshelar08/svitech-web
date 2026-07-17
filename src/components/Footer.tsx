@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { SiteLogo } from "@/components/SiteLogo";
+import { NewsletterForm } from "@/components/forms/NewsletterForm";
 
 export function Footer() {
   return (
     <footer className="border-t border-line bg-bg-deep text-surface">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:px-8">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr_1fr_1.2fr] md:px-8">
         <div>
           <SiteLogo size="md" />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
@@ -28,8 +29,40 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/get-involved" className="hover:text-white">
-                Get Involved
+              <Link href="/impact" className="hover:text-white">
+                Impact
+              </Link>
+            </li>
+            <li>
+              <Link href="/events" className="hover:text-white">
+                Events
+              </Link>
+            </li>
+            <li>
+              <Link href="/news" className="hover:text-white">
+                News
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
+            Take part
+          </p>
+          <ul className="mt-4 space-y-2 text-sm text-white/80">
+            <li>
+              <Link href="/donate" className="hover:text-white">
+                Donate
+              </Link>
+            </li>
+            <li>
+              <Link href="/volunteer" className="hover:text-white">
+                Volunteer
+              </Link>
+            </li>
+            <li>
+              <Link href="/reports" className="hover:text-white">
+                Reports
               </Link>
             </li>
             <li>
@@ -37,20 +70,23 @@ export function Footer() {
                 Contact
               </Link>
             </li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-            Reach us
-          </p>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
             <li>
               <a href="mailto:hello@svitech.org" className="hover:text-white">
                 hello@svitech.org
               </a>
             </li>
-            <li>Serving communities worldwide</li>
           </ul>
+        </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
+            Newsletter
+          </p>
+          <p className="mt-4 text-sm text-white/70">
+            Program updates and impact notes—rarely, and never spam.
+          </p>
+          <div className="mt-4 [&_input]:border-white/20 [&_input]:bg-white/10 [&_input]:text-white [&_input]:placeholder:text-white/45">
+            <NewsletterForm source="footer" compact />
+          </div>
         </div>
       </div>
       <div className="border-t border-white/10">

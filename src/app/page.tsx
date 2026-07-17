@@ -48,16 +48,16 @@ export default function HomePage() {
           </p>
           <div className="animate-rise-delay-2 mt-8 flex flex-wrap gap-3">
             <Link
-              href="/get-involved"
+              href="/donate"
               className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
             >
-              Get involved
+              Donate
             </Link>
             <Link
-              href="/programs"
+              href="/impact"
               className="border border-white/35 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15"
             >
-              See our programs
+              See our impact
             </Link>
           </div>
         </div>
@@ -130,16 +130,22 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/get-involved#donate"
+              href="/donate"
               className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
             >
               Donate
             </Link>
             <Link
-              href="/contact"
+              href="/volunteer"
               className="border border-line bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
             >
-              Contact us
+              Volunteer
+            </Link>
+            <Link
+              href="/events"
+              className="border border-line bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
+            >
+              Upcoming events
             </Link>
           </div>
         </div>

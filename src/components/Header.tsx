@@ -8,6 +8,9 @@ import { SiteLogo } from "@/components/SiteLogo";
 const links = [
   { href: "/about", label: "About" },
   { href: "/programs", label: "Programs" },
+  { href: "/impact", label: "Impact" },
+  { href: "/events", label: "Events" },
+  { href: "/news", label: "News" },
   { href: "/get-involved", label: "Get Involved" },
   { href: "/contact", label: "Contact" },
 ];
@@ -21,9 +24,10 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3 md:px-8">
         <SiteLogo size="sm" priority onClick={() => setOpen(false)} />
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
           {links.map((link) => {
-            const active = pathname === link.href;
+            const active =
+              pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.href}
@@ -37,40 +41,48 @@ export function Header() {
             );
           })}
           <Link
-            href="/get-involved#donate"
+            href="/donate"
             className="bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
           >
             Donate
           </Link>
         </nav>
 
-        <button
-          type="button"
-          className="inline-flex h-10 w-10 items-center justify-center border border-line text-ink md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="sr-only">Menu</span>
-          <span className="flex flex-col gap-1.5">
-            <span
-              className={`block h-0.5 w-5 bg-ink transition ${open ? "translate-y-2 rotate-45" : ""}`}
-            />
-            <span
-              className={`block h-0.5 w-5 bg-ink transition ${open ? "opacity-0" : ""}`}
-            />
-            <span
-              className={`block h-0.5 w-5 bg-ink transition ${open ? "-translate-y-2 -rotate-45" : ""}`}
-            />
-          </span>
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <Link
+            href="/donate"
+            className="bg-accent px-4 py-2 text-sm font-semibold text-white"
+          >
+            Donate
+          </Link>
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center border border-line text-ink"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="sr-only">Menu</span>
+            <span className="flex flex-col gap-1.5">
+              <span
+                className={`block h-0.5 w-5 bg-ink transition ${open ? "translate-y-2 rotate-45" : ""}`}
+              />
+              <span
+                className={`block h-0.5 w-5 bg-ink transition ${open ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block h-0.5 w-5 bg-ink transition ${open ? "-translate-y-2 -rotate-45" : ""}`}
+              />
+            </span>
+          </button>
+        </div>
       </div>
 
       {open && (
         <nav
           id="mobile-nav"
-          className="border-t border-line bg-surface px-5 py-4 md:hidden"
+          className="border-t border-line bg-surface px-5 py-4 lg:hidden"
           aria-label="Mobile"
         >
           <ul className="flex flex-col gap-1">
@@ -85,15 +97,6 @@ export function Header() {
                 </Link>
               </li>
             ))}
-            <li className="pt-2">
-              <Link
-                href="/get-involved#donate"
-                className="inline-block bg-accent px-5 py-3 text-sm font-semibold text-white"
-                onClick={() => setOpen(false)}
-              >
-                Donate
-              </Link>
-            </li>
           </ul>
         </nav>
       )}

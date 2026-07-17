@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getPrograms } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Programs",
@@ -7,34 +8,9 @@ export const metadata: Metadata = {
     "Digital literacy labs, open learning paths, and community tech builds from SVITECH Foundation.",
 };
 
-const programs = [
-  {
-    name: "Community Digital Labs",
-    summary:
-      "In-person workshops covering internet safety, productivity tools, and pathways into remote work.",
-    detail: "Running in partnership with libraries, schools, and youth centers.",
-  },
-  {
-    name: "Open Learning Paths",
-    summary:
-      "Curriculum kits any facilitator can adapt—covering civic tech, data basics, and accessible design.",
-    detail: "Published under open licenses and translated with local educators.",
-  },
-  {
-    name: "Nonprofit Tooling",
-    summary:
-      "Lightweight websites, intake forms, and reporting helpers for small organizations.",
-    detail: "Designed to be maintainable by volunteers with modest tech skills.",
-  },
-  {
-    name: "Mentor Circles",
-    summary:
-      "Peer mentoring that pairs experienced practitioners with emerging community technologists.",
-    detail: "Monthly cohorts focused on projects with real local impact.",
-  },
-];
+export default async function ProgramsPage() {
+  const programs = await getPrograms();
 
-export default function ProgramsPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
@@ -51,14 +27,26 @@ export default function ProgramsPage() {
       <ul className="mt-14 divide-y divide-line border-y border-line">
         {programs.map((program) => (
           <li
-            key={program.name}
+            key={program.slug}
             className="grid gap-3 py-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)] md:gap-10"
           >
             <div>
-              <h2 className="font-display text-2xl font-bold text-ink">{program.name}</h2>
+              <h2 className="font-display text-2xl font-bold text-ink">
+                <Link href={`/programs/${program.slug}`} className="hover:text-brand">
+                  {program.name}
+                </Link>
+              </h2>
               <p className="mt-2 text-sm text-brand">{program.detail}</p>
             </div>
-            <p className="leading-relaxed text-ink-muted">{program.summary}</p>
+            <div>
+              <p className="leading-relaxed text-ink-muted">{program.summary}</p>
+              <Link
+                href={`/programs/${program.slug}`}
+                className="mt-4 inline-block text-sm font-semibold text-brand"
+              >
+                Learn more →
+              </Link>
+            </div>
           </li>
         ))}
       </ul>

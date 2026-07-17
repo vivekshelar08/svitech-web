@@ -77,6 +77,20 @@ export default function AboutPage() {
         </ul>
       </div>
 
+      <div className="mt-16 border-t border-line pt-12">
+        <h2 className="font-display text-2xl font-bold text-ink">Governance</h2>
+        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
+          Board members, annual reports, and financial notes are published for public
+          review—because trust should not require a scavenger hunt.
+        </p>
+        <Link
+          href="/reports"
+          className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
+        >
+          View reports & board
+        </Link>
+      </div>
+
       <Link
         href="/programs"
         className="mt-14 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
