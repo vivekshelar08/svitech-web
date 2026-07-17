@@ -287,6 +287,45 @@ export function SettingsFormBody({
           <Field label="Donate button link" value={settings.navigation.donateHref} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateHref: v } })} />
         </div>
         <NavLinksEditor label="Primary nav links" links={settings.navigation.primaryLinks} onChange={(links) => setSettings({ ...settings, navigation: { ...settings.navigation, primaryLinks: links } })} />
+        <SectionTitle title="Sticky donate bar" copy="Appears after scrolling — like Seva.org. Hidden on donate and admin pages." />
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex items-center gap-3 text-sm font-medium text-ink">
+            <input
+              type="checkbox"
+              checked={settings.navigation.stickyDonate.enabled}
+              onChange={(e) => setSettings({
+                ...settings,
+                navigation: {
+                  ...settings.navigation,
+                  stickyDonate: { ...settings.navigation.stickyDonate, enabled: e.target.checked },
+                },
+              })}
+              className="h-4 w-4 rounded border-line"
+            />
+            Enabled
+          </label>
+          <Field label="CTA label" value={settings.navigation.stickyDonate.ctaLabel} onChange={(v) => setSettings({
+            ...settings,
+            navigation: {
+              ...settings.navigation,
+              stickyDonate: { ...settings.navigation.stickyDonate, ctaLabel: v },
+            },
+          })} />
+          <Field label="CTA link" value={settings.navigation.stickyDonate.ctaHref} onChange={(v) => setSettings({
+            ...settings,
+            navigation: {
+              ...settings.navigation,
+              stickyDonate: { ...settings.navigation.stickyDonate, ctaHref: v },
+            },
+          })} />
+          <Field label="Message" value={settings.navigation.stickyDonate.message} onChange={(v) => setSettings({
+            ...settings,
+            navigation: {
+              ...settings.navigation,
+              stickyDonate: { ...settings.navigation.stickyDonate, message: v },
+            },
+          })} multiline />
+        </div>
         <SectionTitle title="Footer navigation" />
         <div className="grid gap-4 md:grid-cols-3">
           <Field label="Explore heading" value={settings.footer.exploreHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, exploreHeading: v } })} />
@@ -392,6 +431,132 @@ export function SettingsFormBody({
               setSettings({ ...settings, home: { ...settings.home, donateStripAmounts: amounts } });
             }} hint="e.g. 500, 1000, 2500, 5000" />
           </div>
+        </div>
+        <div className="space-y-4">
+          <SectionTitle title="Campaign cards" copy="Support-a-cause grid — like Smile Foundation campaigns." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Eyebrow" value={settings.home.campaignsEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, campaignsEyebrow: v } })} />
+            <Field label="Headline" value={settings.home.campaignsHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, campaignsHeadline: v } })} />
+          </div>
+          {settings.home.campaigns.map((campaign, index) => (
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field label="Title" value={campaign.title} onChange={(v) => {
+                  const next = [...settings.home.campaigns];
+                  next[index] = { ...next[index], title: v };
+                  setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
+                }} />
+                <Field label="Link" value={campaign.href} onChange={(v) => {
+                  const next = [...settings.home.campaigns];
+                  next[index] = { ...next[index], href: v };
+                  setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
+                }} />
+                <Field label="CTA label" value={campaign.cta} onChange={(v) => {
+                  const next = [...settings.home.campaigns];
+                  next[index] = { ...next[index], cta: v };
+                  setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
+                }} />
+                <Field label="Image URL" value={campaign.image || ""} onChange={(v) => {
+                  const next = [...settings.home.campaigns];
+                  next[index] = { ...next[index], image: v || undefined };
+                  setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
+                }} />
+              </div>
+              <Field label="Copy" value={campaign.copy} onChange={(v) => {
+                const next = [...settings.home.campaigns];
+                next[index] = { ...next[index], copy: v };
+                setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
+              }} multiline />
+              <AdminButton variant="ghost" onClick={() => setSettings({
+                ...settings,
+                home: {
+                  ...settings.home,
+                  campaigns: settings.home.campaigns.filter((_, i) => i !== index),
+                },
+              })}>Remove campaign</AdminButton>
+            </div>
+          ))}
+          <AdminButton variant="secondary" onClick={() => setSettings({
+            ...settings,
+            home: {
+              ...settings.home,
+              campaigns: [
+                ...settings.home.campaigns,
+                { title: "New campaign", copy: "", href: "/programs", cta: "Know more →" },
+              ],
+            },
+          })}>Add campaign</AdminButton>
+        </div>
+        <div className="space-y-4">
+          <SectionTitle title="Accreditations & partners" copy="Trust strip — like Smile Foundation empanelment section." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Accreditations eyebrow" value={settings.home.accreditationsEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, accreditationsEyebrow: v } })} />
+            <Field label="Accreditations headline" value={settings.home.accreditationsHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, accreditationsHeadline: v } })} />
+            <Field label="Partners eyebrow" value={settings.home.partnersEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, partnersEyebrow: v } })} />
+          </div>
+          {settings.home.accreditations.map((item, index) => (
+            <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-2">
+              <Field label="Name" value={item.name} onChange={(v) => {
+                const next = [...settings.home.accreditations];
+                next[index] = { ...next[index], name: v };
+                setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
+              }} />
+              <Field label="Description" value={item.description} onChange={(v) => {
+                const next = [...settings.home.accreditations];
+                next[index] = { ...next[index], description: v };
+                setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
+              }} multiline />
+              <div className="md:col-span-2">
+                <AdminButton variant="ghost" onClick={() => setSettings({
+                  ...settings,
+                  home: {
+                    ...settings.home,
+                    accreditations: settings.home.accreditations.filter((_, i) => i !== index),
+                  },
+                })}>Remove accreditation</AdminButton>
+              </div>
+            </div>
+          ))}
+          <AdminButton variant="secondary" onClick={() => setSettings({
+            ...settings,
+            home: {
+              ...settings.home,
+              accreditations: [
+                ...settings.home.accreditations,
+                { name: "New accreditation", description: "" },
+              ],
+            },
+          })}>Add accreditation</AdminButton>
+          {settings.home.partners.map((partner, index) => (
+            <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-[1fr_1fr_auto]">
+              <Field label="Partner name" value={partner.name} onChange={(v) => {
+                const next = [...settings.home.partners];
+                next[index] = { ...next[index], name: v };
+                setSettings({ ...settings, home: { ...settings.home, partners: next } });
+              }} />
+              <Field label="Link (optional)" value={partner.href || ""} onChange={(v) => {
+                const next = [...settings.home.partners];
+                next[index] = { ...next[index], href: v || undefined };
+                setSettings({ ...settings, home: { ...settings.home, partners: next } });
+              }} />
+              <div className="flex items-end">
+                <AdminButton variant="ghost" onClick={() => setSettings({
+                  ...settings,
+                  home: {
+                    ...settings.home,
+                    partners: settings.home.partners.filter((_, i) => i !== index),
+                  },
+                })}>Remove</AdminButton>
+              </div>
+            </div>
+          ))}
+          <AdminButton variant="secondary" onClick={() => setSettings({
+            ...settings,
+            home: {
+              ...settings.home,
+              partners: [...settings.home.partners, { name: "New partner" }],
+            },
+          })}>Add partner</AdminButton>
         </div>
         <div className="space-y-4">
           <SectionTitle title="About" />
