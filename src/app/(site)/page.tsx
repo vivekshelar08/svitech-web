@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AccreditationsStrip } from "@/components/AccreditationsStrip";
+import { CampaignCards } from "@/components/CampaignCards";
 import { DonateStrip } from "@/components/DonateStrip";
 import { HomePrograms } from "@/components/HomePrograms";
 import { HomeSpotlight } from "@/components/HomeSpotlight";
@@ -101,6 +103,12 @@ export default async function HomePage() {
         itemCtaLabel="Know more →"
       />
 
+      <CampaignCards
+        eyebrow={home.campaignsEyebrow}
+        headline={home.campaignsHeadline}
+        campaigns={home.campaigns}
+      />
+
       <section className="border-y border-line bg-surface">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 md:grid-cols-2 md:gap-16 md:px-8 md:py-28">
           <div className="relative aspect-[4/5] overflow-hidden md:aspect-[5/6]">
@@ -141,6 +149,14 @@ export default async function HomePage() {
       />
 
       <TestimonialQuote eyebrow={home.quoteEyebrow} quote={home.quote} />
+
+      <AccreditationsStrip
+        accreditationsEyebrow={home.accreditationsEyebrow}
+        accreditationsHeadline={home.accreditationsHeadline}
+        accreditations={home.accreditations}
+        partnersEyebrow={home.partnersEyebrow}
+        partners={home.partners}
+      />
 
       <DonateStrip
         headline={home.donateStripHeadline}
