@@ -16,6 +16,7 @@ import {
 import { sendEmail } from "@/lib/email";
 import { getAdminEmail, getAppUrl, getAdminPassword, getSupabaseServiceKey, hasSupabase } from "@/lib/env";
 import { getAdminClient } from "@/lib/supabase";
+import { emptyAdminDashboard, fetchAdminDashboard } from "@/lib/admin-dashboard-data";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -116,61 +117,19 @@ export async function PUT() {
   if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
   const admin = getAdminClient();
   if (!admin) {
-    return jsonOk({
-      mode: "file",
-      message:
+    return jsonOk(
+      emptyAdminDashboard(
         "Supabase service role not configured. Set SUPABASE_SERVICE_ROLE_KEY for inbox and CMS. Site settings still save locally.",
-      stats: null,
-      contact: [],
-      volunteers: [],
-      newsletter: [],
-      donations: [],
-      eventRegistrations: [],
-    });
+      ),
+    );
   }
 
-  const [
-    contact,
-    volunteers,
-    newsletter,
-    donations,
-    eventRegistrations,
-    posts,
-    events,
-    programs,
-    impactStories,
-    reports,
-  ] = await Promise.all([
-    admin.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(50),
-    admin.from("volunteer_applications").select("*").order("created_at", { ascending: false }).limit(50),
-    admin.from("newsletter_subscribers").select("*").order("created_at", { ascending: false }).limit(100),
-    admin.from("donations").select("*").order("created_at", { ascending: false }).limit(50),
-    admin.from("event_registrations").select("*").order("created_at", { ascending: false }).limit(50),
-    admin.from("posts").select("id", { count: "exact", head: true }),
-    admin.from("events").select("id", { count: "exact", head: true }),
-    admin.from("programs").select("id", { count: "exact", head: true }),
-    admin.from("impact_stories").select("id", { count: "exact", head: true }),
-    admin.from("reports").select("id", { count: "exact", head: true }),
-  ]);
-
-  return jsonOk({
-    mode: "supabase",
-    stats: {
-      contact: contact.data?.length || 0,
-      volunteers: volunteers.data?.length || 0,
-      newsletter: newsletter.data?.length || 0,
-      donations: donations.data?.length || 0,
-      eventRegistrations: eventRegistrations.data?.length || 0,
-      posts: posts.count || 0,
-      events: events.count || 0,
-      programs: programs.count || 0,
-      impactStories: impactStories.count || 0,
-      reports: reports.count || 0,
-    },
-    contact: contact.data || [],
-    volunteers: volunteers.data || [],
-    newsletter: newsletter.data || [],
-    donations: donations.data || [],
-    eventRegistrations: eventRegistrations.data || [],
-  });
+  try {
+    return jsonOk(await fetchAdminDashboard(admin));
+  } catch (error) {
+    return jsonError(
+      error instanceof Error ? error.message : "Failed to load dashboard",
+      500,
+    );
+  }
 }

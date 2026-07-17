@@ -37,6 +37,7 @@ export function AdminPanel({
     supabaseServiceRole: boolean;
   } | null>(null);
   const [navOpen, setNavOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     void (async () => {
@@ -60,7 +61,9 @@ export function AdminPanel({
   }, []);
 
   async function loadInbox() {
+    setRefreshing(true);
     const res = await fetch("/api/admin", { method: "PUT" });
+    setRefreshing(false);
     if (!res.ok) return;
     setInbox((await res.json()) as AdminInbox);
   }
@@ -151,13 +154,22 @@ export function AdminPanel({
                             setTab(key);
                             setNavOpen(false);
                           }}
-                          className={`w-full px-3 py-2 text-left text-sm font-medium transition ${
+                          className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm font-medium transition ${
                             tab === key
                               ? "bg-brand text-white"
                               : "text-white/75 hover:bg-white/10 hover:text-white"
                           }`}
                         >
-                          {tabLabels[key]}
+                          <span>{tabLabels[key]}</span>
+                          {key === "inbox" && inbox?.stats && inbox.stats.inboxTotal > 0 && (
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                tab === key ? "bg-white/20 text-white" : "bg-accent text-white"
+                              }`}
+                            >
+                              {inbox.stats.inboxTotal}
+                            </span>
+                          )}
                         </button>
                       </li>
                     ))}
@@ -215,8 +227,13 @@ export function AdminPanel({
             {tab === "dashboard" && (
               <DashboardTab
                 inbox={inbox}
+                email={email}
+                backend={backend}
                 onSeed={() => void seedContent()}
                 seedStatus={seedStatus}
+                onRefresh={loadInbox}
+                onNavigate={setTab}
+                refreshing={refreshing}
               />
             )}
             {tab === "inbox" && <InboxTab inbox={inbox} />}

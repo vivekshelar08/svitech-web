@@ -15,29 +15,14 @@ export type AdminTab =
   | "detail"
   | "account";
 
-export type AdminStats = {
-  contact: number;
-  volunteers: number;
-  newsletter: number;
-  donations: number;
-  eventRegistrations: number;
-  posts: number;
-  events: number;
-  programs: number;
-  impactStories: number;
-  reports: number;
-};
-
-export type AdminInbox = {
-  mode: string;
-  message?: string;
-  stats: AdminStats | null;
-  contact: Array<Record<string, unknown>>;
-  volunteers: Array<Record<string, unknown>>;
-  newsletter: Array<Record<string, unknown>>;
-  donations: Array<Record<string, unknown>>;
-  eventRegistrations: Array<Record<string, unknown>>;
-};
+export type {
+  ActivityItem,
+  ActivityKind,
+  AdminInbox,
+  AdminStats,
+  ContentCounts,
+} from "@/lib/admin-dashboard";
+export { activityLabels } from "@/lib/admin-dashboard";
 
 export type NavGroup = {
   label: string;
@@ -76,7 +61,7 @@ export const tabLabels: Record<AdminTab, string> = {
 };
 
 export const tabHints: Record<AdminTab, string> = {
-  dashboard: "Activity snapshot and starter content import",
+  dashboard: "Command center — activity, content health, and quick actions",
   inbox: "Form submissions and registrations",
   posts: "Publish and edit news articles",
   events: "Manage upcoming and past events",
