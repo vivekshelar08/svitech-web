@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { getProgram, getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const programs = await getPrograms();
   return programs.map((program) => ({ slug: program.slug }));

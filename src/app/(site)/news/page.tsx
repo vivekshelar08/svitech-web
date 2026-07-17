@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getPosts } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const { news } = await getSiteSettings();
   return { title: news.seoTitle, description: news.seoDescription };

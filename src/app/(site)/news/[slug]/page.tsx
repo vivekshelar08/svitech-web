@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { getPost, getPosts } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const posts = await getPosts();
   return posts.map((post) => ({ slug: post.slug }));

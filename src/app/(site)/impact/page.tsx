@@ -5,6 +5,8 @@ import { ImpactMap } from "@/components/ImpactMap";
 import { getImpactStories } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const { impact } = await getSiteSettings();
   return { title: impact.seoTitle, description: impact.seoDescription };

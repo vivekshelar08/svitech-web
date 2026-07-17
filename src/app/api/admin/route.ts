@@ -14,7 +14,7 @@ import {
   verifyAdminPassword,
 } from "@/lib/admin-credentials";
 import { sendEmail } from "@/lib/email";
-import { getAdminEmail, getAppUrl, getAdminPassword } from "@/lib/env";
+import { getAdminEmail, getAppUrl, getAdminPassword, getSupabaseServiceKey, hasSupabase } from "@/lib/env";
 import { getAdminClient } from "@/lib/supabase";
 import { z } from "zod";
 
@@ -34,6 +34,10 @@ export async function GET() {
     email: authenticated ? getExpectedAdminEmail() : null,
     hasEnvPassword: Boolean(getAdminPassword()),
     hasCustomPassword: await hasCustomPassword(),
+    backend: {
+      supabase: hasSupabase(),
+      supabaseServiceRole: Boolean(getSupabaseServiceKey()),
+    },
   });
 }
 

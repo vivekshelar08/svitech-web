@@ -169,18 +169,25 @@ export function ContentTab({ type }: { type: ContentType }) {
       setStatus(json.error || "Save failed");
       return;
     }
-    setStatus("Saved.");
+    setStatus("Saved — live site updated.");
     resetForm();
     await loadItems();
   }
 
-  async function toggleItem(id: string, published: boolean) {
+  async function toggleItem(id: string, published: boolean, slug?: string) {
+    setStatus("");
     const res = await fetch("/api/admin/content", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type, id, published }),
+      body: JSON.stringify({ type, id, published, slug }),
     });
-    if (res.ok) await loadItems();
+    if (!res.ok) {
+      const json = (await res.json()) as { error?: string };
+      setStatus(json.error || "Publish update failed");
+      return;
+    }
+    setStatus(published ? "Published on live site." : "Unpublished.");
+    await loadItems();
   }
 
   async function removeItem(id: string) {
@@ -233,7 +240,11 @@ export function ContentTab({ type }: { type: ContentType }) {
                     <button
                       type="button"
                       onClick={() =>
-                        void toggleItem(String(item.id), item.published !== true)
+                        void toggleItem(
+                          String(item.id),
+                          item.published !== true,
+                          String(item.slug || ""),
+                        )
                       }
                       className="border border-line px-2 py-1 text-xs font-semibold"
                     >

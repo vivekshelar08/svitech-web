@@ -12,6 +12,7 @@ import {
   type ContentType,
 } from "@/lib/admin-content";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { revalidatePublicContent } from "@/lib/revalidate-content";
 import { z } from "zod";
 
 const typeSchema = z.enum(contentTypes);
@@ -74,6 +75,12 @@ const reportSchema = z.object({
   published: z.boolean().optional(),
 });
 
+function slugFromPayload(type: ContentType, data: unknown) {
+  if (!data || typeof data !== "object") return undefined;
+  const row = data as Record<string, unknown>;
+  return typeof row.slug === "string" ? row.slug : undefined;
+}
+
 export async function GET(request: Request) {
   if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
   const typeParam = new URL(request.url).searchParams.get("type");
@@ -94,15 +101,18 @@ export async function POST(request: Request) {
   try {
     const body = await readJson<{ type?: ContentType; data?: unknown }>(request);
     const type = typeSchema.parse(body.type);
+    let slug: string | undefined;
 
     if (type === "posts") {
       const data = postSchema.parse(body.data);
+      slug = data.slug;
       await upsertPost({
         ...data,
         coverImage: data.coverImage || undefined,
       });
     } else if (type === "events") {
       const data = eventSchema.parse(body.data);
+      slug = data.slug;
       await upsertEvent({
         ...data,
         endsAt: data.endsAt || undefined,
@@ -110,12 +120,14 @@ export async function POST(request: Request) {
       });
     } else if (type === "programs") {
       const data = programSchema.parse(body.data);
+      slug = data.slug;
       await upsertProgram({
         ...data,
         coverImage: data.coverImage || undefined,
       });
     } else if (type === "impact_stories") {
       const data = impactSchema.parse(body.data);
+      slug = data.slug;
       await upsertImpactStory({
         ...data,
         coverImage: data.coverImage || undefined,
@@ -125,6 +137,7 @@ export async function POST(request: Request) {
       await upsertReport(data);
     }
 
+    revalidatePublicContent(type, slug ?? slugFromPayload(type, body.data));
     return jsonOk({ ok: true });
   } catch (error) {
     if (error instanceof z.ZodError) return fromZod(error);
@@ -140,11 +153,13 @@ export async function PATCH(request: Request) {
       type?: ContentType;
       id?: string;
       published?: boolean;
+      slug?: string;
     }>(request);
     const type = typeSchema.parse(body.type);
     const id = z.string().uuid().parse(body.id);
     const published = z.boolean().parse(body.published);
     await togglePublished(type, id, published);
+    revalidatePublicContent(type, body.slug);
     return jsonOk({ ok: true });
   } catch (error) {
     if (error instanceof z.ZodError) return fromZod(error);
@@ -160,6 +175,7 @@ export async function DELETE(request: Request) {
     const type = typeSchema.parse(params.get("type"));
     const id = z.string().uuid().parse(params.get("id"));
     await deleteContent(type, id);
+    revalidatePublicContent(type);
     return jsonOk({ ok: true });
   } catch (error) {
     if (error instanceof z.ZodError) return fromZod(error);

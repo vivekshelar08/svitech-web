@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const { programs } = await getSiteSettings();
   return { title: programs.seoTitle, description: programs.seoDescription };

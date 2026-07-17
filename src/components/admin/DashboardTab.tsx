@@ -16,9 +16,18 @@ export function DashboardTab({
   return (
     <div className="space-y-8">
       {inbox?.message && (
-        <p className="border border-line bg-accent-soft px-4 py-3 text-sm text-ink">
-          {inbox.message}
-        </p>
+        <div className="border border-accent/40 bg-accent-soft px-4 py-3 text-sm text-ink">
+          <p className="font-semibold">Backend not fully configured</p>
+          <p className="mt-1">{inbox.message}</p>
+          <p className="mt-2 text-xs text-ink-muted">
+            On Hostinger, add <code>SUPABASE_SERVICE_ROLE_KEY</code> in environment
+            variables, redeploy, then run both SQL migrations in Supabase. Check{" "}
+            <a href="/api/live" className="font-semibold text-brand underline" target="_blank" rel="noreferrer">
+              /api/live
+            </a>{" "}
+            — <code>supabaseServiceRole</code> must be <code>true</code>.
+          </p>
+        </div>
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

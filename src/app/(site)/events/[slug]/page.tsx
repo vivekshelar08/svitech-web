@@ -6,6 +6,8 @@ import { EventRegisterForm } from "@/components/forms/EventRegisterForm";
 import { getEvent, getEvents } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const events = await getEvents();
   return events.map((event) => ({ slug: event.slug }));

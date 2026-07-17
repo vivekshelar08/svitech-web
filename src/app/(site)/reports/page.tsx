@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getReports } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export async function generateMetadata(): Promise<Metadata> {
   const { reports } = await getSiteSettings();
   return { title: reports.seoTitle, description: reports.seoDescription };

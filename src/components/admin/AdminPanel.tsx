@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AccountTab } from "@/components/admin/AccountTab";
+import { AdminBackendBanner } from "@/components/admin/AdminBackendBanner";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { ContentTab } from "@/components/admin/ContentTab";
 import { DashboardTab, InboxTab } from "@/components/admin/DashboardTab";
@@ -31,6 +32,10 @@ export function AdminPanel({
   const [email, setEmail] = useState<string | null>(null);
   const [hasCustomPassword, setHasCustomPassword] = useState(false);
   const [hasEnvPassword, setHasEnvPassword] = useState(false);
+  const [backend, setBackend] = useState<{
+    supabase: boolean;
+    supabaseServiceRole: boolean;
+  } | null>(null);
   const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
@@ -41,9 +46,11 @@ export function AdminPanel({
         email?: string | null;
         hasCustomPassword?: boolean;
         hasEnvPassword?: boolean;
+        backend?: { supabase: boolean; supabaseServiceRole: boolean };
       };
       setHasCustomPassword(Boolean(json.hasCustomPassword));
       setHasEnvPassword(Boolean(json.hasEnvPassword));
+      setBackend(json.backend ?? null);
       if (json.authenticated) {
         setAuthed(true);
         setEmail(json.email || null);
@@ -64,10 +71,12 @@ export function AdminPanel({
       email?: string | null;
       hasCustomPassword?: boolean;
       hasEnvPassword?: boolean;
+      backend?: { supabase: boolean; supabaseServiceRole: boolean };
     };
     setEmail(json.email || null);
     setHasCustomPassword(Boolean(json.hasCustomPassword));
     setHasEnvPassword(Boolean(json.hasEnvPassword));
+    setBackend(json.backend ?? null);
   }
 
   async function logout() {
@@ -202,6 +211,7 @@ export function AdminPanel({
           </header>
 
           <div className="flex-1 px-5 py-8 md:px-8 md:py-10">
+            <AdminBackendBanner backend={backend} />
             {tab === "dashboard" && (
               <DashboardTab
                 inbox={inbox}
