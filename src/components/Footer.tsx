@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { SiteLogo } from "@/components/SiteLogo";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export function Footer() {
+export async function Footer() {
+  const { general } = await getSiteSettings();
+
   return (
     <footer className="border-t border-line bg-bg-deep text-surface">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr_1fr_1.2fr] md:px-8">
         <div>
           <SiteLogo size="md" />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-            A nonprofit putting technology in service of communities—through
-            digital literacy, open education, and tools that people can trust.
+            {general.footerBlurb}
           </p>
         </div>
         <div>
@@ -71,8 +73,8 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <a href="mailto:hello@svitech.org" className="hover:text-white">
-                hello@svitech.org
+              <a href={`mailto:${general.contactEmail}`} className="hover:text-white">
+                {general.contactEmail}
               </a>
             </li>
           </ul>
@@ -81,9 +83,7 @@ export function Footer() {
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
             Newsletter
           </p>
-          <p className="mt-4 text-sm text-white/70">
-            Program updates and impact notes—rarely, and never spam.
-          </p>
+          <p className="mt-4 text-sm text-white/70">{general.newsletterBlurb}</p>
           <div className="mt-4 [&_input]:border-white/20 [&_input]:bg-white/10 [&_input]:text-white [&_input]:placeholder:text-white/45">
             <NewsletterForm source="footer" compact />
           </div>
@@ -91,7 +91,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <p className="mx-auto max-w-6xl px-5 py-5 text-xs text-white/45 md:px-8">
-          © {new Date().getFullYear()} SVITECH Foundation. Built for social impact.
+          © {new Date().getFullYear()} {general.siteName}. {general.copyrightNote}
         </p>
       </div>
     </footer>

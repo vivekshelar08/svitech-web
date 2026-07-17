@@ -1,28 +1,35 @@
 import { cookies } from "next/headers";
 import crypto from "crypto";
-import { getAdminPassword } from "@/lib/env";
+import {
+  getSessionSecret,
+  verifyAdminPassword,
+} from "@/lib/admin-credentials";
+import { getAdminEmail } from "@/lib/env";
 
 const COOKIE = "svitech_admin";
 
 function sign(value: string) {
-  const secret = getAdminPassword();
-  if (!secret) return null;
+  const secret = getSessionSecret();
   return crypto.createHmac("sha256", secret).update(value).digest("hex");
 }
 
+function safeEqual(a: string, b: string) {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
 export async function isAdminAuthenticated() {
-  const password = getAdminPassword();
-  if (!password) return false;
   const jar = await cookies();
   const token = jar.get(COOKIE)?.value;
   if (!token) return false;
   const expected = sign("ok");
-  return Boolean(expected && token === expected);
+  return token === expected;
 }
 
 export async function setAdminSession() {
   const token = sign("ok");
-  if (!token) throw new Error("ADMIN_PASSWORD is not set");
   const jar = await cookies();
   jar.set(COOKIE, token, {
     httpOnly: true,
@@ -38,8 +45,22 @@ export async function clearAdminSession() {
   jar.delete(COOKIE);
 }
 
-export function checkAdminPassword(input: string) {
-  const password = getAdminPassword();
-  if (!password) return false;
-  return input === password;
+export async function checkAdminLogin(input: {
+  email?: string;
+  password: string;
+}) {
+  const passwordOk = await verifyAdminPassword(input.password);
+  if (!passwordOk) return false;
+
+  const adminEmail = getAdminEmail();
+  if (adminEmail) {
+    if (!input.email) return false;
+    return safeEqual(input.email.trim().toLowerCase(), adminEmail.toLowerCase());
+  }
+
+  return true;
+}
+
+export function getExpectedAdminEmail() {
+  return getAdminEmail();
 }

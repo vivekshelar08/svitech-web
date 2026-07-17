@@ -1,49 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Get Involved",
-  description:
-    "Volunteer, partner, or donate to support SVITECH Foundation’s community technology programs.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { getInvolved } = await getSiteSettings();
+  return {
+    title: "Get Involved",
+    description: getInvolved.intro.slice(0, 160),
+  };
+}
 
-const ways = [
-  {
-    title: "Volunteer",
-    copy: "Teach a workshop, mentor a cohort, or help translate open learning materials.",
-    href: "/volunteer",
-    cta: "Apply to volunteer",
-  },
-  {
-    title: "Partner",
-    copy: "Bring SVITECH Foundation programs to your school, library, or community organization.",
-    href: "/contact",
-    cta: "Start a partnership",
-  },
-  {
-    title: "Advocate",
-    copy: "Share our open curriculum and help more communities find tools they can trust.",
-    href: "/news",
-    cta: "Read & share",
-  },
-];
+export default async function GetInvolvedPage() {
+  const { getInvolved } = await getSiteSettings();
 
-export default function GetInvolvedPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Get involved
+        {getInvolved.eyebrow}
       </p>
       <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        Help put technology in service of people.
+        {getInvolved.headline}
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        Whether you give time, expertise, or resources, you strengthen programs that
-        communities can grow on their own.
+        {getInvolved.intro}
       </p>
 
       <ul className="mt-14 grid gap-10 border-t border-line pt-12 md:grid-cols-3">
-        {ways.map((way) => (
+        {getInvolved.ways.map((way) => (
           <li key={way.title}>
             <h2 className="font-display text-xl font-bold text-ink">{way.title}</h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">
@@ -64,11 +47,10 @@ export default function GetInvolvedPage() {
         className="mt-20 scroll-mt-28 border border-line bg-surface px-6 py-12 md:px-10 md:py-14"
       >
         <h2 className="font-display text-3xl font-bold tracking-tight text-ink">
-          Donate
+          {getInvolved.donateHeadline}
         </h2>
         <p className="mt-4 max-w-xl leading-relaxed text-ink-muted">
-          Support facilitator stipends, shared lab equipment, and free curriculum with
-          a one-time or monthly gift.
+          {getInvolved.donateCopy}
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
@@ -79,9 +61,9 @@ export default function GetInvolvedPage() {
           </Link>
           <Link
             href="/reports"
-            className="border border-line bg-white/70 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
+            className="border border-line bg-white/70 px-6 py-3.5 text-sm font-semibold text-ink"
           >
-            See reports
+            See how gifts are used
           </Link>
         </div>
       </section>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Syne, IBM_Plex_Sans } from "next/font/google";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
+import { getSiteSettings } from "@/lib/site-settings";
 import "./globals.css";
 
 const syne = Syne({
@@ -16,14 +15,16 @@ const ibmPlex = IBM_Plex_Sans({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "SVITECH Foundation — Technology for Social Good",
-    template: "%s · SVITECH Foundation",
-  },
-  description:
-    "SVITECH Foundation bridges communities with digital skills, open education, and technology that serves people first.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: {
+      default: settings.general.seoTitle,
+      template: `%s · ${settings.general.siteName}`,
+    },
+    description: settings.general.seoDescription,
+  };
+}
 
 export default function RootLayout({
   children,
@@ -34,9 +35,7 @@ export default function RootLayout({
     <html lang="en" className={`${syne.variable} ${ibmPlex.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <div className="site-grain" aria-hidden />
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

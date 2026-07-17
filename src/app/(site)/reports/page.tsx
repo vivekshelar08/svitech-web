@@ -1,32 +1,36 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { board, getReports } from "@/lib/content";
+import { getReports } from "@/lib/content";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export const metadata: Metadata = {
-  title: "Reports & governance",
-  description:
-    "Annual reports, board information, and transparency notes from SVITECH Foundation.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { reports } = await getSiteSettings();
+  return {
+    title: "Reports & governance",
+    description: reports.intro.slice(0, 160),
+  };
+}
 
 export default async function ReportsPage() {
-  const reports = await getReports();
+  const reportList = await getReports();
+  const { reports, board } = await getSiteSettings();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        Transparency
+        {reports.eyebrow}
       </p>
       <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        Reports, board, and how we steward gifts.
+        {reports.headline}
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        Governance should be findable in two clicks. Here is ours.
+        {reports.intro}
       </p>
 
       <section className="mt-14 border-t border-line pt-12">
         <h2 className="font-display text-2xl font-bold text-ink">Annual reports</h2>
         <ul className="mt-8 divide-y divide-line border-y border-line">
-          {reports.map((report) => (
+          {reportList.map((report) => (
             <li
               key={report.year}
               className="flex flex-col gap-3 py-8 md:flex-row md:items-center md:justify-between"
@@ -55,7 +59,7 @@ export default async function ReportsPage() {
       </section>
 
       <section className="mt-16 border-t border-line pt-12">
-        <h2 className="font-display text-2xl font-bold text-ink">Board</h2>
+        <h2 className="font-display text-2xl font-bold text-ink">{reports.boardTitle}</h2>
         <ul className="mt-8 grid gap-8 sm:grid-cols-2">
           {board.map((member) => (
             <li key={member.name}>

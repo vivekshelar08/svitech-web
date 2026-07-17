@@ -56,6 +56,10 @@ export function getAdminPassword() {
   return process.env.ADMIN_PASSWORD ?? null;
 }
 
+export function getAdminEmail() {
+  return process.env.ADMIN_EMAIL || "info@svitech.in";
+}
+
 export function getAppUrl() {
   return (
     process.env.NEXT_PUBLIC_APP_URL ||

@@ -1,66 +1,168 @@
-import { jsonError, jsonOk, readJson } from "@/lib/api";
+import { fromZod, jsonError, jsonOk, readJson } from "@/lib/api";
+import {
+  contentTypes,
+  deleteContent,
+  listContent,
+  togglePublished,
+  upsertEvent,
+  upsertImpactStory,
+  upsertPost,
+  upsertProgram,
+  upsertReport,
+  type ContentType,
+} from "@/lib/admin-content";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { getAdminClient } from "@/lib/supabase";
+import { z } from "zod";
+
+const typeSchema = z.enum(contentTypes);
+
+const postSchema = z.object({
+  slug: z.string().trim().min(2).max(120),
+  title: z.string().trim().min(2).max(200),
+  excerpt: z.string().trim().min(2).max(500),
+  body: z.string().trim().min(2),
+  coverImage: z.string().trim().optional().or(z.literal("")),
+  published: z.boolean().optional(),
+  publishedAt: z.string().optional(),
+});
+
+const eventSchema = z.object({
+  slug: z.string().trim().min(2).max(120),
+  title: z.string().trim().min(2).max(200),
+  summary: z.string().trim().min(2).max(500),
+  body: z.string().trim().min(2),
+  location: z.string().trim().min(2).max(200),
+  startsAt: z.string().min(1),
+  endsAt: z.string().optional().or(z.literal("")),
+  coverImage: z.string().trim().optional().or(z.literal("")),
+  registrationOpen: z.boolean().optional(),
+  published: z.boolean().optional(),
+});
+
+const programSchema = z.object({
+  slug: z.string().trim().min(2).max(120),
+  name: z.string().trim().min(2).max(200),
+  summary: z.string().trim().min(2).max(500),
+  detail: z.string().trim().min(2).max(300),
+  body: z.string().trim().min(2),
+  coverImage: z.string().trim().optional().or(z.literal("")),
+  sortOrder: z.coerce.number().int().optional(),
+  published: z.boolean().optional(),
+});
+
+const impactSchema = z.object({
+  slug: z.string().trim().min(2).max(120),
+  title: z.string().trim().min(2).max(200),
+  location: z.string().trim().min(2).max(200),
+  lat: z.coerce.number().optional(),
+  lng: z.coerce.number().optional(),
+  metricLabel: z.string().trim().min(2).max(120),
+  metricValue: z.string().trim().min(1).max(80),
+  summary: z.string().trim().min(2).max(500),
+  body: z.string().trim().min(2),
+  coverImage: z.string().trim().optional().or(z.literal("")),
+  sortOrder: z.coerce.number().int().optional(),
+  published: z.boolean().optional(),
+});
+
+const reportSchema = z.object({
+  id: z.string().uuid().optional(),
+  year: z.coerce.number().int().min(2000).max(2100),
+  title: z.string().trim().min(2).max(200),
+  description: z.string().trim().min(2).max(500),
+  fileUrl: z.string().trim().min(2).max(500),
+  published: z.boolean().optional(),
+});
+
+export async function GET(request: Request) {
+  if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
+  const typeParam = new URL(request.url).searchParams.get("type");
+  const parsed = typeSchema.safeParse(typeParam);
+  if (!parsed.success) return jsonError("Invalid content type", 400);
+
+  try {
+    const items = await listContent(parsed.data);
+    return jsonOk({ type: parsed.data, items });
+  } catch (error) {
+    return jsonError(error instanceof Error ? error.message : "Failed to load", 500);
+  }
+}
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
 
-  const body = await readJson<{
-    type: "post" | "event";
-    slug: string;
-    title: string;
-    excerpt?: string;
-    summary?: string;
-    body: string;
-    coverImage?: string;
-    location?: string;
-    startsAt?: string;
-  }>(request);
+  try {
+    const body = await readJson<{ type?: ContentType; data?: unknown }>(request);
+    const type = typeSchema.parse(body.type);
 
-  const admin = getAdminClient();
-  if (!admin) {
-    return jsonError(
-      "SUPABASE_SERVICE_ROLE_KEY required to publish via admin CMS. Edit src/content/ as a fallback.",
-      503,
-    );
-  }
+    if (type === "posts") {
+      const data = postSchema.parse(body.data);
+      await upsertPost({
+        ...data,
+        coverImage: data.coverImage || undefined,
+      });
+    } else if (type === "events") {
+      const data = eventSchema.parse(body.data);
+      await upsertEvent({
+        ...data,
+        endsAt: data.endsAt || undefined,
+        coverImage: data.coverImage || undefined,
+      });
+    } else if (type === "programs") {
+      const data = programSchema.parse(body.data);
+      await upsertProgram({
+        ...data,
+        coverImage: data.coverImage || undefined,
+      });
+    } else if (type === "impact_stories") {
+      const data = impactSchema.parse(body.data);
+      await upsertImpactStory({
+        ...data,
+        coverImage: data.coverImage || undefined,
+      });
+    } else if (type === "reports") {
+      const data = reportSchema.parse(body.data);
+      await upsertReport(data);
+    }
 
-  if (body.type === "post") {
-    const { error } = await admin.from("posts").upsert(
-      {
-        slug: body.slug,
-        title: body.title,
-        excerpt: body.excerpt || "",
-        body: body.body,
-        cover_image: body.coverImage || null,
-        published: true,
-        published_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "slug" },
-    );
-    if (error) return jsonError(error.message, 500);
     return jsonOk({ ok: true });
+  } catch (error) {
+    if (error instanceof z.ZodError) return fromZod(error);
+    return jsonError(error instanceof Error ? error.message : "Save failed", 500);
   }
+}
 
-  if (body.type === "event") {
-    const { error } = await admin.from("events").upsert(
-      {
-        slug: body.slug,
-        title: body.title,
-        summary: body.summary || body.excerpt || "",
-        body: body.body,
-        location: body.location || "TBA",
-        starts_at: body.startsAt || new Date().toISOString(),
-        cover_image: body.coverImage || null,
-        published: true,
-        registration_open: true,
-      },
-      { onConflict: "slug" },
-    );
-    if (error) return jsonError(error.message, 500);
+export async function PATCH(request: Request) {
+  if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
+
+  try {
+    const body = await readJson<{
+      type?: ContentType;
+      id?: string;
+      published?: boolean;
+    }>(request);
+    const type = typeSchema.parse(body.type);
+    const id = z.string().uuid().parse(body.id);
+    const published = z.boolean().parse(body.published);
+    await togglePublished(type, id, published);
     return jsonOk({ ok: true });
+  } catch (error) {
+    if (error instanceof z.ZodError) return fromZod(error);
+    return jsonError(error instanceof Error ? error.message : "Update failed", 500);
   }
+}
 
-  return jsonError("Unknown content type", 400);
+export async function DELETE(request: Request) {
+  if (!(await isAdminAuthenticated())) return jsonError("Unauthorized", 401);
+
+  const params = new URL(request.url).searchParams;
+  try {
+    const type = typeSchema.parse(params.get("type"));
+    const id = z.string().uuid().parse(params.get("id"));
+    await deleteContent(type, id);
+    return jsonOk({ ok: true });
+  } catch (error) {
+    if (error instanceof z.ZodError) return fromZod(error);
+    return jsonError(error instanceof Error ? error.message : "Delete failed", 500);
+  }
 }

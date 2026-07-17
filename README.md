@@ -94,4 +94,30 @@ Copy from `.env.example`. At minimum set:
 - `/donate` — Donations
 - `/reports` — Reports & board
 - `/contact` — Contact form
-- `/admin` — Staff inbox / CMS
+- `/admin` — Staff login, inbox, and CMS for all site content
+
+### Admin CMS (`/admin`)
+
+Set these env vars on Hostinger:
+
+```env
+ADMIN_EMAIL=info@svitech.in
+ADMIN_PASSWORD=your-strong-password
+ADMIN_SESSION_SECRET=optional-stable-secret
+SUPABASE_SERVICE_ROLE_KEY=...
+RESEND_API_KEY=...   # for password-reset emails
+```
+
+Run the latest Supabase migration (`site_settings` + `admin_credentials`) so settings sync to the database. Without it, settings and custom passwords still save under `data/`.
+
+After login you can:
+
+- Review contact, volunteer, newsletter, donation, and event submissions
+- Create/edit/publish/unpublish/delete **News**, **Events**, **Programs**, **Impact**, and **Reports**
+- Edit **Site settings** (name, contact email, SEO, footer)
+- Edit **Page copy** placeholders (home, about, get involved, contact)
+- Manage **Board** members shown on Reports
+- Change password, or use **Forgot password?** on the login screen
+- Import starter content from the codebase into Supabase (Dashboard tab)
+
+Login uses a secure httpOnly cookie (12-hour session). A custom password set in Account overrides `ADMIN_PASSWORD` for login.

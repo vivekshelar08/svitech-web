@@ -1,11 +1,9 @@
 import { events as seedEvents, type EventItem } from "@/content/events";
 import { impactStories as seedImpact, type ImpactStory } from "@/content/impact";
-import { board, reports as seedReports, type Report } from "@/content/governance";
+import { reports as seedReports, type Report } from "@/content/governance";
 import { posts as seedPosts, type Post } from "@/content/posts";
 import { programs as seedPrograms, type Program } from "@/content/programs";
 import { getAnonClient } from "@/lib/supabase";
-
-export { board };
 
 export async function getPrograms(): Promise<Program[]> {
   const supabase = getAnonClient();
