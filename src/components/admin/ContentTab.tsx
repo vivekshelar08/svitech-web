@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { contentTabs, slugify, type ContentTabType } from "@/components/admin/admin-types";
+import {
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminEmpty,
+  adminInputClass,
+  adminTextareaClass,
+  cn,
+} from "@/components/admin/admin-ui";
+import { slugify, type ContentTabType } from "@/components/admin/admin-types";
 
 type ContentType = ContentTabType;
 
@@ -199,46 +208,50 @@ export function ContentTab({ type }: { type: ContentType }) {
   }
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[1fr_1.1fr]">
-      <section className="border border-line bg-surface p-6">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="font-display text-xl font-bold text-ink">Existing items</h2>
-          <button
-            type="button"
-            onClick={() => void loadItems()}
-            className="text-sm font-semibold text-brand"
-          >
+    <div className="grid gap-6 xl:grid-cols-[1fr_1.15fr]">
+      <AdminCard
+        title="Existing items"
+        description={`${items.length} item${items.length === 1 ? "" : "s"} in this collection`}
+        action={
+          <AdminButton variant="ghost" size="sm" onClick={() => void loadItems()}>
             Refresh
-          </button>
-        </div>
+          </AdminButton>
+        }
+      >
         {loading ? (
-          <p className="mt-4 text-sm text-ink-muted">Loading…</p>
+          <p className="text-sm text-ink-muted">Loading…</p>
         ) : items.length === 0 ? (
-          <p className="mt-4 text-sm text-ink-muted">No items yet. Create one on the right.</p>
+          <AdminEmpty
+            title="No items yet"
+            description="Use the form on the right to create your first entry."
+          />
         ) : (
-          <ul className="mt-4 divide-y divide-line">
+          <ul className="divide-y divide-line/70">
             {items.map((item) => (
-              <li key={String(item.id)} className="py-4">
+              <li key={String(item.id)} className="py-4 first:pt-0 last:pb-0">
                 <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-medium text-ink">
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-ink">
                       {String(item.title || item.name || item.slug)}
                     </p>
-                    <p className="mt-1 text-xs text-ink-muted">
+                    <p className="mt-1 truncate text-xs text-ink-muted">
                       {String(item.slug || item.year || item.id)}
-                      {item.published === false ? " · draft" : " · live"}
                     </p>
+                    <div className="mt-2">
+                      {item.published === false ? (
+                        <AdminBadge tone="warning">Draft</AdminBadge>
+                      ) : (
+                        <AdminBadge tone="success">Live</AdminBadge>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex shrink-0 flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => editItem(item)}
-                      className="border border-line px-2 py-1 text-xs font-semibold"
-                    >
+                  <div className="flex shrink-0 flex-wrap gap-1.5">
+                    <AdminButton variant="secondary" size="sm" onClick={() => editItem(item)}>
                       Edit
-                    </button>
-                    <button
-                      type="button"
+                    </AdminButton>
+                    <AdminButton
+                      variant="secondary"
+                      size="sm"
                       onClick={() =>
                         void toggleItem(
                           String(item.id),
@@ -246,53 +259,54 @@ export function ContentTab({ type }: { type: ContentType }) {
                           String(item.slug || ""),
                         )
                       }
-                      className="border border-line px-2 py-1 text-xs font-semibold"
                     >
                       {item.published ? "Unpublish" : "Publish"}
-                    </button>
-                    <button
-                      type="button"
+                    </AdminButton>
+                    <AdminButton
+                      variant="danger"
+                      size="sm"
                       onClick={() => void removeItem(String(item.id))}
-                      className="border border-line px-2 py-1 text-xs font-semibold text-accent"
                     >
                       Delete
-                    </button>
+                    </AdminButton>
                   </div>
                 </div>
               </li>
             ))}
           </ul>
         )}
-      </section>
+      </AdminCard>
 
-      <section className="border border-line bg-surface p-6">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="font-display text-xl font-bold text-ink">
-            {form.slug || form.id ? "Edit item" : "Create item"}
-          </h2>
-          <button
-            type="button"
-            onClick={resetForm}
-            className="text-sm font-semibold text-brand"
-          >
+      <AdminCard
+        title={form.slug || form.id ? "Edit item" : "Create item"}
+        description="Changes publish to the live site when saved with Published enabled."
+        action={
+          <AdminButton variant="ghost" size="sm" onClick={resetForm}>
             New
-          </button>
-        </div>
-        <form onSubmit={saveItem} className="mt-6 space-y-4">
-          <ContentFields
-            type={type}
-            form={form}
-            setForm={setForm}
-          />
-          <button
-            type="submit"
-            className="bg-brand px-5 py-2.5 text-sm font-semibold text-white"
-          >
-            Save
-          </button>
-          {status && <p className="text-sm text-ink-muted">{status}</p>}
+          </AdminButton>
+        }
+      >
+        <form onSubmit={saveItem} className="space-y-4">
+          <ContentFields type={type} form={form} setForm={setForm} />
+          <div className="flex flex-wrap items-center gap-3 border-t border-line/70 pt-4">
+            <AdminButton type="submit" variant="primary">
+              Save
+            </AdminButton>
+            {status && (
+              <p
+                className={cn(
+                  "text-sm",
+                  status.includes("failed") || status.includes("Failed")
+                    ? "text-accent"
+                    : "text-ink-muted",
+                )}
+              >
+                {status}
+              </p>
+            )}
+          </div>
         </form>
-      </section>
+      </AdminCard>
     </div>
   );
 }
@@ -320,8 +334,8 @@ function ContentFields({
     label: string,
     opts?: { type?: string; required?: boolean; rows?: number; onBlur?: () => void },
   ) => (
-    <div key={key}>
-      <label className="block text-sm font-medium text-ink">{label}</label>
+    <label key={key} className="block text-sm font-medium text-ink">
+      {label}
       {opts?.rows ? (
         <textarea
           value={String(form[key] || "")}
@@ -329,7 +343,7 @@ function ContentFields({
           rows={opts.rows}
           onChange={(e) => set(key, e.target.value)}
           onBlur={opts.onBlur}
-          className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+          className={adminTextareaClass}
         />
       ) : (
         <input
@@ -340,18 +354,19 @@ function ContentFields({
             set(key, opts?.type === "checkbox" ? e.target.checked : e.target.value)
           }
           onBlur={opts?.onBlur}
-          className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+          className={adminInputClass}
         />
       )}
-    </div>
+    </label>
   );
 
   const published = (
-    <label className="flex items-center gap-2 text-sm text-ink">
+    <label className="flex items-center gap-2.5 rounded-lg border border-line/70 bg-surface/50 px-3 py-2.5 text-sm text-ink">
       <input
         type="checkbox"
         checked={Boolean(form.published)}
         onChange={(e) => set("published", e.target.checked)}
+        className="h-4 w-4 rounded border-line text-brand"
       />
       Published on site
     </label>
@@ -382,11 +397,12 @@ function ContentFields({
         {field("startsAt", "Starts at", { type: "datetime-local", required: true })}
         {field("endsAt", "Ends at", { type: "datetime-local" })}
         {field("coverImage", "Cover image URL")}
-        <label className="flex items-center gap-2 text-sm text-ink">
+        <label className="flex items-center gap-2.5 rounded-lg border border-line/70 bg-surface/50 px-3 py-2.5 text-sm text-ink">
           <input
             type="checkbox"
             checked={Boolean(form.registrationOpen)}
             onChange={(e) => set("registrationOpen", e.target.checked)}
+            className="h-4 w-4 rounded border-line text-brand"
           />
           Registration open
         </label>

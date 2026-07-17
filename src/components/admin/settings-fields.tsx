@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  AdminButton,
+  adminInputClass,
+  adminTextareaClass,
+} from "@/components/admin/admin-ui";
 import type { NavLink, SiteSettings } from "@/lib/site-settings-defaults";
 
 export function Field({
@@ -26,14 +31,14 @@ export function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
-          className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+          className={adminTextareaClass}
         />
       ) : (
         <input
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+          className={adminInputClass}
         />
       )}
     </label>
@@ -57,13 +62,13 @@ export function ColorField({
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-10 w-14 cursor-pointer border border-line bg-white"
+          className="h-10 w-14 cursor-pointer rounded-lg border border-line bg-white shadow-sm"
         />
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="flex-1 border border-line bg-white px-3 py-2.5 font-mono text-sm outline-none focus:border-brand"
+          className={`${adminInputClass} mt-0 flex-1 font-mono`}
         />
       </div>
     </label>
@@ -72,9 +77,9 @@ export function ColorField({
 
 export function SectionTitle({ title, copy }: { title: string; copy?: string }) {
   return (
-    <div>
-      <h2 className="font-display text-xl font-bold text-ink">{title}</h2>
-      {copy && <p className="mt-1 text-sm text-ink-muted">{copy}</p>}
+    <div className="border-b border-line/60 pb-4">
+      <h2 className="font-display text-lg font-bold tracking-tight text-ink">{title}</h2>
+      {copy && <p className="mt-1 text-sm leading-relaxed text-ink-muted">{copy}</p>}
     </div>
   );
 }
@@ -94,7 +99,7 @@ export function NavLinksEditor({
       {links.map((link, index) => (
         <div
           key={index}
-          className="grid gap-3 border border-line bg-white/60 p-4 md:grid-cols-[1fr_1fr_auto]"
+          className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-[1fr_1fr_auto]"
         >
           <Field
             label="Label"
@@ -114,22 +119,25 @@ export function NavLinksEditor({
               onChange(next);
             }}
           />
-          <button
+          <AdminButton
             type="button"
-            className="self-end text-sm font-semibold text-accent"
+            variant="danger"
+            size="sm"
+            className="self-end"
             onClick={() => onChange(links.filter((_, i) => i !== index))}
           >
             Remove
-          </button>
+          </AdminButton>
         </div>
       ))}
-      <button
+      <AdminButton
         type="button"
-        className="border border-line px-4 py-2 text-sm font-semibold"
+        variant="secondary"
+        size="sm"
         onClick={() => onChange([...links, { label: "", href: "/" }])}
       >
         Add link
-      </button>
+      </AdminButton>
     </div>
   );
 }
@@ -156,24 +164,26 @@ export function BulletsEditor({
               next[index] = e.target.value;
               onChange(next);
             }}
-            className="flex-1 border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+            className={`${adminInputClass} mt-0 flex-1`}
           />
-          <button
+          <AdminButton
             type="button"
-            className="px-3 text-sm font-semibold text-accent"
+            variant="danger"
+            size="sm"
             onClick={() => onChange(bullets.filter((_, i) => i !== index))}
           >
             ×
-          </button>
+          </AdminButton>
         </div>
       ))}
-      <button
+      <AdminButton
         type="button"
-        className="border border-line px-4 py-2 text-sm font-semibold"
+        variant="secondary"
+        size="sm"
         onClick={() => onChange([...bullets, ""])}
       >
         Add bullet
-      </button>
+      </AdminButton>
     </div>
   );
 }
@@ -305,6 +315,85 @@ export function SettingsFormBody({
           <NavLinksEditor label="Bottom CTA buttons" links={settings.home.ctaButtons} onChange={(ctaButtons) => setSettings({ ...settings, home: { ...settings.home, ctaButtons } })} />
         </div>
         <div className="space-y-4">
+          <SectionTitle title="Impact stats band" copy="Large counters shown below the hero — inspired by Smile Foundation and Pratham." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Eyebrow" value={settings.home.impactStatsEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, impactStatsEyebrow: v } })} />
+            <Field label="Headline" value={settings.home.impactStatsHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, impactStatsHeadline: v } })} />
+          </div>
+          {settings.home.impactStats.map((stat, index) => (
+            <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-[1fr_1fr_2fr_auto]">
+              <Field label="Value" value={stat.value} onChange={(v) => {
+                const next = [...settings.home.impactStats];
+                next[index] = { ...next[index], value: v };
+                setSettings({ ...settings, home: { ...settings.home, impactStats: next } });
+              }} />
+              <Field label="Suffix" value={stat.suffix || ""} onChange={(v) => {
+                const next = [...settings.home.impactStats];
+                next[index] = { ...next[index], suffix: v || undefined };
+                setSettings({ ...settings, home: { ...settings.home, impactStats: next } });
+              }} hint="e.g. + or Lac+" />
+              <Field label="Label" value={stat.label} onChange={(v) => {
+                const next = [...settings.home.impactStats];
+                next[index] = { ...next[index], label: v };
+                setSettings({ ...settings, home: { ...settings.home, impactStats: next } });
+              }} />
+              <div className="flex items-end">
+                <AdminButton variant="ghost" onClick={() => {
+                  const next = settings.home.impactStats.filter((_, i) => i !== index);
+                  setSettings({ ...settings, home: { ...settings.home, impactStats: next } });
+                }}>Remove</AdminButton>
+              </div>
+            </div>
+          ))}
+          <AdminButton variant="secondary" onClick={() => setSettings({
+            ...settings,
+            home: {
+              ...settings.home,
+              impactStats: [...settings.home.impactStats, { value: "0", label: "New stat" }],
+            },
+          })}>Add stat</AdminButton>
+        </div>
+        <div className="space-y-4">
+          <SectionTitle title="Programmes preview" copy="Card grid pulled from your Programs content." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Eyebrow" value={settings.home.programsEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsEyebrow: v } })} />
+            <Field label="Headline" value={settings.home.programsHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsHeadline: v } })} />
+            <Field label="Intro" value={settings.home.programsIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsIntro: v } })} multiline />
+            <Field label="View all label" value={settings.home.programsCtaLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsCtaLabel: v } })} />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <SectionTitle title="News spotlight" />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Eyebrow" value={settings.home.spotlightEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightEyebrow: v } })} />
+            <Field label="Headline" value={settings.home.spotlightHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightHeadline: v } })} />
+            <Field label="View all label" value={settings.home.spotlightViewAllLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightViewAllLabel: v } })} />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <SectionTitle title="Partner quote" copy="Testimonial strip — similar to Seva Foundation endorsements." />
+          <div className="grid gap-4">
+            <Field label="Eyebrow" value={settings.home.quoteEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, quoteEyebrow: v } })} />
+            <Field label="Quote" value={settings.home.quote.text} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, quote: { ...settings.home.quote, text: v } } })} multiline />
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Attribution" value={settings.home.quote.attribution} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, quote: { ...settings.home.quote, attribution: v } } })} />
+              <Field label="Role / location" value={settings.home.quote.role || ""} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, quote: { ...settings.home.quote, role: v } } })} />
+            </div>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <SectionTitle title="Donate strip" copy="Quick-give band with preset amounts — like Seva.org." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Headline" value={settings.home.donateStripHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, donateStripHeadline: v } })} />
+            <Field label="Copy" value={settings.home.donateStripCopy} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, donateStripCopy: v } })} multiline />
+            <Field label="Button label" value={settings.home.donateStripLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, donateStripLabel: v } })} />
+            <Field label="Preset amounts (comma-separated)" value={settings.home.donateStripAmounts.join(", ")} onChange={(v) => {
+              const amounts = v.split(",").map((n) => Number(n.trim())).filter((n) => Number.isFinite(n) && n > 0);
+              setSettings({ ...settings, home: { ...settings.home, donateStripAmounts: amounts } });
+            }} hint="e.g. 500, 1000, 2500, 5000" />
+          </div>
+        </div>
+        <div className="space-y-4">
           <SectionTitle title="About" />
           <PageIntroFields prefix="About" values={settings.about} onChange={(p) => setSettings({ ...settings, about: { ...settings.about, ...p } })} />
         </div>
@@ -416,16 +505,16 @@ export function SettingsFormBody({
         <SectionTitle title="Board members" />
         <Field label="Board section title" value={settings.reports.boardTitle} onChange={(v) => setSettings({ ...settings, reports: { ...settings.reports, boardTitle: v } })} />
         {settings.board.map((member, index) => (
-          <div key={index} className="grid gap-3 border border-line bg-white/60 p-4 md:grid-cols-2">
+          <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-2">
             <Field label="Name" value={member.name} onChange={(v) => { const board = [...settings.board]; board[index] = { ...board[index], name: v }; setSettings({ ...settings, board }); }} />
             <Field label="Role" value={member.role} onChange={(v) => { const board = [...settings.board]; board[index] = { ...board[index], role: v }; setSettings({ ...settings, board }); }} />
             <div className="md:col-span-2">
               <Field label="Bio" value={member.bio} onChange={(v) => { const board = [...settings.board]; board[index] = { ...board[index], bio: v }; setSettings({ ...settings, board }); }} multiline />
             </div>
-            <button type="button" className="text-sm font-semibold text-accent" onClick={() => setSettings({ ...settings, board: settings.board.filter((_, i) => i !== index) })}>Remove member</button>
+            <AdminButton type="button" variant="danger" size="sm" onClick={() => setSettings({ ...settings, board: settings.board.filter((_, i) => i !== index) })}>Remove member</AdminButton>
           </div>
         ))}
-        <button type="button" className="border border-line px-4 py-2 text-sm font-semibold" onClick={() => setSettings({ ...settings, board: [...settings.board, { name: "", role: "Board member", bio: "" }] })}>Add board member</button>
+        <AdminButton type="button" variant="secondary" size="sm" onClick={() => setSettings({ ...settings, board: [...settings.board, { name: "", role: "Board member", bio: "" }] })}>Add board member</AdminButton>
       </div>
     );
   }

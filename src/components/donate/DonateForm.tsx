@@ -23,11 +23,17 @@ declare global {
   }
 }
 
-export function DonateForm() {
+export function DonateForm({ initialAmount }: { initialAmount?: number }) {
   const router = useRouter();
   const [frequency, setFrequency] = useState<"one_time" | "monthly">("one_time");
-  const [amount, setAmount] = useState(1000);
-  const [custom, setCustom] = useState("");
+  const [amount, setAmount] = useState(() => {
+    if (initialAmount && presets.includes(initialAmount)) return initialAmount;
+    return 1000;
+  });
+  const [custom, setCustom] = useState(() => {
+    if (initialAmount && !presets.includes(initialAmount)) return String(initialAmount);
+    return "";
+  });
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState("");
   const [configured, setConfigured] = useState(true);

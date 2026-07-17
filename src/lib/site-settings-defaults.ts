@@ -2,6 +2,23 @@ import { board as seedBoard } from "@/content/governance";
 
 export type NavLink = { label: string; href: string };
 export type FocusArea = { title: string; copy: string };
+export type ImpactStat = { value: string; suffix?: string; label: string };
+export type TestimonialQuote = { text: string; attribution: string; role?: string };
+export type CampaignCard = {
+  title: string;
+  copy: string;
+  href: string;
+  cta: string;
+  image?: string;
+};
+export type Accreditation = { name: string; description: string };
+export type PartnerLogo = { name: string; href?: string };
+export type StickyDonateSettings = {
+  enabled: boolean;
+  message: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
 export type ValueItem = { title: string; copy: string };
 export type InvolveWay = {
   title: string;
@@ -50,6 +67,7 @@ export type SiteSettings = {
     primaryLinks: NavLink[];
     donateLabel: string;
     donateHref: string;
+    stickyDonate: StickyDonateSettings;
   };
   footer: {
     exploreHeading: string;
@@ -81,6 +99,32 @@ export type SiteSettings = {
     ctaHeadline: string;
     ctaCopy: string;
     ctaButtons: NavLink[];
+    impactStatsEyebrow: string;
+    impactStatsHeadline: string;
+    impactStats: ImpactStat[];
+    programsEyebrow: string;
+    programsHeadline: string;
+    programsIntro: string;
+    programsCtaLabel: string;
+    programsCtaHref: string;
+    spotlightEyebrow: string;
+    spotlightHeadline: string;
+    spotlightViewAllLabel: string;
+    spotlightViewAllHref: string;
+    quoteEyebrow: string;
+    quote: TestimonialQuote;
+    donateStripHeadline: string;
+    donateStripCopy: string;
+    donateStripAmounts: number[];
+    donateStripLabel: string;
+    campaignsEyebrow: string;
+    campaignsHeadline: string;
+    campaigns: CampaignCard[];
+    accreditationsEyebrow: string;
+    accreditationsHeadline: string;
+    accreditations: Accreditation[];
+    partnersEyebrow: string;
+    partners: PartnerLogo[];
   };
   about: {
     eyebrow: string;
@@ -215,10 +259,9 @@ const defaultNav: NavLink[] = [
   { label: "About", href: "/about" },
   { label: "Programs", href: "/programs" },
   { label: "Impact", href: "/impact" },
-  { label: "Events", href: "/events" },
   { label: "News", href: "/news" },
+  { label: "Reports", href: "/reports" },
   { label: "Get Involved", href: "/get-involved" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export const defaultSiteSettings: SiteSettings = {
@@ -253,12 +296,22 @@ export const defaultSiteSettings: SiteSettings = {
     primaryLinks: defaultNav,
     donateLabel: "Donate",
     donateHref: "/donate",
+    stickyDonate: {
+      enabled: true,
+      message: "Restore access to digital skills—your gift funds labs, curriculum, and local facilitators.",
+      ctaLabel: "Donate now",
+      ctaHref: "/donate",
+    },
   },
   footer: {
-    exploreHeading: "Explore",
-    exploreLinks: defaultNav.filter((l) =>
-      ["/about", "/programs", "/impact", "/events", "/news"].includes(l.href),
-    ),
+    exploreHeading: "Our work",
+    exploreLinks: [
+      { label: "About", href: "/about" },
+      { label: "Programs", href: "/programs" },
+      { label: "Impact", href: "/impact" },
+      { label: "Events", href: "/events" },
+      { label: "News", href: "/news" },
+    ],
     takePartHeading: "Take part",
     takePartLinks: [
       { label: "Donate", href: "/donate" },
@@ -313,6 +366,99 @@ export const defaultSiteSettings: SiteSettings = {
       { label: "Donate", href: "/donate" },
       { label: "Volunteer", href: "/volunteer" },
       { label: "Upcoming events", href: "/events" },
+    ],
+    impactStatsEyebrow: "Our impact",
+    impactStatsHeadline: "Communities reached, skills left behind",
+    impactStats: [
+      { value: "12000", suffix: "+", label: "learners trained through labs and workshops" },
+      { value: "48", suffix: "+", label: "partner sites across villages and cities" },
+      { value: "4", label: "core programs built for local ownership" },
+      { value: "12", suffix: "+", label: "states where facilitators lead independently" },
+    ],
+    programsEyebrow: "Our programmes",
+    programsHeadline: "Practical work that communities can sustain",
+    programsIntro:
+      "Like leading NGOs, we organize our work into clear programme areas—each designed to be taught, remixed, and carried forward by local partners.",
+    programsCtaLabel: "View all programmes →",
+    programsCtaHref: "/programs",
+    spotlightEyebrow: "Stories & updates",
+    spotlightHeadline: "Latest from the field",
+    spotlightViewAllLabel: "View all news →",
+    spotlightViewAllHref: "/news",
+    quoteEyebrow: "Voices from partners",
+    quote: {
+      text: "SVITECH didn't drop in with a product pitch—they listened, co-designed with our librarians, and left us facilitators who still run the lab every weekend.",
+      attribution: "Neighborhood library partner",
+      role: "Pune, India",
+    },
+    donateStripHeadline: "Your gift turns into labs, curriculum, and lasting skills",
+    donateStripCopy:
+      "Choose a quick amount or give what you can. Every contribution supports facilitator stipends, shared devices, and open learning materials.",
+    donateStripAmounts: [500, 1000, 2500, 5000],
+    donateStripLabel: "Donate now",
+    campaignsEyebrow: "Support a cause",
+    campaignsHeadline: "Campaigns you can stand behind",
+    campaigns: [
+      {
+        title: "Labs for Every Library",
+        copy: "Help neighbourhood libraries run weekend digital labs with shared devices and trained facilitators.",
+        href: "/programs/community-digital-labs",
+        cta: "Know more →",
+        image:
+          "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        title: "Open Curriculum, Local Languages",
+        copy: "Fund translation and adaptation of open learning kits for educators in rural and semi-urban centres.",
+        href: "/programs/open-learning-paths",
+        cta: "Know more →",
+        image:
+          "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        title: "Youth Mentor Circles",
+        copy: "Pair emerging community technologists with mentors for monthly project coaching and real outcomes.",
+        href: "/programs/mentor-circles",
+        cta: "Know more →",
+        image:
+          "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
+      },
+      {
+        title: "Tools Nonprofits Can Keep",
+        copy: "Support lightweight websites and intake systems that small organizations can maintain themselves.",
+        href: "/programs/nonprofit-tooling",
+        cta: "Know more →",
+        image:
+          "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
+      },
+    ],
+    accreditationsEyebrow: "Trust & transparency",
+    accreditationsHeadline: "Empanelment & accreditations",
+    accreditations: [
+      {
+        name: "Published annual reports",
+        description: "Financial notes and board information available for public review every year.",
+      },
+      {
+        name: "Open curriculum licenses",
+        description: "Learning materials released under open licenses communities can adapt and share.",
+      },
+      {
+        name: "Partner-verified impact",
+        description: "Outcomes tracked with local partners—not vanity metrics from a distant dashboard.",
+      },
+      {
+        name: "Secure online giving",
+        description: "Donations processed through Razorpay with emailed receipts after successful payment.",
+      },
+    ],
+    partnersEyebrow: "Our partners in change",
+    partners: [
+      { name: "Public library networks" },
+      { name: "Rural educator collectives" },
+      { name: "Youth development centres" },
+      { name: "Grassroots nonprofits" },
+      { name: "CSR & philanthropy partners" },
     ],
   },
   about: {

@@ -8,6 +8,7 @@ import { AdminLogin } from "@/components/admin/AdminLogin";
 import { ContentTab } from "@/components/admin/ContentTab";
 import { DashboardTab, InboxTab } from "@/components/admin/DashboardTab";
 import { SettingsTab } from "@/components/admin/SettingsTab";
+import { AdminButton, NavIcon, cn } from "@/components/admin/admin-ui";
 import {
   contentTabs,
   navGroups,
@@ -123,30 +124,41 @@ export function AdminPanel({
   }
 
   return (
-    <div className="min-h-svh bg-[radial-gradient(ellipse_at_top_left,_#e7f2ef,_transparent_45%),linear-gradient(180deg,#f7f4ef,#efe8df)]">
-      <div className="mx-auto flex min-h-svh max-w-7xl">
+    <div className="admin-app min-h-svh bg-[#e9f0ee]">
+      <div className="flex min-h-svh">
         <aside
-          className={`fixed inset-y-0 left-0 z-30 w-72 border-r border-line bg-bg-deep text-surface transition md:static md:translate-x-0 ${
-            navOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={cn(
+            "fixed inset-y-0 left-0 z-40 flex w-[17.5rem] flex-col border-r border-white/10 bg-[linear-gradient(180deg,#0b2f30_0%,#071f20_100%)] text-white shadow-2xl transition-transform duration-200 md:static md:translate-x-0",
+            navOpen ? "translate-x-0" : "-translate-x-full",
+          )}
         >
-          <div className="flex h-full flex-col px-5 py-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-bright">
-                SVITECH
-              </p>
-              <p className="mt-2 font-display text-2xl font-bold">Admin</p>
-              <p className="mt-1 truncate text-sm text-white/55">{email}</p>
+          <div className="border-b border-white/10 px-5 py-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-sm font-bold text-white shadow-lg shadow-brand/30">
+                S
+              </div>
+              <div className="min-w-0">
+                <p className="font-display text-lg font-bold leading-tight">SVITECH</p>
+                <p className="text-xs text-white/50">Content console</p>
+              </div>
             </div>
+            {email && (
+              <p className="mt-4 truncate rounded-lg bg-white/5 px-3 py-2 text-xs text-white/70">
+                {email}
+              </p>
+            )}
+          </div>
 
-            <nav className="mt-8 flex-1 space-y-6 overflow-y-auto" aria-label="Admin">
-              {navGroups.map((group) => (
-                <div key={group.label}>
-                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40">
-                    {group.label}
-                  </p>
-                  <ul className="space-y-1">
-                    {group.items.map((key) => (
+          <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5" aria-label="Admin">
+            {navGroups.map((group) => (
+              <div key={group.label}>
+                <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
+                  {group.label}
+                </p>
+                <ul className="space-y-0.5">
+                  {group.items.map((key) => {
+                    const active = tab === key;
+                    return (
                       <li key={key}>
                         <button
                           type="button"
@@ -154,75 +166,104 @@ export function AdminPanel({
                             setTab(key);
                             setNavOpen(false);
                           }}
-                          className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm font-medium transition ${
-                            tab === key
-                              ? "bg-brand text-white"
-                              : "text-white/75 hover:bg-white/10 hover:text-white"
-                          }`}
-                        >
-                          <span>{tabLabels[key]}</span>
-                          {key === "inbox" && inbox?.stats && inbox.stats.inboxTotal > 0 && (
-                            <span
-                              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                                tab === key ? "bg-white/20 text-white" : "bg-accent text-white"
-                              }`}
-                            >
-                              {inbox.stats.inboxTotal}
-                            </span>
+                          className={cn(
+                            "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition",
+                            active
+                              ? "bg-white/12 text-white shadow-inner ring-1 ring-white/10"
+                              : "text-white/70 hover:bg-white/6 hover:text-white",
                           )}
+                        >
+                          <NavIcon tab={key} />
+                          <span className="flex-1 truncate">{tabLabels[key]}</span>
+                          {key === "inbox" &&
+                            inbox?.stats &&
+                            inbox.stats.inboxTotal > 0 && (
+                              <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white">
+                                {inbox.stats.inboxTotal}
+                              </span>
+                            )}
                         </button>
                       </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </nav>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </nav>
 
-            <div className="space-y-2 border-t border-white/10 pt-4">
-              <Link
-                href="/"
-                className="block px-3 py-2 text-sm text-white/70 hover:text-white"
-              >
-                View public site
-              </Link>
-              <button
-                type="button"
-                onClick={() => void logout()}
-                className="w-full px-3 py-2 text-left text-sm font-semibold text-white/85 hover:bg-white/10"
-              >
-                Sign out
-              </button>
-            </div>
+          <div className="space-y-1 border-t border-white/10 p-3">
+            <Link
+              href="/"
+              target="_blank"
+              className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-white/65 transition hover:bg-white/6 hover:text-white"
+            >
+              <span aria-hidden>↗</span> View public site
+            </Link>
+            <button
+              type="button"
+              onClick={() => void logout()}
+              className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-white/80 transition hover:bg-white/6"
+            >
+              <span aria-hidden>⎋</span> Sign out
+            </button>
           </div>
         </aside>
 
         {navOpen && (
           <button
             type="button"
-            className="fixed inset-0 z-20 bg-ink/40 md:hidden"
+            className="fixed inset-0 z-30 bg-ink/50 backdrop-blur-[2px] md:hidden"
             aria-label="Close menu"
             onClick={() => setNavOpen(false)}
           />
         )}
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-line bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] px-5 py-4 backdrop-blur md:px-8">
-            <div className="min-w-0">
-              <button
-                type="button"
-                className="mb-2 border border-line px-3 py-1.5 text-xs font-semibold md:hidden"
-                onClick={() => setNavOpen(true)}
-              >
-                Menu
-              </button>
-              <h1 className="font-display text-2xl font-bold text-ink md:text-3xl">
-                {tabLabels[tab]}
-              </h1>
-              <p className="mt-1 text-sm text-ink-muted">{tabHints[tab]}</p>
+          <header className="sticky top-0 z-20 border-b border-line/70 bg-[#e9f0ee]/85 px-4 py-4 backdrop-blur-md md:px-8">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="min-w-0">
+                <button
+                  type="button"
+                  className="mb-3 inline-flex items-center gap-2 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold shadow-sm md:hidden"
+                  onClick={() => setNavOpen(true)}
+                >
+                  <span className="flex flex-col gap-0.5" aria-hidden>
+                    <span className="block h-0.5 w-4 bg-ink" />
+                    <span className="block h-0.5 w-4 bg-ink" />
+                    <span className="block h-0.5 w-4 bg-ink" />
+                  </span>
+                  Menu
+                </button>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
+                  {tab === "dashboard" ? "Overview" : "Workspace"}
+                </p>
+                <h1 className="mt-1 font-display text-2xl font-bold tracking-tight text-ink md:text-[1.75rem]">
+                  {tabLabels[tab]}
+                </h1>
+                <p className="mt-1 max-w-2xl text-sm text-ink-muted">{tabHints[tab]}</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {(tab === "dashboard" || tab === "inbox") && (
+                  <AdminButton
+                    variant="secondary"
+                    onClick={() => void loadInbox()}
+                    disabled={refreshing}
+                  >
+                    {refreshing ? "Refreshing…" : "Refresh"}
+                  </AdminButton>
+                )}
+                <AdminButton
+                  variant="primary"
+                  onClick={() => window.open("/", "_blank")}
+                  className="hidden sm:inline-flex"
+                >
+                  Live site
+                </AdminButton>
+              </div>
             </div>
           </header>
 
-          <div className="flex-1 px-5 py-8 md:px-8 md:py-10">
+          <div className="flex-1 px-4 py-6 md:px-8 md:py-8">
             <AdminBackendBanner backend={backend} />
             {tab === "dashboard" && (
               <DashboardTab
@@ -231,9 +272,7 @@ export function AdminPanel({
                 backend={backend}
                 onSeed={() => void seedContent()}
                 seedStatus={seedStatus}
-                onRefresh={loadInbox}
                 onNavigate={setTab}
-                refreshing={refreshing}
               />
             )}
             {tab === "inbox" && <InboxTab inbox={inbox} />}

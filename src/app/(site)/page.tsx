@@ -1,10 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { DonateStrip } from "@/components/DonateStrip";
+import { HomePrograms } from "@/components/HomePrograms";
+import { HomeSpotlight } from "@/components/HomeSpotlight";
+import { ImpactStats } from "@/components/ImpactStats";
 import { SiteLogo } from "@/components/SiteLogo";
+import { TestimonialQuote } from "@/components/TestimonialQuote";
+import { getPosts, getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export default async function HomePage() {
-  const { home, general } = await getSiteSettings();
+  const { home, general, navigation } = await getSiteSettings();
+  const [programs, posts] = await Promise.all([getPrograms(), getPosts()]);
   const logoProps = {
     logoUrl: general.logoUrl,
     logoAlt: general.logoAlt,
@@ -55,6 +62,12 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <ImpactStats
+        eyebrow={home.impactStatsEyebrow}
+        headline={home.impactStatsHeadline}
+        stats={home.impactStats}
+      />
+
       <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
           {home.focusEyebrow}
@@ -77,6 +90,16 @@ export default async function HomePage() {
           ))}
         </ul>
       </section>
+
+      <HomePrograms
+        eyebrow={home.programsEyebrow}
+        headline={home.programsHeadline}
+        intro={home.programsIntro}
+        programs={programs}
+        ctaLabel={home.programsCtaLabel}
+        ctaHref={home.programsCtaHref}
+        itemCtaLabel="Know more →"
+      />
 
       <section className="border-y border-line bg-surface">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 md:grid-cols-2 md:gap-16 md:px-8 md:py-28">
@@ -108,6 +131,24 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <HomeSpotlight
+        eyebrow={home.spotlightEyebrow}
+        headline={home.spotlightHeadline}
+        posts={posts}
+        viewAllLabel={home.spotlightViewAllLabel}
+        viewAllHref={home.spotlightViewAllHref}
+      />
+
+      <TestimonialQuote eyebrow={home.quoteEyebrow} quote={home.quote} />
+
+      <DonateStrip
+        headline={home.donateStripHeadline}
+        copy={home.donateStripCopy}
+        amounts={home.donateStripAmounts}
+        donateHref={navigation.donateHref}
+        donateLabel={home.donateStripLabel}
+      />
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
         <div className="max-w-2xl">

@@ -1,6 +1,12 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import {
+  AdminAlert,
+  AdminButton,
+  AdminCard,
+  adminInputClass,
+} from "@/components/admin/admin-ui";
 
 export function AccountTab({
   email,
@@ -50,86 +56,88 @@ export function AccountTab({
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-      <form onSubmit={onSubmit} className="space-y-4 border border-line bg-surface p-6">
-        <h2 className="font-display text-xl font-bold text-ink">Change password</h2>
-        <p className="text-sm text-ink-muted">
-          Signed in as <span className="font-medium text-ink">{email || "admin"}</span>
-        </p>
-        <label className="block">
-          <span className="text-sm font-medium text-ink">Current password</span>
-          <input
-            type="password"
-            required
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-          />
-        </label>
-        <label className="block">
-          <span className="text-sm font-medium text-ink">New password</span>
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-          />
-        </label>
-        <label className="block">
-          <span className="text-sm font-medium text-ink">Confirm new password</span>
-          <input
-            type="password"
-            required
-            minLength={8}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-          />
-        </label>
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-brand px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-60"
-        >
-          {loading ? "Updating…" : "Update password"}
-        </button>
-        {error && (
-          <p className="text-sm text-accent" role="alert">
-            {error}
-          </p>
-        )}
-        {status && (
-          <p className="text-sm text-brand" role="status">
-            {status}
-          </p>
-        )}
-      </form>
+    <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <AdminCard
+        title="Change password"
+        description={
+          email
+            ? `Signed in as ${email}`
+            : "Update your staff console password"
+        }
+      >
+        <form onSubmit={onSubmit} className="space-y-4">
+          <label className="block text-sm font-medium text-ink">
+            Current password
+            <input
+              type="password"
+              required
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className={adminInputClass}
+            />
+          </label>
+          <label className="block text-sm font-medium text-ink">
+            New password
+            <input
+              type="password"
+              required
+              minLength={8}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className={adminInputClass}
+            />
+          </label>
+          <label className="block text-sm font-medium text-ink">
+            Confirm new password
+            <input
+              type="password"
+              required
+              minLength={8}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className={adminInputClass}
+            />
+          </label>
+          <AdminButton type="submit" variant="primary" disabled={loading}>
+            {loading ? "Updating…" : "Update password"}
+          </AdminButton>
+          {error && (
+            <AdminAlert title="Could not update" tone="warning">
+              {error}
+            </AdminAlert>
+          )}
+          {status && (
+            <p className="rounded-lg bg-brand/10 px-3 py-2 text-sm text-brand" role="status">
+              {status}
+            </p>
+          )}
+        </form>
+      </AdminCard>
 
-      <aside className="space-y-4 border border-line bg-white/70 p-6 text-sm leading-relaxed text-ink-muted">
-        <h3 className="font-display text-lg font-bold text-ink">Account notes</h3>
-        <ul className="list-disc space-y-2 pl-5">
-          <li>
-            Bootstrap password from env:{" "}
-            <strong className="text-ink">{hasEnvPassword ? "set" : "missing"}</strong>
+      <AdminCard title="Account notes" padding="sm">
+        <ul className="space-y-3 text-sm leading-relaxed text-ink-muted">
+          <li className="flex items-center justify-between rounded-lg bg-surface/60 px-3 py-2">
+            <span>Bootstrap password (env)</span>
+            <span className="font-semibold text-ink">
+              {hasEnvPassword ? "Set" : "Missing"}
+            </span>
+          </li>
+          <li className="flex items-center justify-between rounded-lg bg-surface/60 px-3 py-2">
+            <span>Custom password override</span>
+            <span className="font-semibold text-ink">
+              {hasCustomPassword ? "Active" : "Not set"}
+            </span>
           </li>
           <li>
-            Custom password override:{" "}
-            <strong className="text-ink">
-              {hasCustomPassword ? "active" : "not set yet"}
-            </strong>
-          </li>
-          <li>
-            Forgot-password emails use Resend (`RESEND_API_KEY`) and go to{" "}
+            Forgot-password emails use Resend (<code>RESEND_API_KEY</code>) and go to{" "}
             <code className="text-ink">{email}</code>.
           </li>
           <li>
-            After you set a custom password here, that password is used for login
-            instead of <code className="text-ink">ADMIN_PASSWORD</code>.
+            After you set a custom password here, that password is used for login instead of{" "}
+            <code className="text-ink">ADMIN_PASSWORD</code>.
           </li>
         </ul>
-      </aside>
+      </AdminCard>
     </div>
   );
 }

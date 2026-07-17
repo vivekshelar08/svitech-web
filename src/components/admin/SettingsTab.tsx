@@ -5,6 +5,7 @@ import {
   SettingsFormBody,
   type SettingsSection,
 } from "@/components/admin/settings-fields";
+import { AdminButton, AdminCard } from "@/components/admin/admin-ui";
 import { defaultSiteSettings, type SiteSettings } from "@/lib/site-settings-defaults";
 
 export function SettingsTab({ section }: { section: SettingsSection }) {
@@ -49,21 +50,34 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
   }
 
   if (loading) {
-    return <p className="text-sm text-ink-muted">Loading settings…</p>;
+    return (
+      <AdminCard>
+        <p className="text-sm text-ink-muted">Loading settings…</p>
+      </AdminCard>
+    );
   }
 
   return (
-    <form onSubmit={onSave} className="space-y-8">
-      <SettingsFormBody section={section} settings={settings} setSettings={setSettings} />
-      <div className="flex flex-wrap items-center gap-4 border-t border-line pt-6">
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-brand px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-60"
-        >
+    <form onSubmit={onSave} className="space-y-6">
+      <AdminCard padding="lg">
+        <SettingsFormBody section={section} settings={settings} setSettings={setSettings} />
+      </AdminCard>
+
+      <div className="sticky bottom-4 z-10 flex flex-wrap items-center gap-4 rounded-2xl border border-line/80 bg-white/95 px-5 py-4 shadow-[0_8px_30px_rgba(12,46,47,0.08)] backdrop-blur">
+        <AdminButton type="submit" variant="primary" disabled={saving}>
           {saving ? "Saving…" : "Save changes"}
-        </button>
-        {status && <p className="text-sm text-ink-muted">{status}</p>}
+        </AdminButton>
+        {status && (
+          <p
+            className={
+              status.includes("failed") || status.includes("Could not")
+                ? "text-sm text-accent"
+                : "text-sm text-brand"
+            }
+          >
+            {status}
+          </p>
+        )}
       </div>
     </form>
   );

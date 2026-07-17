@@ -8,8 +8,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: donate.seoTitle, description: donate.seoDescription };
 }
 
-export default async function DonatePage() {
+export default async function DonatePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ amount?: string }>;
+}) {
   const { donate } = await getSiteSettings();
+  const params = await searchParams;
+  const parsed = Number(params.amount);
+  const initialAmount =
+    Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : undefined;
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
@@ -29,7 +37,7 @@ export default async function DonatePage() {
           </ul>
           <p className="mt-8 text-sm text-ink-muted">{donate.footerNote}</p>
         </div>
-        <DonateForm />
+        <DonateForm initialAmount={initialAmount} />
       </div>
     </div>
   );

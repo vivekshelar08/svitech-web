@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { adminInputClass, cn } from "@/components/admin/admin-ui";
 
 export function AdminLogin({
   onSuccess,
@@ -82,168 +83,173 @@ export function AdminLogin({
   }
 
   return (
-    <div className="flex min-h-svh items-center justify-center bg-[radial-gradient(ellipse_at_top,_#e8f3f0,_#f7f4ef_55%,_#efe8df)] px-5 py-16">
-      <div className="w-full max-w-md border border-line bg-surface/95 p-8 shadow-[0_24px_80px_rgba(12,46,47,0.08)]">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-          Staff access
-        </p>
-        <h1 className="mt-3 font-display text-3xl font-bold text-ink">
-          {mode === "forgot"
-            ? "Reset password"
-            : mode === "reset"
-              ? "Choose a new password"
-              : "SVITECH Admin"}
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-          {mode === "forgot"
-            ? "We’ll email a reset link to the configured admin address."
-            : mode === "reset"
-              ? "Enter the token from your email and set a new password."
-              : "Manage site copy, CMS content, inbox, and account security."}
-        </p>
+    <div className="admin-app flex min-h-svh">
+      <div className="hidden w-[42%] flex-col justify-between bg-[linear-gradient(160deg,#0b2f30_0%,#0e6b5c_55%,#14967f_100%)] p-10 text-white lg:flex">
+        <div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-lg font-bold backdrop-blur">
+            S
+          </div>
+          <h1 className="mt-8 font-display text-4xl font-bold leading-tight">
+            SVITECH
+            <br />
+            Admin Console
+          </h1>
+          <p className="mt-4 max-w-sm text-base leading-relaxed text-white/75">
+            Manage content, review submissions, customize your site, and publish
+            updates — all in one place.
+          </p>
+        </div>
+        <ul className="space-y-3 text-sm text-white/65">
+          <li>✦ Publish news, events & programs</li>
+          <li>✦ Edit site copy and brand colors</li>
+          <li>✦ Track donations and form submissions</li>
+        </ul>
+      </div>
 
-        <form onSubmit={onSubmit} className="mt-8 space-y-4">
-          {(mode === "login" || mode === "forgot") && (
-            <div>
-              <label htmlFor="admin-email" className="block text-sm font-medium text-ink">
+      <div className="flex flex-1 items-center justify-center bg-[#e9f0ee] px-5 py-12">
+        <div className="w-full max-w-md rounded-2xl border border-line/80 bg-white p-8 shadow-[0_20px_60px_rgba(12,46,47,0.08)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
+            Staff access
+          </p>
+          <h2 className="mt-3 font-display text-2xl font-bold text-ink">
+            {mode === "forgot"
+              ? "Reset password"
+              : mode === "reset"
+                ? "New password"
+                : "Sign in"}
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+            {mode === "forgot"
+              ? "We’ll email a reset link to the configured admin address."
+              : mode === "reset"
+                ? "Enter the token from your email."
+                : "Use your staff credentials to continue."}
+          </p>
+
+          <form onSubmit={onSubmit} className="mt-8 space-y-4">
+            {(mode === "login" || mode === "forgot") && (
+              <label className="block text-sm font-medium text-ink">
                 Email
+                <input
+                  id="admin-email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="info@svitech.in"
+                  className={adminInputClass}
+                />
               </label>
-              <input
-                id="admin-email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="info@svitech.in"
-                className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-              />
-            </div>
-          )}
+            )}
 
-          {mode === "login" && (
-            <div>
-              <label
-                htmlFor="admin-password"
-                className="block text-sm font-medium text-ink"
-              >
+            {mode === "login" && (
+              <label className="block text-sm font-medium text-ink">
                 Password
+                <input
+                  id="admin-password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={adminInputClass}
+                />
               </label>
-              <input
-                id="admin-password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-              />
-            </div>
-          )}
+            )}
 
-          {mode === "reset" && (
-            <>
-              <div>
-                <label htmlFor="reset-token" className="block text-sm font-medium text-ink">
+            {mode === "reset" && (
+              <>
+                <label className="block text-sm font-medium text-ink">
                   Reset token
+                  <input
+                    id="reset-token"
+                    type="text"
+                    required
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    className={cn(adminInputClass, "font-mono text-xs")}
+                  />
                 </label>
-                <input
-                  id="reset-token"
-                  type="text"
-                  required
-                  value={token}
-                  onChange={(e) => setToken(e.target.value)}
-                  className="mt-2 w-full border border-line bg-white px-3 py-2.5 font-mono text-xs outline-none focus:border-brand"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="new-password"
-                  className="block text-sm font-medium text-ink"
-                >
+                <label className="block text-sm font-medium text-ink">
                   New password
+                  <input
+                    id="new-password"
+                    type="password"
+                    required
+                    minLength={8}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className={adminInputClass}
+                  />
                 </label>
-                <input
-                  id="new-password"
-                  type="password"
-                  required
-                  minLength={8}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="confirm-password"
-                  className="block text-sm font-medium text-ink"
-                >
+                <label className="block text-sm font-medium text-ink">
                   Confirm password
+                  <input
+                    id="confirm-password"
+                    type="password"
+                    required
+                    minLength={8}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className={adminInputClass}
+                  />
                 </label>
-                <input
-                  id="confirm-password"
-                  type="password"
-                  required
-                  minLength={8}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
-                />
-              </div>
-            </>
-          )}
+              </>
+            )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-brand px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
-          >
-            {loading
-              ? "Working…"
-              : mode === "forgot"
-                ? "Send reset link"
-                : mode === "reset"
-                  ? "Update password"
-                  : "Sign in"}
-          </button>
-
-          {error && (
-            <p className="text-sm text-accent" role="alert">
-              {error}
-            </p>
-          )}
-          {message && (
-            <p className="text-sm text-brand" role="status">
-              {message}
-            </p>
-          )}
-        </form>
-
-        <div className="mt-6 flex flex-wrap gap-3 text-sm">
-          {mode !== "login" && (
             <button
-              type="button"
-              className="font-semibold text-brand"
-              onClick={() => {
-                setMode("login");
-                setError("");
-                setMessage("");
-              }}
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-110 disabled:opacity-60"
             >
-              Back to sign in
+              {loading
+                ? "Working…"
+                : mode === "forgot"
+                  ? "Send reset link"
+                  : mode === "reset"
+                    ? "Update password"
+                    : "Sign in"}
             </button>
-          )}
-          {mode === "login" && (
-            <button
-              type="button"
-              className="font-semibold text-brand"
-              onClick={() => {
-                setMode("forgot");
-                setError("");
-                setMessage("");
-              }}
-            >
-              Forgot password?
-            </button>
-          )}
+
+            {error && (
+              <p className="rounded-lg bg-accent/10 px-3 py-2 text-sm text-accent" role="alert">
+                {error}
+              </p>
+            )}
+            {message && (
+              <p className="rounded-lg bg-brand/10 px-3 py-2 text-sm text-brand" role="status">
+                {message}
+              </p>
+            )}
+          </form>
+
+          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+            {mode !== "login" && (
+              <button
+                type="button"
+                className="font-semibold text-brand"
+                onClick={() => {
+                  setMode("login");
+                  setError("");
+                  setMessage("");
+                }}
+              >
+                Back to sign in
+              </button>
+            )}
+            {mode === "login" && (
+              <button
+                type="button"
+                className="font-semibold text-brand"
+                onClick={() => {
+                  setMode("forgot");
+                  setError("");
+                  setMessage("");
+                }}
+              >
+                Forgot password?
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
