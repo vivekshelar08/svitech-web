@@ -63,7 +63,7 @@ export default async function ProgramDetailPage({
       <div className="mt-10 flex flex-wrap gap-3">
         <Link
           href="/get-involved"
-          className="bg-accent px-6 py-3.5 text-sm font-semibold text-white"
+          className="bg-accent px-6 py-3.5 text-sm font-semibold text-ink"
         >
           {detailPages.programsPartnerCta}
         </Link>

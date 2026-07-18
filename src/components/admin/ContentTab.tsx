@@ -10,6 +10,7 @@ import {
   adminTextareaClass,
   cn,
 } from "@/components/admin/admin-ui";
+import { MediaField } from "@/components/admin/MediaField";
 import { slugify, type ContentTabType } from "@/components/admin/admin-types";
 
 type ContentType = ContentTabType;
@@ -77,8 +78,11 @@ export function ContentTab({ type }: { type: ContentType }) {
   const [form, setForm] = useState(emptyForms[type]);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
+    setForm(emptyForms[type]);
+    setQuery("");
     void loadItems();
   }, [type]);
 
@@ -98,6 +102,25 @@ export function ContentTab({ type }: { type: ContentType }) {
 
   function resetForm() {
     setForm(emptyForms[type]);
+  }
+
+  function duplicateItem(item: ContentItem) {
+    editItem(item);
+    const base =
+      type === "programs"
+        ? String(item.name || item.slug || "item")
+        : String(item.title || item.slug || "item");
+    const nextSlug = `${slugify(base)}-copy`;
+    setForm((prev) => ({
+      ...prev,
+      id: "",
+      slug: nextSlug,
+      published: false,
+      title: type === "programs" ? prev.title : `${String(prev.title || base)} (copy)`,
+      name: type === "programs" ? `${String(prev.name || base)} (copy)` : prev.name,
+    }));
+    setStatus("Duplicated into the editor as a draft — change the slug and save.");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function editItem(item: ContentItem) {
@@ -207,27 +230,46 @@ export function ContentTab({ type }: { type: ContentType }) {
     if (res.ok) await loadItems();
   }
 
+  const filtered = items.filter((item) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return Object.values(item).some((value) =>
+      String(value ?? "")
+        .toLowerCase()
+        .includes(q),
+    );
+  });
+
+  const previewHref = previewPath(type, form);
+
   return (
     <div className="grid gap-6 xl:grid-cols-[1fr_1.15fr]">
       <AdminCard
         title="Existing items"
-        description={`${items.length} item${items.length === 1 ? "" : "s"} in this collection`}
+        description={`${filtered.length} of ${items.length} shown`}
         action={
           <AdminButton variant="ghost" size="sm" onClick={() => void loadItems()}>
             Refresh
           </AdminButton>
         }
       >
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search title, slug, location…"
+          className={cn(adminInputClass, "mt-0 mb-4")}
+        />
         {loading ? (
           <p className="text-sm text-ink-muted">Loading…</p>
-        ) : items.length === 0 ? (
+        ) : filtered.length === 0 ? (
           <AdminEmpty
             title="No items yet"
             description="Use the form on the right to create your first entry."
           />
         ) : (
           <ul className="divide-y divide-line/70">
-            {items.map((item) => (
+            {filtered.map((item) => (
               <li key={String(item.id)} className="py-4 first:pt-0 last:pb-0">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -248,6 +290,13 @@ export function ContentTab({ type }: { type: ContentType }) {
                   <div className="flex shrink-0 flex-wrap gap-1.5">
                     <AdminButton variant="secondary" size="sm" onClick={() => editItem(item)}>
                       Edit
+                    </AdminButton>
+                    <AdminButton
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => duplicateItem(item)}
+                    >
+                      Duplicate
                     </AdminButton>
                     <AdminButton
                       variant="secondary"
@@ -279,11 +328,22 @@ export function ContentTab({ type }: { type: ContentType }) {
 
       <AdminCard
         title={form.slug || form.id ? "Edit item" : "Create item"}
-        description="Changes publish to the live site when saved with Published enabled."
+        description="Upload a cover image or paste a URL. Drafts stay off the public site."
         action={
-          <AdminButton variant="ghost" size="sm" onClick={resetForm}>
-            New
-          </AdminButton>
+          <div className="flex items-center gap-2">
+            {previewHref && (
+              <AdminButton
+                variant="ghost"
+                size="sm"
+                onClick={() => window.open(previewHref, "_blank")}
+              >
+                Preview
+              </AdminButton>
+            )}
+            <AdminButton variant="ghost" size="sm" onClick={resetForm}>
+              New
+            </AdminButton>
+          </div>
         }
       >
         <form onSubmit={saveItem} className="space-y-4">
@@ -379,7 +439,12 @@ function ContentFields({
         {field("slug", "Slug", { required: true })}
         {field("excerpt", "Excerpt", { required: true, rows: 2 })}
         {field("body", "Body", { required: true, rows: 8 })}
-        {field("coverImage", "Cover image URL")}
+        <MediaField
+          label="Cover image"
+          value={String(form.coverImage || "")}
+          onChange={(v) => set("coverImage", v)}
+          folder="posts"
+        />
         {field("publishedAt", "Published at", { type: "datetime-local" })}
         {published}
       </>
@@ -396,7 +461,12 @@ function ContentFields({
         {field("location", "Location", { required: true })}
         {field("startsAt", "Starts at", { type: "datetime-local", required: true })}
         {field("endsAt", "Ends at", { type: "datetime-local" })}
-        {field("coverImage", "Cover image URL")}
+        <MediaField
+          label="Cover image"
+          value={String(form.coverImage || "")}
+          onChange={(v) => set("coverImage", v)}
+          folder="events"
+        />
         <label className="flex items-center gap-2.5 rounded-lg border border-line/70 bg-surface/50 px-3 py-2.5 text-sm text-ink">
           <input
             type="checkbox"
@@ -419,7 +489,12 @@ function ContentFields({
         {field("detail", "Detail line", { required: true })}
         {field("summary", "Summary", { required: true, rows: 3 })}
         {field("body", "Body", { required: true, rows: 6 })}
-        {field("coverImage", "Cover image URL")}
+        <MediaField
+          label="Cover image"
+          value={String(form.coverImage || "")}
+          onChange={(v) => set("coverImage", v)}
+          folder="programs"
+        />
         {field("sortOrder", "Sort order", { type: "number" })}
         {published}
       </>
@@ -438,7 +513,12 @@ function ContentFields({
         {field("body", "Body", { required: true, rows: 6 })}
         {field("lat", "Latitude", { type: "number" })}
         {field("lng", "Longitude", { type: "number" })}
-        {field("coverImage", "Cover image URL")}
+        <MediaField
+          label="Cover image"
+          value={String(form.coverImage || "")}
+          onChange={(v) => set("coverImage", v)}
+          folder="impact"
+        />
         {field("sortOrder", "Sort order", { type: "number" })}
         {published}
       </>
@@ -450,10 +530,31 @@ function ContentFields({
       {field("year", "Year", { type: "number", required: true })}
       {field("title", "Title", { required: true })}
       {field("description", "Description", { required: true, rows: 3 })}
-      {field("fileUrl", "PDF URL", { required: true })}
+      <MediaField
+        label="PDF / file"
+        value={String(form.fileUrl || "")}
+        onChange={(v) => set("fileUrl", v)}
+        kind="file"
+        folder="reports"
+        hint="Upload a PDF or paste a URL"
+      />
       {published}
     </>
   );
+}
+
+function previewPath(
+  type: ContentType,
+  form: Record<string, string | boolean>,
+): string | null {
+  const slug = String(form.slug || "").trim();
+  if (!slug && type !== "reports") return null;
+  if (type === "posts") return `/news/${slug}`;
+  if (type === "events") return `/events/${slug}`;
+  if (type === "programs") return `/programs/${slug}`;
+  if (type === "impact_stories") return `/impact`;
+  if (type === "reports") return `/reports`;
+  return null;
 }
 
 function buildPayload(type: ContentType, form: Record<string, string | boolean>) {

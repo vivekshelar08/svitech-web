@@ -37,6 +37,10 @@ yarn-error.log*
 # local form/donation fallback store
 /data/
 
+# admin local media fallback (when Supabase storage unavailable)
+/public/uploads/
+!/public/uploads/.gitkeep
+
 # vercel
 .vercel
 

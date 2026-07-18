@@ -124,7 +124,7 @@ export function VolunteerForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
+        className="bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110 disabled:opacity-60"
       >
         {status === "loading" ? "Submitting…" : "Submit application"}
       </button>

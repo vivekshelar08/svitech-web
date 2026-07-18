@@ -124,11 +124,11 @@ export function AdminPanel({
   }
 
   return (
-    <div className="admin-app min-h-svh bg-[#e9f0ee]">
+    <div className="admin-app min-h-svh bg-[#f2f5fa]">
       <div className="flex min-h-svh">
         <aside
           className={cn(
-            "fixed inset-y-0 left-0 z-40 flex w-[17.5rem] flex-col border-r border-white/10 bg-[linear-gradient(180deg,#0b2f30_0%,#071f20_100%)] text-white shadow-2xl transition-transform duration-200 md:static md:translate-x-0",
+            "fixed inset-y-0 left-0 z-40 flex w-[17.5rem] flex-col border-r border-white/10 bg-[linear-gradient(180deg,#0b1424_0%,#0a1628_100%)] text-white shadow-2xl transition-transform duration-200 md:static md:translate-x-0",
             navOpen ? "translate-x-0" : "-translate-x-full",
           )}
         >
@@ -178,7 +178,7 @@ export function AdminPanel({
                           {key === "inbox" &&
                             inbox?.stats &&
                             inbox.stats.inboxTotal > 0 && (
-                              <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-white">
+                              <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-ink">
                                 {inbox.stats.inboxTotal}
                               </span>
                             )}
@@ -219,7 +219,7 @@ export function AdminPanel({
         )}
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-20 border-b border-line/70 bg-[#e9f0ee]/85 px-4 py-4 backdrop-blur-md md:px-8">
+          <header className="sticky top-0 z-20 border-b border-line/70 bg-[#f2f5fa]/85 px-4 py-4 backdrop-blur-md md:px-8">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="min-w-0">
                 <button

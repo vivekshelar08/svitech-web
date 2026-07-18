@@ -103,7 +103,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
           email: createJson.email,
           contact: createJson.phone,
         },
-        theme: { color: "#0e6b5c" },
+        theme: { color: "#1b6ef5" },
         handler: async (response: RazorpaySuccess) => {
           const verifyRes = await fetch("/api/donate/verify", {
             method: "POST",
@@ -189,7 +189,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
                 }}
                 className={`px-4 py-2.5 text-sm font-semibold transition ${
                   !custom && amount === value
-                    ? "bg-accent text-white"
+                    ? "bg-accent text-ink"
                     : "border border-line bg-white text-ink"
                 }`}
               >
@@ -255,7 +255,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
         <button
           type="submit"
           disabled={status === "loading" || amountInr < 100}
-          className="w-full bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110 disabled:opacity-60"
+          className="w-full bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110 disabled:opacity-60"
         >
           {status === "loading" ? "Opening checkout…" : "Continue to donate"}
         </button>

@@ -78,7 +78,7 @@ export default async function EventsPage() {
               </p>
               <Link
                 href={`/events/${event.slug}`}
-                className="mt-5 inline-block bg-accent px-5 py-3 text-sm font-semibold text-white"
+                className="mt-5 inline-block bg-accent px-5 py-3 text-sm font-semibold text-ink"
               >
                 {event.registrationOpen
                   ? events.registerOpenCta

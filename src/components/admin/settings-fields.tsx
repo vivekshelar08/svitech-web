@@ -5,6 +5,12 @@ import {
   adminInputClass,
   adminTextareaClass,
 } from "@/components/admin/admin-ui";
+import {
+  MediaField,
+  ReorderButtons,
+  SeoHint,
+  moveItem,
+} from "@/components/admin/MediaField";
 import type { NavLink, SiteSettings } from "@/lib/site-settings-defaults";
 
 export function Field({
@@ -119,15 +125,21 @@ export function NavLinksEditor({
               onChange(next);
             }}
           />
-          <AdminButton
-            type="button"
-            variant="danger"
-            size="sm"
-            className="self-end"
-            onClick={() => onChange(links.filter((_, i) => i !== index))}
-          >
-            Remove
-          </AdminButton>
+          <div className="flex items-end gap-1">
+            <ReorderButtons
+              index={index}
+              total={links.length}
+              onMove={(from, to) => onChange(moveItem(links, from, to))}
+            />
+            <AdminButton
+              type="button"
+              variant="danger"
+              size="sm"
+              onClick={() => onChange(links.filter((_, i) => i !== index))}
+            >
+              Remove
+            </AdminButton>
+          </div>
         </div>
       ))}
       <AdminButton
@@ -246,12 +258,27 @@ export function SettingsFormBody({
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Site name" value={settings.general.siteName} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, siteName: v } })} />
           <Field label="Tagline" value={settings.general.tagline} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, tagline: v } })} />
-          <Field label="Logo URL" value={settings.general.logoUrl} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoUrl: v } })} hint="Path under public/ or full image URL" />
+          <div className="md:col-span-2">
+            <MediaField
+              label="Logo"
+              value={settings.general.logoUrl}
+              onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoUrl: v } })}
+              hint="Upload a file or paste a public URL /public path"
+              folder="brand"
+            />
+          </div>
           <Field label="Logo alt text" value={settings.general.logoAlt} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAlt: v } })} />
+          <Field label="Logo aria label" value={settings.general.logoAriaLabel} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAriaLabel: v } })} />
           <Field label="Contact email" value={settings.general.contactEmail} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactEmail: v } })} />
           <Field label="Response time" value={settings.general.responseTime} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, responseTime: v } })} />
-          <Field label="SEO title" value={settings.general.seoTitle} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoTitle: v } })} />
-          <Field label="SEO description" value={settings.general.seoDescription} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoDescription: v } })} multiline />
+          <div>
+            <Field label="SEO title" value={settings.general.seoTitle} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoTitle: v } })} />
+            <SeoHint value={settings.general.seoTitle} softLimit={60} />
+          </div>
+          <div>
+            <Field label="SEO description" value={settings.general.seoDescription} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoDescription: v } })} multiline />
+            <SeoHint value={settings.general.seoDescription} softLimit={155} />
+          </div>
           <Field label="Footer blurb" value={settings.general.footerBlurb} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, footerBlurb: v } })} multiline />
           <Field label="Newsletter blurb" value={settings.general.newsletterBlurb} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, newsletterBlurb: v } })} multiline />
           <Field label="Copyright note" value={settings.general.copyrightNote} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, copyrightNote: v } })} />
@@ -342,14 +369,118 @@ export function SettingsFormBody({
     return (
       <div className="space-y-12">
         <div className="space-y-4">
-          <SectionTitle title="Home page" />
+          <SectionTitle title="Home page" copy="Every homepage block is editable — including hero CTAs, focus areas, and approach imagery." />
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Hero headline" value={settings.home.heroHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroHeadline: v } })} />
             <Field label="Hero subhead" value={settings.home.heroSubhead} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroSubhead: v } })} multiline />
-            <Field label="Hero image URL" value={settings.home.heroImage} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImage: v } })} />
+            <div className="md:col-span-2">
+              <MediaField
+                label="Hero image"
+                value={settings.home.heroImage}
+                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImage: v } })}
+                folder="home"
+              />
+            </div>
+            <Field label="Hero image alt" value={settings.home.heroImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImageAlt: v } })} />
+            <Field label="Primary CTA label" value={settings.home.heroCtaPrimary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimary: v } })} />
+            <Field label="Primary CTA link" value={settings.home.heroCtaPrimaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimaryHref: v } })} />
+            <Field label="Secondary CTA label" value={settings.home.heroCtaSecondary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondary: v } })} />
+            <Field label="Secondary CTA link" value={settings.home.heroCtaSecondaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondaryHref: v } })} />
+          </div>
+
+          <SectionTitle title="Focus areas" />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Focus eyebrow" value={settings.home.focusEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusEyebrow: v } })} />
             <Field label="Focus headline" value={settings.home.focusHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusHeadline: v } })} />
+            <Field label="Focus intro" value={settings.home.focusIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusIntro: v } })} multiline />
+          </div>
+          {settings.home.focusAreas.map((area, index) => (
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Area {index + 1}</p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.home.focusAreas.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        home: { ...settings.home, focusAreas: moveItem(settings.home.focusAreas, from, to) },
+                      })
+                    }
+                  />
+                  <AdminButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setSettings({
+                        ...settings,
+                        home: {
+                          ...settings.home,
+                          focusAreas: settings.home.focusAreas.filter((_, i) => i !== index),
+                        },
+                      })
+                    }
+                  >
+                    Remove
+                  </AdminButton>
+                </div>
+              </div>
+              <Field
+                label="Title"
+                value={area.title}
+                onChange={(v) => {
+                  const next = [...settings.home.focusAreas];
+                  next[index] = { ...next[index], title: v };
+                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
+                }}
+              />
+              <Field
+                label="Copy"
+                value={area.copy}
+                onChange={(v) => {
+                  const next = [...settings.home.focusAreas];
+                  next[index] = { ...next[index], copy: v };
+                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
+                }}
+                multiline
+              />
+            </div>
+          ))}
+          <AdminButton
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              setSettings({
+                ...settings,
+                home: {
+                  ...settings.home,
+                  focusAreas: [...settings.home.focusAreas, { title: "New focus area", copy: "" }],
+                },
+              })
+            }
+          >
+            Add focus area
+          </AdminButton>
+
+          <SectionTitle title="Approach block" />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Approach eyebrow" value={settings.home.approachEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachEyebrow: v } })} />
             <Field label="Approach headline" value={settings.home.approachHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachHeadline: v } })} />
+            <Field label="Approach copy" value={settings.home.approachCopy} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachCopy: v } })} multiline />
+            <div className="md:col-span-2">
+              <MediaField
+                label="Approach image"
+                value={settings.home.approachImage}
+                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImage: v } })}
+                folder="home"
+              />
+            </div>
+            <Field label="Approach image alt" value={settings.home.approachImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImageAlt: v } })} />
+            <Field label="Approach link label" value={settings.home.approachLinkLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkLabel: v } })} />
+            <Field label="Approach link href" value={settings.home.approachLinkHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkHref: v } })} />
             <Field label="Bottom CTA headline" value={settings.home.ctaHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, ctaHeadline: v } })} />
+            <Field label="Bottom CTA copy" value={settings.home.ctaCopy} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, ctaCopy: v } })} multiline />
           </div>
           <NavLinksEditor label="Bottom CTA buttons" links={settings.home.ctaButtons} onChange={(ctaButtons) => setSettings({ ...settings, home: { ...settings.home, ctaButtons } })} />
         </div>
@@ -399,6 +530,7 @@ export function SettingsFormBody({
             <Field label="Headline" value={settings.home.programsHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsHeadline: v } })} />
             <Field label="Intro" value={settings.home.programsIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsIntro: v } })} multiline />
             <Field label="View all label" value={settings.home.programsCtaLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsCtaLabel: v } })} />
+            <Field label="View all link" value={settings.home.programsCtaHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, programsCtaHref: v } })} />
           </div>
         </div>
         <div className="space-y-4">
@@ -407,6 +539,7 @@ export function SettingsFormBody({
             <Field label="Eyebrow" value={settings.home.spotlightEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightEyebrow: v } })} />
             <Field label="Headline" value={settings.home.spotlightHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightHeadline: v } })} />
             <Field label="View all label" value={settings.home.spotlightViewAllLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightViewAllLabel: v } })} />
+            <Field label="View all link" value={settings.home.spotlightViewAllHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, spotlightViewAllHref: v } })} />
           </div>
         </div>
         <div className="space-y-4">
@@ -440,6 +573,38 @@ export function SettingsFormBody({
           </div>
           {settings.home.campaigns.map((campaign, index) => (
             <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
+                  Campaign {index + 1}
+                </p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.home.campaigns.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        home: { ...settings.home, campaigns: moveItem(settings.home.campaigns, from, to) },
+                      })
+                    }
+                  />
+                  <AdminButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setSettings({
+                        ...settings,
+                        home: {
+                          ...settings.home,
+                          campaigns: settings.home.campaigns.filter((_, i) => i !== index),
+                        },
+                      })
+                    }
+                  >
+                    Remove
+                  </AdminButton>
+                </div>
+              </div>
               <div className="grid gap-3 md:grid-cols-2">
                 <Field label="Title" value={campaign.title} onChange={(v) => {
                   const next = [...settings.home.campaigns];
@@ -456,24 +621,24 @@ export function SettingsFormBody({
                   next[index] = { ...next[index], cta: v };
                   setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
                 }} />
-                <Field label="Image URL" value={campaign.image || ""} onChange={(v) => {
-                  const next = [...settings.home.campaigns];
-                  next[index] = { ...next[index], image: v || undefined };
-                  setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
-                }} />
+                <div className="md:col-span-2">
+                  <MediaField
+                    label="Campaign image"
+                    value={campaign.image || ""}
+                    onChange={(v) => {
+                      const next = [...settings.home.campaigns];
+                      next[index] = { ...next[index], image: v || undefined };
+                      setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
+                    }}
+                    folder="campaigns"
+                  />
+                </div>
               </div>
               <Field label="Copy" value={campaign.copy} onChange={(v) => {
                 const next = [...settings.home.campaigns];
                 next[index] = { ...next[index], copy: v };
                 setSettings({ ...settings, home: { ...settings.home, campaigns: next } });
               }} multiline />
-              <AdminButton variant="ghost" onClick={() => setSettings({
-                ...settings,
-                home: {
-                  ...settings.home,
-                  campaigns: settings.home.campaigns.filter((_, i) => i !== index),
-                },
-              })}>Remove campaign</AdminButton>
             </div>
           ))}
           <AdminButton variant="secondary" onClick={() => setSettings({
@@ -488,32 +653,64 @@ export function SettingsFormBody({
           })}>Add campaign</AdminButton>
         </div>
         <div className="space-y-4">
-          <SectionTitle title="Accreditations & partners" copy="Trust strip — like Smile Foundation empanelment section." />
+          <SectionTitle title="Accreditations & partners" copy="Trust strip — logos optional; upload or paste URL." />
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Accreditations eyebrow" value={settings.home.accreditationsEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, accreditationsEyebrow: v } })} />
             <Field label="Accreditations headline" value={settings.home.accreditationsHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, accreditationsHeadline: v } })} />
             <Field label="Partners eyebrow" value={settings.home.partnersEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, partnersEyebrow: v } })} />
           </div>
           {settings.home.accreditations.map((item, index) => (
-            <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-2">
-              <Field label="Name" value={item.name} onChange={(v) => {
-                const next = [...settings.home.accreditations];
-                next[index] = { ...next[index], name: v };
-                setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
-              }} />
-              <Field label="Description" value={item.description} onChange={(v) => {
-                const next = [...settings.home.accreditations];
-                next[index] = { ...next[index], description: v };
-                setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
-              }} multiline />
-              <div className="md:col-span-2">
-                <AdminButton variant="ghost" onClick={() => setSettings({
-                  ...settings,
-                  home: {
-                    ...settings.home,
-                    accreditations: settings.home.accreditations.filter((_, i) => i !== index),
-                  },
-                })}>Remove accreditation</AdminButton>
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
+                  Accreditation {index + 1}
+                </p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.home.accreditations.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        home: {
+                          ...settings.home,
+                          accreditations: moveItem(settings.home.accreditations, from, to),
+                        },
+                      })
+                    }
+                  />
+                  <AdminButton variant="ghost" size="sm" onClick={() => setSettings({
+                    ...settings,
+                    home: {
+                      ...settings.home,
+                      accreditations: settings.home.accreditations.filter((_, i) => i !== index),
+                    },
+                  })}>Remove</AdminButton>
+                </div>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field label="Name" value={item.name} onChange={(v) => {
+                  const next = [...settings.home.accreditations];
+                  next[index] = { ...next[index], name: v };
+                  setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
+                }} />
+                <Field label="Description" value={item.description} onChange={(v) => {
+                  const next = [...settings.home.accreditations];
+                  next[index] = { ...next[index], description: v };
+                  setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
+                }} multiline />
+                <div className="md:col-span-2">
+                  <MediaField
+                    label="Logo (optional)"
+                    value={item.logo || ""}
+                    onChange={(v) => {
+                      const next = [...settings.home.accreditations];
+                      next[index] = { ...next[index], logo: v || undefined };
+                      setSettings({ ...settings, home: { ...settings.home, accreditations: next } });
+                    }}
+                    folder="trust"
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -528,25 +725,54 @@ export function SettingsFormBody({
             },
           })}>Add accreditation</AdminButton>
           {settings.home.partners.map((partner, index) => (
-            <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-[1fr_1fr_auto]">
-              <Field label="Partner name" value={partner.name} onChange={(v) => {
-                const next = [...settings.home.partners];
-                next[index] = { ...next[index], name: v };
-                setSettings({ ...settings, home: { ...settings.home, partners: next } });
-              }} />
-              <Field label="Link (optional)" value={partner.href || ""} onChange={(v) => {
-                const next = [...settings.home.partners];
-                next[index] = { ...next[index], href: v || undefined };
-                setSettings({ ...settings, home: { ...settings.home, partners: next } });
-              }} />
-              <div className="flex items-end">
-                <AdminButton variant="ghost" onClick={() => setSettings({
-                  ...settings,
-                  home: {
-                    ...settings.home,
-                    partners: settings.home.partners.filter((_, i) => i !== index),
-                  },
-                })}>Remove</AdminButton>
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
+                  Partner {index + 1}
+                </p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.home.partners.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        home: { ...settings.home, partners: moveItem(settings.home.partners, from, to) },
+                      })
+                    }
+                  />
+                  <AdminButton variant="ghost" size="sm" onClick={() => setSettings({
+                    ...settings,
+                    home: {
+                      ...settings.home,
+                      partners: settings.home.partners.filter((_, i) => i !== index),
+                    },
+                  })}>Remove</AdminButton>
+                </div>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field label="Partner name" value={partner.name} onChange={(v) => {
+                  const next = [...settings.home.partners];
+                  next[index] = { ...next[index], name: v };
+                  setSettings({ ...settings, home: { ...settings.home, partners: next } });
+                }} />
+                <Field label="Link (optional)" value={partner.href || ""} onChange={(v) => {
+                  const next = [...settings.home.partners];
+                  next[index] = { ...next[index], href: v || undefined };
+                  setSettings({ ...settings, home: { ...settings.home, partners: next } });
+                }} />
+                <div className="md:col-span-2">
+                  <MediaField
+                    label="Logo image (optional)"
+                    value={partner.image || ""}
+                    onChange={(v) => {
+                      const next = [...settings.home.partners];
+                      next[index] = { ...next[index], image: v || undefined };
+                      setSettings({ ...settings, home: { ...settings.home, partners: next } });
+                    }}
+                    folder="partners"
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -561,6 +787,94 @@ export function SettingsFormBody({
         <div className="space-y-4">
           <SectionTitle title="About" />
           <PageIntroFields prefix="About" values={settings.about} onChange={(p) => setSettings({ ...settings, about: { ...settings.about, ...p } })} />
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <MediaField
+                label="About hero image"
+                value={settings.about.heroImage}
+                onChange={(v) => setSettings({ ...settings, about: { ...settings.about, heroImage: v } })}
+                folder="about"
+              />
+            </div>
+            <Field label="Hero image alt" value={settings.about.heroImageAlt} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, heroImageAlt: v } })} />
+            <Field label="Mission title" value={settings.about.missionTitle} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, missionTitle: v } })} />
+            <Field label="Mission copy" value={settings.about.missionCopy} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, missionCopy: v } })} multiline />
+            <Field label="How title" value={settings.about.howTitle} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, howTitle: v } })} />
+            <Field label="How copy" value={settings.about.howCopy} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, howCopy: v } })} multiline />
+            <Field label="Values title" value={settings.about.valuesTitle} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, valuesTitle: v } })} />
+            <Field label="Governance title" value={settings.about.governanceTitle} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, governanceTitle: v } })} />
+            <Field label="Governance copy" value={settings.about.governanceCopy} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, governanceCopy: v } })} multiline />
+            <Field label="Governance link label" value={settings.about.governanceLinkLabel} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, governanceLinkLabel: v } })} />
+            <Field label="Programs link label" value={settings.about.programsLinkLabel} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, programsLinkLabel: v } })} />
+          </div>
+          {settings.about.values.map((value, index) => (
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Value {index + 1}</p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.about.values.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        about: { ...settings.about, values: moveItem(settings.about.values, from, to) },
+                      })
+                    }
+                  />
+                  <AdminButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setSettings({
+                        ...settings,
+                        about: {
+                          ...settings.about,
+                          values: settings.about.values.filter((_, i) => i !== index),
+                        },
+                      })
+                    }
+                  >
+                    Remove
+                  </AdminButton>
+                </div>
+              </div>
+              <Field
+                label="Title"
+                value={value.title}
+                onChange={(v) => {
+                  const next = [...settings.about.values];
+                  next[index] = { ...next[index], title: v };
+                  setSettings({ ...settings, about: { ...settings.about, values: next } });
+                }}
+              />
+              <Field
+                label="Copy"
+                value={value.copy}
+                onChange={(v) => {
+                  const next = [...settings.about.values];
+                  next[index] = { ...next[index], copy: v };
+                  setSettings({ ...settings, about: { ...settings.about, values: next } });
+                }}
+                multiline
+              />
+            </div>
+          ))}
+          <AdminButton
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              setSettings({
+                ...settings,
+                about: {
+                  ...settings.about,
+                  values: [...settings.about.values, { title: "New value", copy: "" }],
+                },
+              })
+            }
+          >
+            Add value
+          </AdminButton>
         </div>
         <div className="space-y-4">
           <SectionTitle title="Contact" />
@@ -576,7 +890,105 @@ export function SettingsFormBody({
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Donate block headline" value={settings.getInvolved.donateHeadline} onChange={(v) => setSettings({ ...settings, getInvolved: { ...settings.getInvolved, donateHeadline: v } })} />
             <Field label="Donate block copy" value={settings.getInvolved.donateCopy} onChange={(v) => setSettings({ ...settings, getInvolved: { ...settings.getInvolved, donateCopy: v } })} multiline />
+            <Field label="Donate primary CTA" value={settings.getInvolved.donateCtaPrimary} onChange={(v) => setSettings({ ...settings, getInvolved: { ...settings.getInvolved, donateCtaPrimary: v } })} />
+            <Field label="Donate primary link" value={settings.getInvolved.donateCtaPrimaryHref} onChange={(v) => setSettings({ ...settings, getInvolved: { ...settings.getInvolved, donateCtaPrimaryHref: v } })} />
+            <Field label="Donate secondary CTA" value={settings.getInvolved.donateCtaSecondary} onChange={(v) => setSettings({ ...settings, getInvolved: { ...settings.getInvolved, donateCtaSecondary: v } })} />
+            <Field label="Donate secondary link" value={settings.getInvolved.donateCtaSecondaryHref} onChange={(v) => setSettings({ ...settings, getInvolved: { ...settings.getInvolved, donateCtaSecondaryHref: v } })} />
           </div>
+          {settings.getInvolved.ways.map((way, index) => (
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Way {index + 1}</p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.getInvolved.ways.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        getInvolved: {
+                          ...settings.getInvolved,
+                          ways: moveItem(settings.getInvolved.ways, from, to),
+                        },
+                      })
+                    }
+                  />
+                  <AdminButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setSettings({
+                        ...settings,
+                        getInvolved: {
+                          ...settings.getInvolved,
+                          ways: settings.getInvolved.ways.filter((_, i) => i !== index),
+                        },
+                      })
+                    }
+                  >
+                    Remove
+                  </AdminButton>
+                </div>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                <Field
+                  label="Title"
+                  value={way.title}
+                  onChange={(v) => {
+                    const next = [...settings.getInvolved.ways];
+                    next[index] = { ...next[index], title: v };
+                    setSettings({ ...settings, getInvolved: { ...settings.getInvolved, ways: next } });
+                  }}
+                />
+                <Field
+                  label="CTA label"
+                  value={way.cta}
+                  onChange={(v) => {
+                    const next = [...settings.getInvolved.ways];
+                    next[index] = { ...next[index], cta: v };
+                    setSettings({ ...settings, getInvolved: { ...settings.getInvolved, ways: next } });
+                  }}
+                />
+                <Field
+                  label="Link"
+                  value={way.href}
+                  onChange={(v) => {
+                    const next = [...settings.getInvolved.ways];
+                    next[index] = { ...next[index], href: v };
+                    setSettings({ ...settings, getInvolved: { ...settings.getInvolved, ways: next } });
+                  }}
+                />
+                <Field
+                  label="Copy"
+                  value={way.copy}
+                  onChange={(v) => {
+                    const next = [...settings.getInvolved.ways];
+                    next[index] = { ...next[index], copy: v };
+                    setSettings({ ...settings, getInvolved: { ...settings.getInvolved, ways: next } });
+                  }}
+                  multiline
+                />
+              </div>
+            </div>
+          ))}
+          <AdminButton
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              setSettings({
+                ...settings,
+                getInvolved: {
+                  ...settings.getInvolved,
+                  ways: [
+                    ...settings.getInvolved.ways,
+                    { title: "New way", copy: "", href: "/volunteer", cta: "Learn more" },
+                  ],
+                },
+              })
+            }
+          >
+            Add way to get involved
+          </AdminButton>
         </div>
       </div>
     );
@@ -667,19 +1079,96 @@ export function SettingsFormBody({
   if (section === "board") {
     return (
       <div className="space-y-6">
-        <SectionTitle title="Board members" />
+        <SectionTitle title="Board members" copy="Add, edit, reorder, or remove. Photos optional." />
         <Field label="Board section title" value={settings.reports.boardTitle} onChange={(v) => setSettings({ ...settings, reports: { ...settings.reports, boardTitle: v } })} />
         {settings.board.map((member, index) => (
-          <div key={index} className="grid gap-3 rounded-xl border border-line/70 bg-surface/40 p-4 md:grid-cols-2">
-            <Field label="Name" value={member.name} onChange={(v) => { const board = [...settings.board]; board[index] = { ...board[index], name: v }; setSettings({ ...settings, board }); }} />
-            <Field label="Role" value={member.role} onChange={(v) => { const board = [...settings.board]; board[index] = { ...board[index], role: v }; setSettings({ ...settings, board }); }} />
-            <div className="md:col-span-2">
-              <Field label="Bio" value={member.bio} onChange={(v) => { const board = [...settings.board]; board[index] = { ...board[index], bio: v }; setSettings({ ...settings, board }); }} multiline />
+          <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
+                Member {index + 1}
+              </p>
+              <div className="flex items-center gap-2">
+                <ReorderButtons
+                  index={index}
+                  total={settings.board.length}
+                  onMove={(from, to) =>
+                    setSettings({ ...settings, board: moveItem(settings.board, from, to) })
+                  }
+                />
+                <AdminButton
+                  type="button"
+                  variant="danger"
+                  size="sm"
+                  onClick={() =>
+                    setSettings({
+                      ...settings,
+                      board: settings.board.filter((_, i) => i !== index),
+                    })
+                  }
+                >
+                  Remove
+                </AdminButton>
+              </div>
             </div>
-            <AdminButton type="button" variant="danger" size="sm" onClick={() => setSettings({ ...settings, board: settings.board.filter((_, i) => i !== index) })}>Remove member</AdminButton>
+            <div className="grid gap-3 md:grid-cols-2">
+              <Field
+                label="Name"
+                value={member.name}
+                onChange={(v) => {
+                  const board = [...settings.board];
+                  board[index] = { ...board[index], name: v };
+                  setSettings({ ...settings, board });
+                }}
+              />
+              <Field
+                label="Role"
+                value={member.role}
+                onChange={(v) => {
+                  const board = [...settings.board];
+                  board[index] = { ...board[index], role: v };
+                  setSettings({ ...settings, board });
+                }}
+              />
+              <div className="md:col-span-2">
+                <MediaField
+                  label="Photo"
+                  value={member.photo || ""}
+                  onChange={(v) => {
+                    const board = [...settings.board];
+                    board[index] = { ...board[index], photo: v || undefined };
+                    setSettings({ ...settings, board });
+                  }}
+                  folder="board"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <Field
+                  label="Bio"
+                  value={member.bio}
+                  onChange={(v) => {
+                    const board = [...settings.board];
+                    board[index] = { ...board[index], bio: v };
+                    setSettings({ ...settings, board });
+                  }}
+                  multiline
+                />
+              </div>
+            </div>
           </div>
         ))}
-        <AdminButton type="button" variant="secondary" size="sm" onClick={() => setSettings({ ...settings, board: [...settings.board, { name: "", role: "Board member", bio: "" }] })}>Add board member</AdminButton>
+        <AdminButton
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() =>
+            setSettings({
+              ...settings,
+              board: [...settings.board, { name: "", role: "Board member", bio: "" }],
+            })
+          }
+        >
+          Add board member
+        </AdminButton>
       </div>
     );
   }

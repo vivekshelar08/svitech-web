@@ -11,8 +11,8 @@ export type CampaignCard = {
   cta: string;
   image?: string;
 };
-export type Accreditation = { name: string; description: string };
-export type PartnerLogo = { name: string; href?: string };
+export type Accreditation = { name: string; description: string; logo?: string };
+export type PartnerLogo = { name: string; href?: string; image?: string };
 export type StickyDonateSettings = {
   enabled: boolean;
   message: string;
@@ -30,6 +30,7 @@ export type BoardMemberSetting = {
   name: string;
   role: string;
   bio: string;
+  photo?: string;
 };
 
 export type PageSeo = {
@@ -282,15 +283,15 @@ export const defaultSiteSettings: SiteSettings = {
       "SVITECH Foundation bridges communities with digital skills, open education, and technology that serves people first.",
   },
   theme: {
-    bg: "#eef3f2",
-    bgDeep: "#0c2e2f",
-    ink: "#0c2e2f",
-    inkMuted: "#4a6364",
-    brand: "#0e6b5c",
-    brandBright: "#14967f",
-    accent: "#c45c26",
-    accentSoft: "#f3e6dc",
-    surface: "#f7faf9",
+    bg: "#f2f5fa",
+    bgDeep: "#0b1424",
+    ink: "#121c2e",
+    inkMuted: "#5c6b82",
+    brand: "#1b6ef5",
+    brandBright: "#4a8ff7",
+    accent: "#f0a202",
+    accentSoft: "#fff4d6",
+    surface: "#f8fafc",
   },
   navigation: {
     primaryLinks: defaultNav,

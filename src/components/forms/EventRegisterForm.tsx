@@ -93,7 +93,7 @@ export function EventRegisterForm({ eventSlug }: { eventSlug: string }) {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="bg-accent px-6 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        className="bg-accent px-6 py-3 text-sm font-semibold text-ink disabled:opacity-60"
       >
         {status === "loading" ? "Registering…" : "Register for event"}
       </button>

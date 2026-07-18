@@ -5,6 +5,8 @@ import { SiteTheme } from "@/components/SiteTheme";
 import { getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export default async function SiteLayout({
   children,
 }: {

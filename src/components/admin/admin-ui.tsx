@@ -78,7 +78,7 @@ export function AdminButton({
   const sizes = size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2.5 text-sm";
   const variants = {
     primary: "bg-brand text-white shadow-sm hover:brightness-110",
-    accent: "bg-accent text-white shadow-sm hover:brightness-110",
+    accent: "bg-accent text-ink shadow-sm hover:brightness-110",
     secondary:
       "border border-line bg-white text-ink shadow-sm hover:border-brand/30 hover:bg-surface",
     ghost: "text-brand hover:bg-brand/5",

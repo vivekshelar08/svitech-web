@@ -11,6 +11,8 @@ import { TestimonialQuote } from "@/components/TestimonialQuote";
 import { getPosts, getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const { home, general, navigation } = await getSiteSettings();
   const [programs, posts] = await Promise.all([getPrograms(), getPosts()]);

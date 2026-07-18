@@ -55,7 +55,7 @@ export default async function GetInvolvedPage() {
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href={getInvolved.donateCtaPrimaryHref}
-            className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
+            className="bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110"
           >
             {getInvolved.donateCtaPrimary}
           </Link>

@@ -84,7 +84,7 @@ export function AdminLogin({
 
   return (
     <div className="admin-app flex min-h-svh">
-      <div className="hidden w-[42%] flex-col justify-between bg-[linear-gradient(160deg,#0b2f30_0%,#0e6b5c_55%,#14967f_100%)] p-10 text-white lg:flex">
+      <div className="hidden w-[42%] flex-col justify-between bg-[linear-gradient(160deg,#0b1424_0%,#1558c7_55%,#4a8ff7_100%)] p-10 text-white lg:flex">
         <div>
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-lg font-bold backdrop-blur">
             S
@@ -106,7 +106,7 @@ export function AdminLogin({
         </ul>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-[#e9f0ee] px-5 py-12">
+      <div className="flex flex-1 items-center justify-center bg-[#f2f5fa] px-5 py-12">
         <div className="w-full max-w-md rounded-2xl border border-line/80 bg-white p-8 shadow-[0_20px_60px_rgba(12,46,47,0.08)]">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
             Staff access

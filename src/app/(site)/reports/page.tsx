@@ -60,14 +60,26 @@ export default async function ReportsPage() {
         <h2 className="font-display text-2xl font-bold text-ink">{reports.boardTitle}</h2>
         <ul className="mt-8 grid gap-8 sm:grid-cols-2">
           {board.map((member) => (
-            <li key={member.name}>
-              <h3 className="font-display text-lg font-bold text-ink">
-                {member.name}
-              </h3>
-              <p className="mt-1 text-sm font-semibold text-brand">{member.role}</p>
-              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                {member.bio}
-              </p>
+            <li key={member.name} className="flex gap-4">
+              {member.photo && (
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden border border-line bg-surface">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={member.photo}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <div>
+                <h3 className="font-display text-lg font-bold text-ink">
+                  {member.name}
+                </h3>
+                <p className="mt-1 text-sm font-semibold text-brand">{member.role}</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                  {member.bio}
+                </p>
+              </div>
             </li>
           ))}
         </ul>

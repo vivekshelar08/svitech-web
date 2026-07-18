@@ -56,7 +56,7 @@ export default async function ProgramsPage() {
       <div className="mt-14">
         <Link
           href={programs.bottomCtaHref}
-          className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
+          className="bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110"
         >
           {programs.bottomCtaLabel}
         </Link>

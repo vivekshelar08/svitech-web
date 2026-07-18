@@ -5,27 +5,31 @@ import { posts as seedPosts, type Post } from "@/content/posts";
 import { programs as seedPrograms, type Program } from "@/content/programs";
 import { getAnonClient } from "@/lib/supabase";
 
+/**
+ * When Supabase is configured, trust the DB result even if empty.
+ * Do not fall back to seed content — that revived unpublished items on the public site.
+ */
 export async function getPrograms(): Promise<Program[]> {
   const supabase = getAnonClient();
-  if (supabase) {
-    const { data, error } = await supabase
-      .from("programs")
-      .select("*")
-      .eq("published", true)
-      .order("sort_order", { ascending: true });
-    if (!error && data && data.length > 0) {
-      return data.map((row) => ({
-        slug: row.slug,
-        name: row.name,
-        summary: row.summary,
-        detail: row.detail,
-        body: row.body,
-        coverImage: row.cover_image ?? undefined,
-        sortOrder: row.sort_order,
-      }));
-    }
-  }
-  return seedPrograms;
+  if (!supabase) return seedPrograms;
+
+  const { data, error } = await supabase
+    .from("programs")
+    .select("*")
+    .eq("published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    slug: row.slug,
+    name: row.name,
+    summary: row.summary,
+    detail: row.detail,
+    body: row.body,
+    coverImage: row.cover_image ?? undefined,
+    sortOrder: row.sort_order,
+  }));
 }
 
 export async function getProgram(slug: string) {
@@ -35,29 +39,29 @@ export async function getProgram(slug: string) {
 
 export async function getImpactStories(): Promise<ImpactStory[]> {
   const supabase = getAnonClient();
-  if (supabase) {
-    const { data, error } = await supabase
-      .from("impact_stories")
-      .select("*")
-      .eq("published", true)
-      .order("sort_order", { ascending: true });
-    if (!error && data && data.length > 0) {
-      return data.map((row) => ({
-        slug: row.slug,
-        title: row.title,
-        location: row.location,
-        lat: row.lat ?? 0,
-        lng: row.lng ?? 0,
-        metricLabel: row.metric_label,
-        metricValue: row.metric_value,
-        summary: row.summary,
-        body: row.body,
-        coverImage: row.cover_image || "",
-        sortOrder: row.sort_order,
-      }));
-    }
-  }
-  return seedImpact;
+  if (!supabase) return seedImpact;
+
+  const { data, error } = await supabase
+    .from("impact_stories")
+    .select("*")
+    .eq("published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    location: row.location,
+    lat: row.lat ?? 0,
+    lng: row.lng ?? 0,
+    metricLabel: row.metric_label,
+    metricValue: row.metric_value,
+    summary: row.summary,
+    body: row.body,
+    coverImage: row.cover_image || "",
+    sortOrder: row.sort_order,
+  }));
 }
 
 export async function getImpactStory(slug: string) {
@@ -67,24 +71,26 @@ export async function getImpactStory(slug: string) {
 
 export async function getPosts(): Promise<Post[]> {
   const supabase = getAnonClient();
-  if (supabase) {
-    const { data, error } = await supabase
-      .from("posts")
-      .select("*")
-      .eq("published", true)
-      .order("published_at", { ascending: false });
-    if (!error && data && data.length > 0) {
-      return data.map((row) => ({
-        slug: row.slug,
-        title: row.title,
-        excerpt: row.excerpt,
-        body: row.body,
-        coverImage: row.cover_image || "",
-        publishedAt: (row.published_at || "").slice(0, 10),
-      }));
-    }
+  if (!supabase) {
+    return [...seedPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   }
-  return [...seedPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("published", true)
+    .order("published_at", { ascending: false });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    excerpt: row.excerpt,
+    body: row.body,
+    coverImage: row.cover_image || "",
+    publishedAt: (row.published_at || "").slice(0, 10),
+  }));
 }
 
 export async function getPost(slug: string) {
@@ -94,27 +100,27 @@ export async function getPost(slug: string) {
 
 export async function getEvents(): Promise<EventItem[]> {
   const supabase = getAnonClient();
-  if (supabase) {
-    const { data, error } = await supabase
-      .from("events")
-      .select("*")
-      .eq("published", true)
-      .order("starts_at", { ascending: true });
-    if (!error && data && data.length > 0) {
-      return data.map((row) => ({
-        slug: row.slug,
-        title: row.title,
-        summary: row.summary,
-        body: row.body,
-        location: row.location,
-        startsAt: row.starts_at,
-        endsAt: row.ends_at ?? undefined,
-        coverImage: row.cover_image || "",
-        registrationOpen: row.registration_open,
-      }));
-    }
-  }
-  return seedEvents;
+  if (!supabase) return seedEvents;
+
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("published", true)
+    .order("starts_at", { ascending: true });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    summary: row.summary,
+    body: row.body,
+    location: row.location,
+    startsAt: row.starts_at,
+    endsAt: row.ends_at ?? undefined,
+    coverImage: row.cover_image || "",
+    registrationOpen: row.registration_open,
+  }));
 }
 
 export async function getEvent(slug: string) {
@@ -124,20 +130,20 @@ export async function getEvent(slug: string) {
 
 export async function getReports(): Promise<Report[]> {
   const supabase = getAnonClient();
-  if (supabase) {
-    const { data, error } = await supabase
-      .from("reports")
-      .select("*")
-      .eq("published", true)
-      .order("year", { ascending: false });
-    if (!error && data && data.length > 0) {
-      return data.map((row) => ({
-        year: row.year,
-        title: row.title,
-        description: row.description,
-        fileUrl: row.file_url,
-      }));
-    }
-  }
-  return seedReports;
+  if (!supabase) return seedReports;
+
+  const { data, error } = await supabase
+    .from("reports")
+    .select("*")
+    .eq("published", true)
+    .order("year", { ascending: false });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    year: row.year,
+    title: row.title,
+    description: row.description,
+    fileUrl: row.file_url,
+  }));
 }

@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #eef3f2;
-  --bg-deep: #0c2e2f;
-  --ink: #0c2e2f;
-  --ink-muted: #4a6364;
-  --brand: #0e6b5c;
-  --brand-bright: #14967f;
-  --accent: #c45c26;
-  --accent-soft: #f3e6dc;
-  --surface: #f7faf9;
-  --line: rgba(12, 46, 47, 0.12);
+  --bg: #f2f5fa;
+  --bg-deep: #0b1424;
+  --ink: #121c2e;
+  --ink-muted: #5c6b82;
+  --brand: #1b6ef5;
+  --brand-bright: #4a8ff7;
+  --accent: #f0a202;
+  --accent-soft: #fff4d6;
+  --surface: #f8fafc;
+  --line: rgba(18, 28, 46, 0.12);
   --background: var(--bg);
   --foreground: var(--ink);
 }
@@ -45,15 +45,15 @@ body {
   color: var(--ink);
   font-family: var(--font-body), system-ui, sans-serif;
   background-image:
-    radial-gradient(ellipse 70% 45% at 8% -8%, rgba(20, 150, 127, 0.14), transparent 55%),
-    radial-gradient(ellipse 50% 35% at 96% 4%, rgba(196, 92, 38, 0.1), transparent 48%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, rgba(14, 107, 92, 0.06), transparent 60%),
-    linear-gradient(180deg, #f1f5f4 0%, #e8efed 55%, #e4ebe9 100%);
+    radial-gradient(ellipse 70% 45% at 8% -8%, color-mix(in srgb, var(--brand-bright) 16%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 35% at 96% 4%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 48%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, color-mix(in srgb, var(--brand) 7%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, var(--ink)) 100%);
   background-attachment: fixed;
 }
 
 ::selection {
-  background: rgba(14, 107, 92, 0.22);
+  background: color-mix(in srgb, var(--brand) 22%, transparent);
   color: var(--ink);
 }
 
@@ -94,7 +94,7 @@ a {
   align-items: center;
   justify-content: center;
   background: var(--accent);
-  color: #fff;
+  color: #121c2e;
   padding: 0.85rem 1.6rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -103,13 +103,13 @@ a {
     transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.25s ease,
     box-shadow 0.25s ease;
-  box-shadow: 0 8px 24px -10px rgba(196, 92, 38, 0.55);
+  box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--accent) 65%, transparent);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.06);
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -10px rgba(196, 92, 38, 0.65);
+  box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--accent) 75%, transparent);
 }
 
 .btn-ghost {
@@ -217,16 +217,26 @@ a {
 
 .mesh-deep {
   background:
-    radial-gradient(ellipse 60% 50% at 0% 0%, rgba(20, 150, 127, 0.22), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(196, 92, 38, 0.14), transparent 50%),
-    linear-gradient(165deg, #0a2829 0%, #0c2e2f 45%, #0e3536 100%);
+    radial-gradient(ellipse 60% 50% at 0% 0%, color-mix(in srgb, var(--brand-bright) 28%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 50%),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--bg-deep) 90%, black) 0%,
+      var(--bg-deep) 48%,
+      color-mix(in srgb, var(--bg-deep) 82%, var(--brand)) 100%
+    );
 }
 
 .mesh-warm {
   background:
-    radial-gradient(ellipse 55% 60% at 15% 20%, rgba(255, 255, 255, 0.55), transparent 55%),
-    radial-gradient(ellipse 40% 50% at 90% 80%, rgba(14, 107, 92, 0.1), transparent 50%),
-    linear-gradient(135deg, #f6ebe3 0%, #f3e6dc 40%, #ebe4d8 100%);
+    radial-gradient(ellipse 55% 60% at 15% 20%, rgba(255, 255, 255, 0.65), transparent 55%),
+    radial-gradient(ellipse 40% 50% at 90% 80%, color-mix(in srgb, var(--brand) 10%, transparent), transparent 50%),
+    linear-gradient(
+      135deg,
+      var(--accent-soft) 0%,
+      color-mix(in srgb, var(--accent-soft) 75%, white) 42%,
+      color-mix(in srgb, var(--bg) 75%, var(--accent-soft)) 100%
+    );
 }
 
 .panel-lift {

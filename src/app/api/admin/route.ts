@@ -63,7 +63,7 @@ export async function POST(request: Request) {
           to: adminEmail,
           subject: "Reset your SVITECH admin password",
           html: `
-            <div style="font-family: Georgia, serif; color: #0c2e2f; line-height: 1.5;">
+            <div style="font-family: Georgia, serif; color: #121c2e; line-height: 1.5;">
               <h1 style="font-size: 20px;">Password reset</h1>
               <p>Use this link to choose a new admin password. It expires in 1 hour.</p>
               <p><a href="${resetUrl}">${resetUrl}</a></p>

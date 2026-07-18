@@ -48,7 +48,7 @@ export function donationReceiptHtml(opts: {
   const freq =
     opts.frequency === "monthly" ? "Monthly donation" : "One-time donation";
   return `
-    <div style="font-family: Georgia, serif; color: #0c2e2f; line-height: 1.5;">
+    <div style="font-family: Georgia, serif; color: #121c2e; line-height: 1.5;">
       <h1 style="font-size: 22px;">Thank you, ${escapeHtml(opts.name)}</h1>
       <p>We received your ${freq.toLowerCase()} of <strong>₹${opts.amountInr.toLocaleString("en-IN")}</strong>.</p>
       <p>Payment reference: <code>${escapeHtml(opts.paymentId)}</code></p>

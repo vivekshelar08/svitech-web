@@ -71,10 +71,10 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     setMobileProgramsOpen(false);
   }, [pathname]);
 
-  function renderNavLink(link: { label: string; href: string }) {
+  function renderNavLink(link: { label: string; href: string }, index: number) {
     if (link.href === PROGRAMS_HREF && programs.length > 0) {
       return (
-        <div key={link.href} ref={dropdownRef} className="relative">
+        <div key={`nav-${index}-${link.href}`} ref={dropdownRef} className="relative">
           <button
             type="button"
             className="nav-link"
@@ -155,7 +155,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
     return (
       <Link
-        key={link.href}
+        key={`nav-${index}-${link.href}`}
         href={link.href}
         className="nav-link"
         data-active={active ? "true" : "false"}
@@ -185,7 +185,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           className="hidden items-center gap-1 rounded-sm border border-line/60 bg-white/55 px-4 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm lg:flex xl:gap-2"
           aria-label="Primary"
         >
-          {navigation.primaryLinks.map((link) => renderNavLink(link))}
+          {navigation.primaryLinks.map((link, index) => renderNavLink(link, index))}
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
@@ -238,10 +238,10 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           aria-label="Mobile"
         >
           <ul className="flex flex-col gap-0.5">
-            {navigation.primaryLinks.map((link) => {
+            {navigation.primaryLinks.map((link, index) => {
               if (link.href === PROGRAMS_HREF && programs.length > 0) {
                 return (
-                  <li key={link.href} className="border-b border-line/60 pb-2">
+                  <li key={`mnav-${index}-${link.href}`} className="border-b border-line/60 pb-2">
                     <button
                       type="button"
                       className="flex w-full items-center justify-between py-3 font-display text-lg font-semibold text-ink"
@@ -286,7 +286,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
               const active =
                 pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
-                <li key={link.href}>
+                <li key={`mnav-${index}-${link.href}`}>
                   <Link
                     href={link.href}
                     className={`block border-b border-line/40 py-3.5 font-display text-lg font-semibold transition ${
