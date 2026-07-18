@@ -28,17 +28,21 @@ export default async function HomePage() {
           alt={home.heroImageAlt}
           fill
           priority
-          className="animate-ken object-cover opacity-55"
+          className="animate-ken object-cover opacity-50"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/70 to-bg-deep/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/75 to-bg-deep/30" />
+        <div
+          className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_20%_80%,rgba(20,150,127,0.2),transparent_55%)]"
+          aria-hidden
+        />
 
         <div className="relative mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-6xl flex-col justify-end px-5 pb-16 pt-28 md:px-8 md:pb-20">
           <div className="animate-rise">
             <SiteLogo href="" size="lg" priority {...logoProps} />
           </div>
           <span
-            className="animate-draw mt-5 block h-1 w-24 bg-brand-bright"
+            className="animate-draw mt-5 block h-1 w-28 bg-gradient-to-r from-brand-bright to-accent"
             aria-hidden
           />
           <h1 className="animate-rise-delay-1 mt-6 max-w-2xl font-display text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl md:text-4xl">
@@ -48,16 +52,10 @@ export default async function HomePage() {
             {home.heroSubhead}
           </p>
           <div className="animate-rise-delay-2 mt-8 flex flex-wrap gap-3">
-            <Link
-              href={home.heroCtaPrimaryHref}
-              className="bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
-            >
+            <Link href={home.heroCtaPrimaryHref} className="btn-primary">
               {home.heroCtaPrimary}
             </Link>
-            <Link
-              href={home.heroCtaSecondaryHref}
-              className="border border-white/35 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/15"
-            >
+            <Link href={home.heroCtaSecondaryHref} className="btn-ghost">
               {home.heroCtaSecondary}
             </Link>
           </div>
@@ -71,9 +69,7 @@ export default async function HomePage() {
       />
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-          {home.focusEyebrow}
-        </p>
+        <p className="site-eyebrow">{home.focusEyebrow}</p>
         <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
           {home.focusHeadline}
         </h2>
@@ -81,13 +77,25 @@ export default async function HomePage() {
           {home.focusIntro}
         </p>
 
-        <ul className="mt-14 grid gap-12 border-t border-line pt-12 md:grid-cols-3 md:gap-10">
-          {home.focusAreas.map((item) => (
-            <li key={item.title}>
-              <h3 className="font-display text-xl font-bold text-ink">{item.title}</h3>
+        <ul className="mt-14 grid gap-6 border-t border-line pt-12 md:grid-cols-3 md:gap-5">
+          {home.focusAreas.map((item, index) => (
+            <li
+              key={item.title}
+              className="group relative border border-line/60 bg-white/50 p-6 transition hover:border-brand/25 hover:bg-white"
+            >
+              <span className="font-display text-xs font-bold tracking-wider text-brand/40">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mt-3 font-display text-xl font-bold text-ink group-hover:text-brand">
+                {item.title}
+              </h3>
               <p className="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">
                 {item.copy}
               </p>
+              <span
+                className="mt-5 block h-0.5 w-8 bg-brand/30 transition-all duration-300 group-hover:w-14 group-hover:bg-brand"
+                aria-hidden
+              />
             </li>
           ))}
         </ul>
@@ -100,7 +108,7 @@ export default async function HomePage() {
         programs={programs}
         ctaLabel={home.programsCtaLabel}
         ctaHref={home.programsCtaHref}
-        itemCtaLabel="Know more →"
+        itemCtaLabel="Know more"
       />
 
       <CampaignCards
@@ -109,7 +117,7 @@ export default async function HomePage() {
         campaigns={home.campaigns}
       />
 
-      <section className="border-y border-line bg-surface">
+      <section className="relative overflow-hidden border-y border-line bg-surface">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 md:grid-cols-2 md:gap-16 md:px-8 md:py-28">
           <div className="relative aspect-[4/5] overflow-hidden md:aspect-[5/6]">
             <Image
@@ -119,21 +127,18 @@ export default async function HomePage() {
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
+            <div className="absolute inset-0 ring-1 ring-inset ring-black/5" />
+            <div className="absolute bottom-0 left-0 h-1 w-24 bg-gradient-to-r from-brand to-accent" />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-              {home.approachEyebrow}
-            </p>
+            <p className="site-eyebrow">{home.approachEyebrow}</p>
             <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
               {home.approachHeadline}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-ink-muted md:text-lg">
               {home.approachCopy}
             </p>
-            <Link
-              href={home.approachLinkHref}
-              className="mt-8 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand transition hover:border-brand-bright hover:text-brand-bright"
-            >
+            <Link href={home.approachLinkHref} className="link-underline mt-8">
               {home.approachLinkLabel}
             </Link>
           </div>
@@ -167,7 +172,11 @@ export default async function HomePage() {
       />
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
-        <div className="max-w-2xl">
+        <div className="relative max-w-2xl overflow-hidden border border-line/70 bg-white/60 p-8 md:p-10">
+          <div
+            className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-brand to-accent"
+            aria-hidden
+          />
           <h2 className="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
             {home.ctaHeadline}
           </h2>
@@ -179,11 +188,7 @@ export default async function HomePage() {
               <Link
                 key={btn.href}
                 href={btn.href}
-                className={
-                  i === 0
-                    ? "bg-accent px-6 py-3.5 text-sm font-semibold text-white transition hover:brightness-110"
-                    : "border border-line bg-white/60 px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white"
-                }
+                className={i === 0 ? "btn-primary" : "btn-secondary"}
               >
                 {btn.label}
               </Link>

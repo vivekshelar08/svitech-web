@@ -48,23 +48,21 @@ export function StickyDonateBar({
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-bg-deep/95 px-4 py-3 text-white shadow-[0_-8px_30px_rgba(0,0,0,0.2)] backdrop-blur-md"
+      className="animate-slide-up pointer-events-none fixed inset-x-0 bottom-0 z-50 px-4 pb-4 sm:px-6 sm:pb-5"
       role="region"
       aria-label="Donate prompt"
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm leading-snug text-white/85 sm:max-w-xl">{message}</p>
+      <div className="pointer-events-auto mx-auto flex max-w-3xl flex-col gap-3 border border-white/10 bg-bg-deep/95 p-4 shadow-[0_20px_50px_-16px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:flex-row sm:items-center sm:gap-5 sm:p-4 sm:pl-5">
+        <div className="hidden h-10 w-1 shrink-0 bg-gradient-to-b from-brand-bright to-accent sm:block" aria-hidden />
+        <p className="flex-1 text-sm leading-snug text-white/85">{message}</p>
         <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href={ctaHref}
-            className="bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
-          >
+          <Link href={ctaHref} className="btn-primary !px-5 !py-2.5">
             {ctaLabel}
           </Link>
           <button
             type="button"
             onClick={dismiss}
-            className="px-3 py-2.5 text-sm text-white/60 transition hover:text-white"
+            className="flex h-10 w-10 items-center justify-center border border-white/15 text-white/55 transition hover:border-white/30 hover:text-white"
             aria-label="Dismiss donate prompt"
           >
             ✕
