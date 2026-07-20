@@ -79,10 +79,12 @@ export function ContentTab({ type }: { type: ContentType }) {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+  const [visibility, setVisibility] = useState<"live" | "draft" | "all">("live");
 
   useEffect(() => {
     setForm(emptyForms[type]);
     setQuery("");
+    setVisibility("live");
     void loadItems();
   }, [type]);
 
@@ -230,15 +232,28 @@ export function ContentTab({ type }: { type: ContentType }) {
     if (res.ok) await loadItems();
   }
 
-  const filtered = items.filter((item) => {
-    const q = query.trim().toLowerCase();
-    if (!q) return true;
-    return Object.values(item).some((value) =>
-      String(value ?? "")
-        .toLowerCase()
-        .includes(q),
-    );
-  });
+  const liveCount = items.filter((item) => item.published !== false).length;
+  const draftCount = items.length - liveCount;
+
+  const filtered = items
+    .filter((item) => {
+      if (visibility === "live" && item.published === false) return false;
+      if (visibility === "draft" && item.published !== false) return false;
+      const q = query.trim().toLowerCase();
+      if (!q) return true;
+      return Object.values(item).some((value) =>
+        String(value ?? "")
+          .toLowerCase()
+          .includes(q),
+      );
+    })
+    .slice()
+    .sort((a, b) => {
+      if (visibility !== "all") return 0;
+      const aLive = a.published !== false ? 0 : 1;
+      const bLive = b.published !== false ? 0 : 1;
+      return aLive - bLive;
+    });
 
   const previewHref = previewPath(type, form);
 
@@ -246,46 +261,78 @@ export function ContentTab({ type }: { type: ContentType }) {
     <div className="grid gap-6 xl:grid-cols-[1fr_1.15fr]">
       <AdminCard
         title="Existing items"
-        description={`${filtered.length} of ${items.length} shown`}
+        description={`${filtered.length} shown · ${liveCount} live · ${draftCount} draft`}
         action={
           <AdminButton variant="ghost" size="sm" onClick={() => void loadItems()}>
             Refresh
           </AdminButton>
         }
       >
+        <div className="mb-4 flex flex-wrap gap-2">
+          {(
+            [
+              ["live", `Live (${liveCount})`],
+              ["draft", `Draft (${draftCount})`],
+              ["all", `All (${items.length})`],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setVisibility(value)}
+              className={cn(
+                "rounded-md px-3 py-1.5 text-xs font-semibold transition",
+                visibility === value
+                  ? "bg-brand text-white"
+                  : "border border-line/70 bg-surface/50 text-ink-muted hover:text-ink",
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search title, slug, location…"
+          placeholder="Search title, slug, location, summary…"
           className={cn(adminInputClass, "mt-0 mb-4")}
         />
         {loading ? (
           <p className="text-sm text-ink-muted">Loading…</p>
         ) : filtered.length === 0 ? (
           <AdminEmpty
-            title="No items yet"
-            description="Use the form on the right to create your first entry."
+            title={visibility === "live" ? "No live items" : "No items yet"}
+            description={
+              visibility === "live"
+                ? "Switch to Draft or All, or create a new entry on the right."
+                : "Use the form on the right to create your first entry."
+            }
           />
         ) : (
           <ul className="divide-y divide-line/70">
             {filtered.map((item) => (
               <li key={String(item.id)} className="py-4 first:pt-0 last:pb-0">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0">
-                    <p className="truncate font-semibold text-ink">
-                      {String(item.title || item.name || item.slug)}
-                    </p>
-                    <p className="mt-1 truncate text-xs text-ink-muted">
-                      {String(item.slug || item.year || item.id)}
-                    </p>
-                    <div className="mt-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-semibold text-ink">
+                        {String(item.title || item.name || item.slug)}
+                      </p>
                       {item.published === false ? (
                         <AdminBadge tone="warning">Draft</AdminBadge>
                       ) : (
                         <AdminBadge tone="success">Live</AdminBadge>
                       )}
                     </div>
+                    <p className="mt-1 text-xs text-ink-muted">
+                      {itemMeta(type, item)}
+                    </p>
+                    {itemSnippet(type, item) && (
+                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-muted">
+                        {itemSnippet(type, item)}
+                      </p>
+                    )}
                   </div>
                   <div className="flex w-full shrink-0 flex-wrap justify-end gap-1.5 sm:w-auto">
                     <AdminButton variant="secondary" size="sm" onClick={() => editItem(item)}>
@@ -555,6 +602,40 @@ function previewPath(
   if (type === "impact_stories") return `/impact`;
   if (type === "reports") return `/reports`;
   return null;
+}
+
+function itemMeta(type: ContentType, item: ContentItem) {
+  const parts: string[] = [];
+  if (type === "reports") {
+    parts.push(String(item.year || ""));
+  } else if (item.slug) {
+    parts.push(String(item.slug));
+  }
+  if (type === "programs" || type === "impact_stories") {
+    parts.push(`Order ${item.sort_order ?? 0}`);
+  }
+  if (type === "impact_stories" && item.location) {
+    parts.push(String(item.location));
+  }
+  if (type === "events" && item.starts_at) {
+    parts.push(new Date(String(item.starts_at)).toLocaleString("en-IN"));
+  }
+  if (type === "posts" && item.published_at) {
+    parts.push(new Date(String(item.published_at)).toLocaleDateString("en-IN"));
+  }
+  if (type === "impact_stories" && item.metric_value) {
+    parts.push(`${item.metric_label || "Metric"}: ${item.metric_value}`);
+  }
+  return parts.filter(Boolean).join(" · ");
+}
+
+function itemSnippet(type: ContentType, item: ContentItem) {
+  if (type === "posts") return String(item.excerpt || "");
+  if (type === "events" || type === "programs" || type === "impact_stories") {
+    return String(item.summary || item.detail || "");
+  }
+  if (type === "reports") return String(item.description || "");
+  return "";
 }
 
 function buildPayload(type: ContentType, form: Record<string, string | boolean>) {

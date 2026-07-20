@@ -1,5 +1,6 @@
 /**
- * One-off sync: push programmes / impact / posts + site settings to Supabase.
+ * Sync programmes / impact / posts / events / reports + site settings to Supabase.
+ * Upserts current seeds, unpublishes stale slugs, dedupes reports.
  * Run: npx --yes tsx scripts/sync-activities.ts
  */
 import { createClient } from "@supabase/supabase-js";
@@ -9,6 +10,7 @@ import { programs } from "../src/content/programs";
 import { impactStories } from "../src/content/impact";
 import { posts } from "../src/content/posts";
 import { events } from "../src/content/events";
+import { reports } from "../src/content/governance";
 import {
   defaultSiteSettings,
   mergeSiteSettings,
@@ -49,6 +51,27 @@ const admin = createClient(url, serviceKey, {
 
 const KEEP_PROGRAM_SLUGS = new Set(programs.map((p) => p.slug));
 const KEEP_IMPACT_SLUGS = new Set(impactStories.map((s) => s.slug));
+const KEEP_POST_SLUGS = new Set(posts.map((p) => p.slug));
+const KEEP_EVENT_SLUGS = new Set(events.map((e) => e.slug));
+const KEEP_REPORT_YEARS = new Set(reports.map((r) => r.year));
+
+async function unpublishStale(
+  table: string,
+  keep: Set<string>,
+  key: "slug" = "slug",
+) {
+  const { data, error } = await admin.from(table).select(`id, ${key}`);
+  if (error) throw new Error(`list ${table}: ${error.message}`);
+  const stale = (data ?? []).filter((row) => !keep.has(String(row[key])));
+  if (!stale.length) return [];
+  const ids = stale.map((r) => r.id as string);
+  const { error: updErr } = await admin
+    .from(table)
+    .update({ published: false })
+    .in("id", ids);
+  if (updErr) throw new Error(`unpublish ${table}: ${updErr.message}`);
+  return stale.map((r) => String(r[key]));
+}
 
 async function main() {
   for (const program of programs) {
@@ -68,20 +91,8 @@ async function main() {
     if (error) throw new Error(`program ${program.slug}: ${error.message}`);
   }
   console.log(`Upserted ${programs.length} programmes`);
-
-  const { data: allPrograms, error: listProgErr } = await admin
-    .from("programs")
-    .select("slug");
-  if (listProgErr) throw new Error(listProgErr.message);
-  const stalePrograms = (allPrograms ?? [])
-    .map((r) => r.slug as string)
-    .filter((slug) => !KEEP_PROGRAM_SLUGS.has(slug));
+  const stalePrograms = await unpublishStale("programs", KEEP_PROGRAM_SLUGS);
   if (stalePrograms.length) {
-    const { error } = await admin
-      .from("programs")
-      .update({ published: false })
-      .in("slug", stalePrograms);
-    if (error) throw new Error(`unpublish programs: ${error.message}`);
     console.log(`Unpublished stale programmes: ${stalePrograms.join(", ")}`);
   }
 
@@ -106,20 +117,8 @@ async function main() {
     if (error) throw new Error(`impact ${story.slug}: ${error.message}`);
   }
   console.log(`Upserted ${impactStories.length} impact stories`);
-
-  const { data: allImpact, error: listImpactErr } = await admin
-    .from("impact_stories")
-    .select("slug");
-  if (listImpactErr) throw new Error(listImpactErr.message);
-  const staleImpact = (allImpact ?? [])
-    .map((r) => r.slug as string)
-    .filter((slug) => !KEEP_IMPACT_SLUGS.has(slug));
+  const staleImpact = await unpublishStale("impact_stories", KEEP_IMPACT_SLUGS);
   if (staleImpact.length) {
-    const { error } = await admin
-      .from("impact_stories")
-      .update({ published: false })
-      .in("slug", staleImpact);
-    if (error) throw new Error(`unpublish impact: ${error.message}`);
     console.log(`Unpublished stale impact: ${staleImpact.join(", ")}`);
   }
 
@@ -140,8 +139,11 @@ async function main() {
     if (error) throw new Error(`post ${post.slug}: ${error.message}`);
   }
   console.log(`Upserted ${posts.length} posts`);
+  const stalePosts = await unpublishStale("posts", KEEP_POST_SLUGS);
+  if (stalePosts.length) {
+    console.log(`Unpublished stale posts: ${stalePosts.join(", ")}`);
+  }
 
-  const KEEP_EVENT_SLUGS = new Set(events.map((e) => e.slug));
   for (const event of events) {
     const { error } = await admin.from("events").upsert(
       {
@@ -161,22 +163,67 @@ async function main() {
     if (error) throw new Error(`event ${event.slug}: ${error.message}`);
   }
   console.log(`Upserted ${events.length} events`);
-
-  const { data: allEvents, error: listEventsErr } = await admin
-    .from("events")
-    .select("slug");
-  if (listEventsErr) throw new Error(listEventsErr.message);
-  const staleEvents = (allEvents ?? [])
-    .map((r) => r.slug as string)
-    .filter((slug) => !KEEP_EVENT_SLUGS.has(slug));
+  const staleEvents = await unpublishStale("events", KEEP_EVENT_SLUGS);
   if (staleEvents.length) {
-    const { error } = await admin
-      .from("events")
-      .update({ published: false })
-      .in("slug", staleEvents);
-    if (error) throw new Error(`unpublish events: ${error.message}`);
     console.log(`Unpublished stale events: ${staleEvents.join(", ")}`);
   }
+
+  // Reports: upsert one published row per seed year; unpublish extras / other years
+  const { data: existingReports, error: listReportsErr } = await admin
+    .from("reports")
+    .select("id, year, title, published")
+    .order("year", { ascending: false });
+  if (listReportsErr) throw new Error(`list reports: ${listReportsErr.message}`);
+
+  for (const report of reports) {
+    const matches = (existingReports ?? []).filter((r) => r.year === report.year);
+    if (matches.length === 0) {
+      const { error } = await admin.from("reports").insert({
+        year: report.year,
+        title: report.title,
+        description: report.description,
+        file_url: report.fileUrl,
+        published: true,
+      });
+      if (error) throw new Error(`insert report ${report.year}: ${error.message}`);
+    } else {
+      const [keep, ...dupes] = matches;
+      const { error } = await admin
+        .from("reports")
+        .update({
+          title: report.title,
+          description: report.description,
+          file_url: report.fileUrl,
+          published: true,
+        })
+        .eq("id", keep.id);
+      if (error) throw new Error(`update report ${report.year}: ${error.message}`);
+      if (dupes.length) {
+        const { error: delErr } = await admin
+          .from("reports")
+          .delete()
+          .in(
+            "id",
+            dupes.map((d) => d.id),
+          );
+        if (delErr) throw new Error(`dedupe report ${report.year}: ${delErr.message}`);
+        console.log(`Removed ${dupes.length} duplicate report(s) for ${report.year}`);
+      }
+    }
+  }
+
+  const extraReportIds = (existingReports ?? [])
+    .filter((r) => !KEEP_REPORT_YEARS.has(r.year as number))
+    .map((r) => r.id as string);
+  if (extraReportIds.length) {
+    const { error } = await admin
+      .from("reports")
+      .update({ published: false })
+      .in("id", extraReportIds);
+    if (error) throw new Error(`unpublish extra reports: ${error.message}`);
+    console.log(`Unpublished ${extraReportIds.length} report(s) outside seed years`);
+  }
+  console.log(`Synced ${reports.length} reports`);
 
   const { data: existing, error: settingsReadError } = await admin
     .from("site_settings")
@@ -228,25 +275,20 @@ async function main() {
   if (settingsWriteError) {
     throw new Error(`write settings: ${settingsWriteError.message}`);
   }
-  console.log("Updated site_settings (about/home/programs/impact narrative)");
+  console.log("Updated site_settings");
 
-  const [p, i, n] = await Promise.all([
-    admin.from("programs").select("slug", { count: "exact" }).eq("published", true),
-    admin
-      .from("impact_stories")
-      .select("slug", { count: "exact" })
-      .eq("published", true),
-    admin.from("posts").select("slug", { count: "exact" }).eq("published", true),
-  ]);
-  console.log("Published counts:", {
-    programs: p.count,
-    impact: i.count,
-    posts: n.count,
-  });
-  console.log(
-    "Impact locations:",
-    impactStories.map((s) => `${s.location} (${s.lat}, ${s.lng})`).join(" | "),
+  const counts = await Promise.all(
+    (["programs", "impact_stories", "posts", "events", "reports"] as const).map(
+      async (table) => {
+        const { count } = await admin
+          .from(table)
+          .select("id", { count: "exact", head: true })
+          .eq("published", true);
+        return [table, count] as const;
+      },
+    ),
   );
+  console.log("Published counts:", Object.fromEntries(counts));
 }
 
 main().catch((err) => {

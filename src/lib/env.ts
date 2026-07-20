@@ -48,7 +48,7 @@ export function getEmailConfig() {
   return {
     apiKey: process.env.RESEND_API_KEY ?? null,
     from: process.env.EMAIL_FROM || "SVITECH Foundation <onboarding@resend.dev>",
-    notifyTo: process.env.NOTIFY_EMAIL || "hello@svitech.org",
+    notifyTo: process.env.NOTIFY_EMAIL || "info@svitech.in",
   };
 }
 

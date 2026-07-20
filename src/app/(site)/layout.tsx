@@ -5,7 +5,9 @@ import { SiteTheme } from "@/components/SiteTheme";
 import { getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
-export const revalidate = 60;
+// Header/footer/nav must always match the latest admin settings — never a
+// stale statically generated shell from build or ISR cache.
+export const dynamic = "force-dynamic";
 
 export default async function SiteLayout({
   children,

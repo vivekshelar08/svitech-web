@@ -6,7 +6,8 @@ import { AccountTab } from "@/components/admin/AccountTab";
 import { AdminBackendBanner } from "@/components/admin/AdminBackendBanner";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { ContentTab } from "@/components/admin/ContentTab";
-import { DashboardTab, InboxTab } from "@/components/admin/DashboardTab";
+import { DashboardTab } from "@/components/admin/DashboardTab";
+import { InboxTab } from "@/components/admin/InboxTab";
 import { SettingsTab } from "@/components/admin/SettingsTab";
 import { AdminButton, NavIcon, cn } from "@/components/admin/admin-ui";
 import {
@@ -275,7 +276,9 @@ export function AdminPanel({
                 onNavigate={setTab}
               />
             )}
-            {tab === "inbox" && <InboxTab inbox={inbox} />}
+            {tab === "inbox" && (
+              <InboxTab inbox={inbox} onRefresh={() => void loadInbox()} />
+            )}
             {contentTabs.includes(tab as ContentTabType) && (
               <ContentTab type={tab as ContentTabType} />
             )}

@@ -13,145 +13,131 @@ export type ImpactStory = {
 };
 
 /**
- * Achievements mapped to states where SVITECH Foundation conducted activities:
- * Maharashtra, Delhi, Gujarat, Haryana, Uttar Pradesh.
- * Metrics are qualitative programme labels—not fabricated headcount statistics.
+ * Geographic programme map:
+ * - Maharashtra: full suite of activities
+ * - Pune (Maharashtra): Digital Literacy (in addition to state-wide work)
+ * - Other states: Financial Inclusion project only
  */
 export const impactStories: ImpactStory[] = [
   {
-    slug: "maharashtra-financial-digital-inclusion",
-    title: "Financial and Digital Inclusion",
+    slug: "maharashtra-all-activities",
+    title: "Full programme suite across Maharashtra",
     location: "Mumbai, Maharashtra",
     lat: 19.076,
     lng: 72.8777,
-    metricLabel: "Flagship focus",
-    metricValue: "Inclusion",
+    metricLabel: "Maharashtra",
+    metricValue: "All activities",
     summary:
-      "Flagship work on digital banking, UPI safety, financial planning, and citizen digital services in Mumbai suburbs including Mankhurd, Govandi, Malad, and Ghatkopar.",
-    body: `In Maharashtra—particularly Mumbai suburbs such as Mankhurd, Govandi, Malad, and Ghatkopar—SVITECH Foundation’s flagship Financial and Digital Inclusion programme helps residents use digital tools safely and access public services.
+      "Home base for SVITECH Foundation’s complete work—Financial and Digital Inclusion, skills training, health and welfare facilitation, education, women empowerment, road safety, CSR, and community outreach.",
+    body: `Maharashtra is where SVITECH Foundation delivers its full range of activities.
 
-Volunteers and facilitators support awareness sessions on UPI, cyber safety, and budgeting, alongside practical help with digital documentation, online registrations, and government scheme applications.`,
+From Ghatkopar West and Mumbai suburbs such as Mankhurd, Govandi, and Malad, programmes include Financial and Digital Inclusion, digital skills training, health awareness and PM-JAY facilitation, school education support, women empowerment, road safety campaigns, corporate CSR engagement, digital service camps, and community outreach.
+
+This is the Foundation’s deepest footprint—need-based awareness, capacity building, and beneficiary support with schools, agencies, CSR partners, and local communities.`,
     coverImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80",
     sortOrder: 1,
   },
   {
-    slug: "maharashtra-digital-skills",
-    title: "Digital skills & job pathways",
+    slug: "pune-digital-literacy",
+    title: "Digital Literacy in Pune",
     location: "Pune, Maharashtra",
     lat: 18.5204,
     lng: 73.8567,
-    metricLabel: "Active programme",
-    metricValue: "IT & livelihoods",
+    metricLabel: "Pune focus",
+    metricValue: "Digital Literacy",
     summary:
-      "IT and digital skills training for youth and women across Maharashtra, linking learning to employment and entrepreneurship pathways.",
-    body: `Digital skills programmes in Maharashtra equip underprivileged youth and women with IT fundamentals, office applications, digital marketing, and entrepreneurship skills.
+      "Alongside Maharashtra’s full programme suite, Pune hosts dedicated digital literacy sessions on safe technology use, UPI basics, and cyber awareness.",
+    body: `In Pune, SVITECH Foundation runs focused Digital Literacy programmes in schools, colleges, and community centres.
 
-Training prepares participants for roles in local SMEs and emerging digital sectors, with centres supporting ongoing capacity-building and livelihood pathways.`,
+Participants learn responsible internet use, cyber safety, online fraud prevention, and practical digital tools—complementing the Foundation’s wider Maharashtra activities and the flagship Financial and Digital Inclusion work.`,
     coverImage:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80",
     sortOrder: 2,
   },
   {
-    slug: "maharashtra-health-education",
-    title: "Health camps & school awareness",
-    location: "Mumbai & Pune, Maharashtra",
-    lat: 19.2183,
-    lng: 72.9781,
-    metricLabel: "Activity type",
-    metricValue: "Health & schools",
+    slug: "mumbai-financial-digital-inclusion",
+    title: "Financial and Digital Inclusion",
+    location: "Mumbai suburbs, Maharashtra",
+    lat: 19.05,
+    lng: 72.93,
+    metricLabel: "Flagship",
+    metricValue: "Inclusion",
     summary:
-      "Free health camps with PM-JAY facilitation and school programmes on digital literacy, life skills, and cyber safety.",
-    body: `Health awareness campaigns and camps in Maharashtra provide essential medical services and enrolment support under Ayushman Bharat (PM-JAY).
+      "Flagship programme in Maharashtra: digital banking, UPI safety, financial planning, and access to citizen digital services.",
+    body: `Financial and Digital Inclusion is the Foundation’s flagship programme in Maharashtra—helping underserved families use digital banking and UPI safely, plan everyday finances, and complete citizen-centric digital services.
 
-Educational support programmes add digital literacy, financial awareness, life skills, and cyber safety in schools across underserved areas.`,
+Sessions and facilitation run through community centres and neighbourhood support points across Mumbai, as part of the state’s full activity suite.`,
     coverImage:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1600&q=80",
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
     sortOrder: 3,
   },
   {
-    slug: "delhi-women-community",
-    title: "Women empowerment & community workshops",
+    slug: "delhi-financial-inclusion",
+    title: "Financial Inclusion",
     location: "New Delhi, Delhi",
     lat: 28.6139,
     lng: 77.209,
-    metricLabel: "Focus area",
-    metricValue: "Women & community",
+    metricLabel: "Project",
+    metricValue: "Financial Inclusion",
     summary:
-      "Training for women on financial independence, digital literacy, welfare schemes, and livelihoods—plus capacity-building for youth and seniors.",
-    body: `In Delhi, SVITECH Foundation organised women empowerment initiatives and community awareness workshops covering financial independence, digital literacy, government welfare schemes, health awareness, and livelihood opportunities.
+      "Outside Maharashtra, SVITECH Foundation’s work in Delhi focuses on the Financial Inclusion project—digital banking awareness, UPI safety, and financial planning.",
+    body: `In Delhi, SVITECH Foundation implements the Financial Inclusion project for underserved communities.
 
-Interactive sessions also help youth and senior citizens understand digital services, citizen rights, and public welfare benefits.`,
+Sessions cover digital banking, UPI transactions, cyber safety, budgeting, and savings—so participants can manage money and digital payments with greater confidence. Broader programme suites remain centred in Maharashtra.`,
     coverImage:
-      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1600&q=80",
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
     sortOrder: 4,
   },
   {
-    slug: "gujarat-digital-literacy",
-    title: "Digital & financial literacy drives",
+    slug: "gujarat-financial-inclusion",
+    title: "Financial Inclusion",
     location: "Ahmedabad, Gujarat",
     lat: 23.0225,
     lng: 72.5714,
-    metricLabel: "Focus",
-    metricValue: "UPI & cyber safety",
+    metricLabel: "Project",
+    metricValue: "Financial Inclusion",
     summary:
-      "Awareness sessions in schools, colleges, and community centres on digital banking, fraud prevention, budgeting, and safe internet use.",
-    body: `In Gujarat, digital and financial literacy programmes educated participants on digital banking, UPI transactions, cyber safety, online fraud prevention, budgeting, savings, and financial planning.
+      "Financial Inclusion project sessions in Gujarat on digital payments, fraud prevention, budgeting, and safer everyday banking.",
+    body: `In Gujarat, SVITECH Foundation’s presence is through the Financial Inclusion project.
 
-Sessions in Ahmedabad-area schools, colleges, and community centres promoted financial inclusion and digital empowerment among economically weaker and underserved groups.`,
+Awareness sessions in community venues help participants understand digital banking, UPI, online fraud risks, and basic financial planning. Full multi-programme delivery is focused in Maharashtra.`,
     coverImage:
       "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
     sortOrder: 5,
   },
   {
-    slug: "gujarat-community-outreach",
-    title: "Community outreach & welfare facilitation",
-    location: "Gandhinagar / Ahmedabad, Gujarat",
-    lat: 23.2156,
-    lng: 72.6369,
-    metricLabel: "Outreach",
-    metricValue: "Welfare access",
-    summary:
-      "Need-based outreach identifying local needs and facilitating access to education, healthcare, digital services, and social security benefits.",
-    body: `Community outreach in Gujarat helped identify local needs, create awareness about public welfare schemes, and encourage participation in digital services and social security benefits.
-
-Camps and meetings supported citizen-centric digital documentation, scheme applications, and informed decision-making for families who often struggle to navigate government portals alone.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80",
-    sortOrder: 6,
-  },
-  {
-    slug: "haryana-road-safety-csr",
-    title: "Road safety & CSR volunteering",
+    slug: "haryana-financial-inclusion",
+    title: "Financial Inclusion",
     location: "Gurugram, Haryana",
     lat: 28.4595,
     lng: 77.0266,
-    metricLabel: "Campaigns",
-    metricValue: "Safety + CSR",
+    metricLabel: "Project",
+    metricValue: "Financial Inclusion",
     summary:
-      "Road safety awareness with schools and local partners, alongside corporate employee volunteering and community service projects.",
-    body: `In Haryana—centred on Gurugram—SVITECH Foundation conducted road safety campaigns on traffic rules, pedestrian safety, helmet usage, seat belt compliance, and accident prevention through rallies and school interactions.
+      "Financial Inclusion project outreach in Haryana—practical sessions on UPI, cyber safety, and household financial planning.",
+    body: `In Haryana, SVITECH Foundation delivers the Financial Inclusion project.
 
-Corporate CSR engagement brought employee volunteering, ethics awareness, environmental initiatives, and community service projects that extend programme reach across the NCR belt.`,
+Community sessions introduce digital payments, fraud prevention, budgeting, and savings habits for economically weaker and underserved groups. Other activity areas are delivered primarily in Maharashtra.`,
     coverImage:
-      "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1600&q=80",
-    sortOrder: 7,
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+    sortOrder: 6,
   },
   {
-    slug: "uttar-pradesh-digital-camps",
-    title: "Digital service camps & school programmes",
+    slug: "uttar-pradesh-financial-inclusion",
+    title: "Financial Inclusion",
     location: "Lucknow, Uttar Pradesh",
     lat: 26.8467,
     lng: 80.9462,
-    metricLabel: "Citizen services",
-    metricValue: "Aadhaar & e-gov",
+    metricLabel: "Project",
+    metricValue: "Financial Inclusion",
     summary:
-      "Digital facilitation camps and school awareness sessions helping families complete online registrations and students build digital life skills.",
-    body: `In Uttar Pradesh, digital service facilitation camps assisted with digital documentation, online registrations, Aadhaar-linked services, beneficiary enrolment, and government scheme applications—especially for economically weaker sections.
+      "Financial Inclusion project in Uttar Pradesh—digital banking literacy, UPI safety, and financial awareness for underserved communities.",
+    body: `In Uttar Pradesh, SVITECH Foundation implements the Financial Inclusion project.
 
-Educational support programmes in schools covered digital literacy, financial awareness, life skills, cyber safety, and responsible technology use through interactive learning.`,
+Participants learn digital banking basics, safe UPI use, cyber awareness, and everyday financial planning. The Foundation’s complete activity suite—health, education, women empowerment, road safety, and more—is concentrated in Maharashtra.`,
     coverImage:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1600&q=80",
-    sortOrder: 8,
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+    sortOrder: 7,
   },
 ];

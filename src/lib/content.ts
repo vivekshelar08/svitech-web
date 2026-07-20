@@ -3,6 +3,7 @@ import { impactStories as seedImpact, type ImpactStory } from "@/content/impact"
 import { reports as seedReports, type Report } from "@/content/governance";
 import { posts as seedPosts, type Post } from "@/content/posts";
 import { programs as seedPrograms, type Program } from "@/content/programs";
+import { unstable_noStore as noStore } from "next/cache";
 import { getAnonClient } from "@/lib/supabase";
 
 /**
@@ -10,6 +11,7 @@ import { getAnonClient } from "@/lib/supabase";
  * Do not fall back to seed content — that revived unpublished items on the public site.
  */
 export async function getPrograms(): Promise<Program[]> {
+  noStore();
   const supabase = getAnonClient();
   if (!supabase) return seedPrograms;
 

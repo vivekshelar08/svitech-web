@@ -1,14 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import {
   AdminAlert,
   AdminBadge,
   AdminButton,
   AdminCard,
   AdminEmpty,
-  adminInputClass,
-  adminSelectClass,
   cn,
 } from "@/components/admin/admin-ui";
 import {
@@ -380,127 +377,5 @@ function SystemStatus({
         ))}
       </ul>
     </AdminCard>
-  );
-}
-
-export function InboxTab({ inbox }: { inbox: AdminInbox | null }) {
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<"all" | "contact" | "volunteers" | "newsletter" | "donations" | "events">("all");
-
-  const sections = useMemo(
-    () => [
-      { key: "contact" as const, title: "Contact", rows: inbox?.contact || [] },
-      { key: "volunteers" as const, title: "Volunteers", rows: inbox?.volunteers || [] },
-      { key: "newsletter" as const, title: "Newsletter", rows: inbox?.newsletter || [] },
-      { key: "donations" as const, title: "Donations", rows: inbox?.donations || [] },
-      {
-        key: "events" as const,
-        title: "Event registrations",
-        rows: inbox?.eventRegistrations || [],
-      },
-    ],
-    [inbox],
-  );
-
-  const visible = sections.filter((s) => filter === "all" || filter === s.key);
-
-  return (
-    <div className="space-y-6">
-      <AdminCard padding="sm">
-        <div className="flex flex-col gap-3 md:flex-row">
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search name, email, message…"
-            className={cn(adminInputClass, "mt-0 flex-1")}
-          />
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as typeof filter)}
-            className={adminSelectClass}
-          >
-            <option value="all">All types</option>
-            <option value="contact">Contact</option>
-            <option value="volunteers">Volunteers</option>
-            <option value="newsletter">Newsletter</option>
-            <option value="donations">Donations</option>
-            <option value="events">Event registrations</option>
-          </select>
-        </div>
-      </AdminCard>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        {visible.map((section) => (
-          <AdminCard
-            key={section.key}
-            title={section.title}
-            action={
-              <AdminBadge tone="neutral">{filterRows(section.rows, query).length}</AdminBadge>
-            }
-            padding="sm"
-          >
-            <InboxList rows={filterRows(section.rows, query)} />
-          </AdminCard>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function filterRows(rows: Array<Record<string, unknown>>, query: string) {
-  const q = query.trim().toLowerCase();
-  if (!q) return rows;
-  return rows.filter((row) =>
-    Object.values(row).some((value) => String(value ?? "").toLowerCase().includes(q)),
-  );
-}
-
-function InboxList({ rows }: { rows: Array<Record<string, unknown>> }) {
-  if (rows.length === 0) {
-    return <AdminEmpty title="No matching records" />;
-  }
-
-  return (
-    <ul className="max-h-96 space-y-2 overflow-auto pr-1">
-      {rows.map((row) => (
-        <li
-          key={String(row.id)}
-          className="rounded-xl border border-line/60 bg-surface/40 p-3.5 text-sm"
-        >
-          <InboxRow row={row} />
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function InboxRow({ row }: { row: Record<string, unknown> }) {
-  const name = String(row.name || row.email || row.title || "Record");
-  const detail =
-    String(row.message || row.motivation || row.topic || row.status || "") ||
-    String(row.email || "");
-  const when = row.created_at ? new Date(String(row.created_at)).toLocaleString("en-IN") : "";
-  const amount =
-    row.amount_paise != null
-      ? `₹${Math.round(Number(row.amount_paise) / 100).toLocaleString("en-IN")}`
-      : null;
-  const published = row.published === false;
-
-  return (
-    <div>
-      <div className="flex items-start justify-between gap-2">
-        <p className="font-semibold text-ink">{name}</p>
-        <div className="flex shrink-0 items-center gap-2">
-          {published && <AdminBadge tone="warning">Draft</AdminBadge>}
-          {amount && <AdminBadge tone="brand">{amount}</AdminBadge>}
-        </div>
-      </div>
-      {row.email != null && row.name != null && (
-        <p className="mt-0.5 text-xs text-ink-muted">{String(row.email)}</p>
-      )}
-      {detail && <p className="mt-2 leading-relaxed text-ink-muted">{detail.slice(0, 220)}</p>}
-      {when && <p className="mt-2 text-[11px] text-ink-muted/70">{when}</p>}
-    </div>
   );
 }

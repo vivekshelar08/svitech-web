@@ -46,8 +46,8 @@ export function ImpactMap({
           {mapHeadline}
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
-          Pins mark programme achievements across Maharashtra, Delhi, Gujarat, Haryana, and
-          Uttar Pradesh. Select a pin to read the outcome.
+          Pins mark where we work: full activities in Maharashtra, Digital Literacy in Pune, and
+          Financial Inclusion projects in other states. Select a pin to read the outcome.
         </p>
       </div>
 

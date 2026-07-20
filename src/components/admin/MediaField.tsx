@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AdminButton,
   adminInputClass,
@@ -27,6 +27,11 @@ export function MediaField({
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const [editingUrl, setEditingUrl] = useState(!value.trim());
+
+  useEffect(() => {
+    if (!value.trim()) setEditingUrl(true);
+  }, [value]);
 
   async function onFile(file: File | undefined) {
     if (!file) return;
@@ -43,6 +48,7 @@ export function MediaField({
         return;
       }
       onChange(json.url);
+      setEditingUrl(false);
     } catch {
       setError("Upload failed — check connection and try again.");
     } finally {
@@ -51,6 +57,13 @@ export function MediaField({
     }
   }
 
+  function clearMedia() {
+    onChange("");
+    setEditingUrl(true);
+    setError("");
+  }
+
+  const hasValue = Boolean(value.trim());
   const isImage =
     kind === "image" ||
     /\.(png|jpe?g|gif|webp|svg|avif)(\?|$)/i.test(value) ||
@@ -58,63 +71,117 @@ export function MediaField({
 
   return (
     <div className="space-y-2">
-      <div className="flex items-end justify-between gap-3">
-        <label className="block flex-1 text-sm font-medium text-ink">
-          {label}
-          {hint && <span className="mt-0.5 block text-xs font-normal text-ink-muted">{hint}</span>}
-          <input
-            type="url"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="https://… or /uploads/…"
-            className={adminInputClass}
-          />
-        </label>
-        <AdminButton
-          type="button"
-          variant="secondary"
-          size="sm"
-          disabled={uploading}
-          className="shrink-0"
-          onClick={() => inputRef.current?.click()}
-        >
-          {uploading ? "Uploading…" : "Upload"}
-        </AdminButton>
-        <input
-          ref={inputRef}
-          type="file"
-          className="hidden"
-          accept={kind === "image" ? "image/*" : "image/*,.pdf,.doc,.docx"}
-          onChange={(e) => void onFile(e.target.files?.[0])}
-        />
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <p className="text-sm font-medium text-ink">{label}</p>
+          {hint && (
+            <p className="mt-0.5 text-xs font-normal text-ink-muted">{hint}</p>
+          )}
+        </div>
+        {!hasValue && (
+          <AdminButton
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={uploading}
+            className="shrink-0"
+            onClick={() => inputRef.current?.click()}
+          >
+            {uploading ? "Uploading…" : kind === "image" ? "Add image" : "Add file"}
+          </AdminButton>
+        )}
       </div>
+
+      <input
+        ref={inputRef}
+        type="file"
+        className="hidden"
+        accept={kind === "image" ? "image/*" : "image/*,.pdf,.doc,.docx"}
+        onChange={(e) => void onFile(e.target.files?.[0])}
+      />
 
       {error && <p className="text-xs text-accent">{error}</p>}
 
-      {value && (
-        <div className="flex items-center gap-3 rounded-xl border border-line/70 bg-surface/50 p-3">
-          {isImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={value}
-              alt=""
-              className="h-16 w-24 rounded-lg object-cover ring-1 ring-line"
-            />
-          ) : (
-            <div className="flex h-16 w-24 items-center justify-center rounded-lg bg-brand/10 text-xs font-bold text-brand">
-              FILE
+      {hasValue ? (
+        <div className="rounded-xl border border-line/70 bg-surface/50 p-3">
+          <div className="flex items-start gap-3">
+            {isImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={value}
+                alt=""
+                className="h-20 w-28 shrink-0 rounded-lg object-cover ring-1 ring-line"
+              />
+            ) : (
+              <div className="flex h-20 w-28 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-xs font-bold text-brand">
+                FILE
+              </div>
+            )}
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-mono text-[11px] text-ink-muted">{value}</p>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                <AdminButton
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  disabled={uploading}
+                  onClick={() => inputRef.current?.click()}
+                >
+                  {uploading ? "Uploading…" : "Replace"}
+                </AdminButton>
+                <AdminButton
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setEditingUrl((v) => !v)}
+                >
+                  {editingUrl ? "Hide URL" : "Edit URL"}
+                </AdminButton>
+                <AdminButton
+                  type="button"
+                  variant="danger"
+                  size="sm"
+                  onClick={clearMedia}
+                >
+                  {kind === "image" ? "Remove image" : "Remove file"}
+                </AdminButton>
+              </div>
             </div>
-          )}
-          <div className="min-w-0 flex-1">
-            <p className="truncate font-mono text-[11px] text-ink-muted">{value}</p>
-            <button
-              type="button"
-              className="mt-1 text-xs font-semibold text-accent"
-              onClick={() => onChange("")}
-            >
-              Clear
-            </button>
           </div>
+
+          {editingUrl && (
+            <label className="mt-3 block text-xs font-medium text-ink-muted">
+              Image / file URL
+              <input
+                type="url"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="https://… or /uploads/…"
+                className={adminInputClass}
+              />
+            </label>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-xl border border-dashed border-line/80 bg-surface/30 p-4">
+          <p className="text-sm text-ink-muted">
+            No {kind === "image" ? "image" : "file"} yet. Upload one or paste a URL.
+          </p>
+          {(editingUrl || !hasValue) && (
+            <label className="mt-3 block text-xs font-medium text-ink-muted">
+              Or paste URL
+              <input
+                type="url"
+                value={value}
+                onChange={(e) => {
+                  onChange(e.target.value);
+                  if (e.target.value.trim()) setEditingUrl(false);
+                }}
+                placeholder="https://… or /uploads/…"
+                className={adminInputClass}
+              />
+            </label>
+          )}
         </div>
       )}
     </div>

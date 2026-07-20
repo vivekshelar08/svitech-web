@@ -209,6 +209,82 @@ export async function togglePublished(
   if (error) throw new Error(error.message);
 }
 
+async function unpublishSlugsNotIn(
+  type: Exclude<ContentType, "reports">,
+  keep: Set<string>,
+) {
+  const admin = requireAdminClient();
+  const { data, error } = await admin.from(type).select("id, slug");
+  if (error) throw new Error(error.message);
+  const staleIds = (data || [])
+    .filter((row) => !keep.has(String(row.slug)))
+    .map((row) => String(row.id));
+  if (!staleIds.length) return 0;
+  const { error: updErr } = await admin
+    .from(type)
+    .update({
+      published: false,
+      ...(type === "posts" ? { updated_at: new Date().toISOString() } : {}),
+    })
+    .in("id", staleIds);
+  if (updErr) throw new Error(updErr.message);
+  return staleIds.length;
+}
+
+async function syncSeedReports() {
+  const admin = requireAdminClient();
+  const keepYears = new Set(seedReports.map((r) => r.year));
+  const { data, error } = await admin
+    .from("reports")
+    .select("id, year")
+    .order("year", { ascending: false });
+  if (error) throw new Error(error.message);
+
+  for (const report of seedReports) {
+    const matches = (data || []).filter((r) => r.year === report.year);
+    if (!matches.length) {
+      await upsertReport({
+        year: report.year,
+        title: report.title,
+        description: report.description,
+        fileUrl: report.fileUrl,
+        published: true,
+      });
+      continue;
+    }
+    const [keep, ...dupes] = matches;
+    await upsertReport({
+      id: String(keep.id),
+      year: report.year,
+      title: report.title,
+      description: report.description,
+      fileUrl: report.fileUrl,
+      published: true,
+    });
+    if (dupes.length) {
+      const { error: delErr } = await admin
+        .from("reports")
+        .delete()
+        .in(
+          "id",
+          dupes.map((d) => String(d.id)),
+        );
+      if (delErr) throw new Error(delErr.message);
+    }
+  }
+
+  const extraIds = (data || [])
+    .filter((r) => !keepYears.has(r.year as number))
+    .map((r) => String(r.id));
+  if (extraIds.length) {
+    const { error: updErr } = await admin
+      .from("reports")
+      .update({ published: false })
+      .in("id", extraIds);
+    if (updErr) throw new Error(updErr.message);
+  }
+}
+
 export async function seedAllContent() {
   for (const post of seedPosts) {
     await upsertPost({
@@ -267,15 +343,26 @@ export async function seedAllContent() {
     });
   }
 
-  for (const report of seedReports) {
-    await upsertReport({
-      year: report.year,
-      title: report.title,
-      description: report.description,
-      fileUrl: report.fileUrl,
-      published: true,
-    });
-  }
+  await syncSeedReports();
+
+  const unpublished = {
+    posts: await unpublishSlugsNotIn(
+      "posts",
+      new Set(seedPosts.map((p) => p.slug)),
+    ),
+    events: await unpublishSlugsNotIn(
+      "events",
+      new Set(seedEvents.map((e) => e.slug)),
+    ),
+    programs: await unpublishSlugsNotIn(
+      "programs",
+      new Set(seedPrograms.map((p) => p.slug)),
+    ),
+    impact_stories: await unpublishSlugsNotIn(
+      "impact_stories",
+      new Set(seedImpact.map((s) => s.slug)),
+    ),
+  };
 
   return {
     posts: seedPosts.length,
@@ -283,5 +370,6 @@ export async function seedAllContent() {
     programs: seedPrograms.length,
     impact_stories: seedImpact.length,
     reports: seedReports.length,
+    unpublished,
   };
 }

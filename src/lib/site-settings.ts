@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import {
   defaultSiteSettings,
   mergeSiteSettings,
@@ -25,6 +25,9 @@ async function writeLocal(settings: SiteSettings) {
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
+  // Always read live settings so header/nav never flash an old cached bar.
+  noStore();
+
   const anon = getAnonClient();
   if (anon) {
     const { data, error } = await anon
@@ -43,7 +46,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 function revalidatePublicSite() {
+  // Bust layout + every public route so Hostinger/CDN don't keep an old nav shell.
   revalidatePath("/", "layout");
+  revalidatePath("/", "page");
   const paths = [
     "/",
     "/about",
@@ -58,7 +63,10 @@ function revalidatePublicSite() {
     "/impact",
     "/reports",
   ];
-  for (const p of paths) revalidatePath(p);
+  for (const p of paths) {
+    revalidatePath(p, "page");
+    revalidatePath(p, "layout");
+  }
 }
 
 export async function saveSiteSettings(input: unknown): Promise<SiteSettings> {

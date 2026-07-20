@@ -276,13 +276,13 @@ export const defaultSiteSettings: SiteSettings = {
     logoUrl: "/svitech-logo.png",
     logoAlt: "SVITECH Foundation — Education, Technology, Community",
     logoAriaLabel: "SVITECH Foundation home",
-    contactEmail: "info@svitech.org",
+    contactEmail: "info@svitech.in",
     contactPhone: "+91 93210 23332",
     officeAddress:
       "Bhaiyalal Chawl, R No. 4, NSS Road, Ghatkopar West, Mumbai 400084, Maharashtra, India",
     responseTime: "Usually within 2–3 business days",
     footerBlurb:
-      "Section 8 nonprofit empowering underprivileged youth, women, children, and senior citizens through digital skills, welfare access, education, and community development across Maharashtra.",
+      "Section 8 nonprofit based in Maharashtra—full community programmes at home, Digital Literacy in Pune, and Financial Inclusion projects in other states.",
     copyrightNote: "Working for inclusive community development.",
     newsletterBlurb: "Programme updates and impact notes—rarely, and never spam.",
     seoTitle: "SVITECH Foundation — Digital Skills, Education & Community Welfare",
@@ -378,10 +378,10 @@ export const defaultSiteSettings: SiteSettings = {
     impactStatsEyebrow: "Our impact",
     impactStatsHeadline: "Where the work reaches",
     impactStats: [
-      { value: "5", label: "states with active programme achievements" },
-      { value: "9", label: "core programme areas across education, health & welfare" },
-      { value: "MH", label: "Financial and Digital Inclusion hubs in Maharashtra" },
-      { value: "NCR", label: "women empowerment, road safety & CSR outreach" },
+      { value: "MH", label: "Full activity suite across Maharashtra" },
+      { value: "Pune", label: "Dedicated Digital Literacy programmes" },
+      { value: "4", label: "other states with Financial Inclusion projects" },
+      { value: "5", label: "states with mapped programme presence" },
     ],
     programsEyebrow: "Our programmes",
     programsHeadline: "Flagship work serving underserved communities",
@@ -571,7 +571,7 @@ export const defaultSiteSettings: SiteSettings = {
       "Card, UPI, and netbanking via Razorpay · bank transfer & cheque on request",
     ],
     footerNote:
-      "Prefer bank transfer, cheque, or CSR partnership? Contact us at info@svitech.org. Cheques may be mailed to our Ghatkopar West office. See impact stories and reports for how gifts are used.",
+      "Prefer bank transfer, cheque, or CSR partnership? Contact us at info@svitech.in. Cheques may be mailed to our Ghatkopar West office. See impact stories and reports for how gifts are used.",
     seoTitle: "Donate",
     seoDescription:
       "Support SVITECH Foundation with a one-time or monthly donation for digital skills, welfare access, and community programmes.",
@@ -634,13 +634,13 @@ export const defaultSiteSettings: SiteSettings = {
     eyebrow: "Impact",
     headline: "Outcomes you can measure.",
     intro:
-      "Explore programme work across Maharashtra, Delhi, Gujarat, Haryana, and Uttar Pradesh—Financial and Digital Inclusion, digital skills, women empowerment, health camps, literacy drives, and community outreach.",
+      "Maharashtra hosts the full activity suite. Pune adds dedicated Digital Literacy. Delhi, Gujarat, Haryana, and Uttar Pradesh focus on the Financial Inclusion project.",
     mapEyebrow: "Where we work",
-    mapHeadline: "Impact across five states",
+    mapHeadline: "Maharashtra full suite · Financial Inclusion elsewhere",
     storyCtaLabel: "Support work like this",
     seoTitle: "Impact",
     seoDescription:
-      "See SVITECH Foundation achievements across Maharashtra, Delhi, Gujarat, Haryana, and Uttar Pradesh.",
+      "SVITECH Foundation: all activities in Maharashtra, Digital Literacy in Pune, and Financial Inclusion projects in Delhi, Gujarat, Haryana, and Uttar Pradesh.",
   },
   reports: {
     eyebrow: "Transparency",
