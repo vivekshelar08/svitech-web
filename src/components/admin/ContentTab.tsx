@@ -12,6 +12,8 @@ import {
 } from "@/components/admin/admin-ui";
 import { MediaField } from "@/components/admin/MediaField";
 import { slugify, type ContentTabType } from "@/components/admin/admin-types";
+import { adminJson } from "@/lib/admin-fetch";
+import { PROGRAM_CATEGORY_OPTIONS } from "@/lib/program-categories";
 
 type ContentType = ContentTabType;
 
@@ -46,6 +48,7 @@ const emptyForms: Record<ContentType, Record<string, string | boolean>> = {
     detail: "",
     body: "",
     coverImage: "",
+    category: "digital",
     sortOrder: "0",
     published: true,
   },
@@ -90,15 +93,17 @@ export function ContentTab({ type }: { type: ContentType }) {
 
   async function loadItems() {
     setLoading(true);
-    const res = await fetch(`/api/admin/content?type=${type}`);
+    const result = await adminJson<{ items?: ContentItem[]; error?: string }>(
+      `/api/admin/content?type=${type}`,
+      undefined,
+      { retries: 1 },
+    );
     setLoading(false);
-    if (!res.ok) {
-      const json = (await res.json()) as { error?: string };
-      setStatus(json.error || "Failed to load content");
+    if (!result.ok) {
+      setStatus(result.error);
       return;
     }
-    const json = (await res.json()) as { items?: ContentItem[] };
-    setItems(json.items || []);
+    setItems(result.data.items || []);
     setStatus("");
   }
 
@@ -157,6 +162,7 @@ export function ContentTab({ type }: { type: ContentType }) {
         detail: String(item.detail || ""),
         body: String(item.body || ""),
         coverImage: String(item.cover_image || ""),
+        category: String(item.category || "community"),
         sortOrder: String(item.sort_order ?? 0),
         published: Boolean(item.published),
       });
@@ -193,14 +199,16 @@ export function ContentTab({ type }: { type: ContentType }) {
     setStatus("Saving…");
 
     const payload = buildPayload(type, form);
-    const res = await fetch("/api/admin/content", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type, data: payload }),
-    });
-    const json = (await res.json()) as { error?: string };
-    if (!res.ok) {
-      setStatus(json.error || "Save failed");
+    const result = await adminJson<{ ok?: boolean; error?: string }>(
+      "/api/admin/content",
+      {
+        method: "POST",
+        body: JSON.stringify({ type, data: payload }),
+      },
+      { retries: 2 },
+    );
+    if (!result.ok) {
+      setStatus(result.error);
       return;
     }
     setStatus("Saved — live site updated.");
@@ -210,14 +218,16 @@ export function ContentTab({ type }: { type: ContentType }) {
 
   async function toggleItem(id: string, published: boolean, slug?: string) {
     setStatus("");
-    const res = await fetch("/api/admin/content", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type, id, published, slug }),
-    });
-    if (!res.ok) {
-      const json = (await res.json()) as { error?: string };
-      setStatus(json.error || "Publish update failed");
+    const result = await adminJson(
+      "/api/admin/content",
+      {
+        method: "PATCH",
+        body: JSON.stringify({ type, id, published, slug }),
+      },
+      { retries: 1 },
+    );
+    if (!result.ok) {
+      setStatus(result.error);
       return;
     }
     setStatus(published ? "Published on live site." : "Unpublished.");
@@ -226,10 +236,17 @@ export function ContentTab({ type }: { type: ContentType }) {
 
   async function removeItem(id: string) {
     if (!confirm("Delete this item permanently?")) return;
-    const res = await fetch(`/api/admin/content?type=${type}&id=${id}`, {
-      method: "DELETE",
-    });
-    if (res.ok) await loadItems();
+    const result = await adminJson(
+      `/api/admin/content?type=${type}&id=${id}`,
+      { method: "DELETE" },
+      { retries: 1 },
+    );
+    if (!result.ok) {
+      setStatus(result.error);
+      return;
+    }
+    setStatus("Deleted.");
+    await loadItems();
   }
 
   const liveCount = items.filter((item) => item.published !== false).length;
@@ -533,6 +550,20 @@ function ContentFields({
       <>
         {field("name", "Name", { required: true, onBlur: () => autoSlugFromTitle("name") })}
         {field("slug", "Slug", { required: true })}
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium text-ink">Category</span>
+          <select
+            className={adminInputClass}
+            value={String(form.category || "community")}
+            onChange={(e) => set("category", e.target.value)}
+          >
+            {PROGRAM_CATEGORY_OPTIONS.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
         {field("detail", "Detail line", { required: true })}
         {field("summary", "Summary", { required: true, rows: 3 })}
         {field("body", "Body", { required: true, rows: 6 })}
@@ -614,6 +645,9 @@ function itemMeta(type: ContentType, item: ContentItem) {
   if (type === "programs" || type === "impact_stories") {
     parts.push(`Order ${item.sort_order ?? 0}`);
   }
+  if (type === "programs" && item.category) {
+    parts.push(String(item.category));
+  }
   if (type === "impact_stories" && item.location) {
     parts.push(String(item.location));
   }
@@ -674,6 +708,7 @@ function buildPayload(type: ContentType, form: Record<string, string | boolean>)
       detail: form.detail,
       body: form.body,
       coverImage: form.coverImage || undefined,
+      category: form.category || "community",
       sortOrder: Number(form.sortOrder || 0),
       published: form.published,
     };

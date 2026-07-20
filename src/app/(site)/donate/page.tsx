@@ -13,7 +13,7 @@ export default async function DonatePage({
 }: {
   searchParams: Promise<{ amount?: string }>;
 }) {
-  const { donate } = await getSiteSettings();
+  const { donate, general } = await getSiteSettings();
   const params = await searchParams;
   const parsed = Number(params.amount);
   const initialAmount =
@@ -37,7 +37,11 @@ export default async function DonatePage({
           </ul>
           <p className="mt-8 text-sm text-ink-muted">{donate.footerNote}</p>
         </div>
-        <DonateForm initialAmount={initialAmount} />
+        <DonateForm
+          initialAmount={initialAmount}
+          presetAmounts={donate.presetAmounts}
+          organizationName={general.siteName}
+        />
       </div>
     </div>
   );

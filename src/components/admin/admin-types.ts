@@ -35,18 +35,43 @@ export type NavGroup = {
 export const navGroups: NavGroup[] = [
   { label: "Overview", items: ["dashboard", "inbox"] },
   {
-    label: "Content",
+    label: "Publish content",
     items: ["posts", "events", "programs", "impact_stories", "reports"],
   },
   {
-    label: "Website",
-    items: ["home", "popup", "cache", "site", "theme", "navigation"],
+    label: "Edit website pages",
+    items: ["home", "pages", "listings", "navigation", "board"],
   },
   {
-    label: "Pages & people",
-    items: ["pages", "listings", "board", "detail"],
+    label: "Look & controls",
+    items: ["site", "theme", "popup", "cache", "detail"],
   },
   { label: "You", items: ["account"] },
+];
+
+/** Quick map used on the dashboard — every public surface → admin tab */
+export const websiteEditorMap: {
+  label: string;
+  preview: string;
+  tab: AdminTab;
+  hint: string;
+}[] = [
+  { label: "Home", preview: "/", tab: "home", hint: "Hero, focus areas, campaigns" },
+  { label: "About", preview: "/about", tab: "pages", hint: "Story, values, images" },
+  { label: "Programs", preview: "/programs", tab: "programs", hint: "Programme cards & categories" },
+  { label: "Events", preview: "/events", tab: "events", hint: "Listings & registration" },
+  { label: "News", preview: "/news", tab: "posts", hint: "Articles & covers" },
+  { label: "Impact", preview: "/impact", tab: "impact_stories", hint: "Stories & metrics" },
+  { label: "Reports", preview: "/reports", tab: "reports", hint: "PDFs & board list" },
+  { label: "Get involved", preview: "/get-involved", tab: "pages", hint: "Ways to help" },
+  { label: "Volunteer", preview: "/volunteer", tab: "listings", hint: "Volunteer page copy" },
+  { label: "Donate", preview: "/donate", tab: "listings", hint: "Donate intro & notes" },
+  { label: "Contact", preview: "/contact", tab: "pages", hint: "Contact copy & form" },
+  { label: "Navigation", preview: "/", tab: "navigation", hint: "Header, donate CTA, sticky bar" },
+  { label: "Brand & logo", preview: "/", tab: "site", hint: "Name, logo, SEO, footer" },
+  { label: "Colors", preview: "/", tab: "theme", hint: "Brand palette" },
+  { label: "Site popup", preview: "/", tab: "popup", hint: "Announcement overlay" },
+  { label: "Cache", preview: "/", tab: "cache", hint: "Live vs cached pages" },
 ];
 
 export const tabLabels: Record<AdminTab, string> = {

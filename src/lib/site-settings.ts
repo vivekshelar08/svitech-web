@@ -94,6 +94,13 @@ export function revalidatePublicSite() {
 export async function saveSiteSettings(input: unknown): Promise<SiteSettings> {
   const settings = mergeSiteSettings(input);
   const admin = getAdminClient();
+
+  if (hasSupabase() && !admin) {
+    throw new Error(
+      "Database is configured but SUPABASE_SERVICE_ROLE_KEY is missing — cannot save reliably.",
+    );
+  }
+
   if (admin) {
     const { error } = await admin.from("site_settings").upsert(
       {
@@ -104,12 +111,13 @@ export async function saveSiteSettings(input: unknown): Promise<SiteSettings> {
       { onConflict: "id" },
     );
     if (error) {
-      console.warn("[site-settings] supabase upsert failed:", error.message);
-      await writeLocal(settings);
-      revalidatePublicSite();
-      return settings;
+      throw new Error(`Could not save settings to database: ${error.message}`);
     }
-    await writeLocal(settings);
+    try {
+      await writeLocal(settings);
+    } catch {
+      // Local mirror is optional when Supabase is the source of truth
+    }
     revalidatePublicSite();
     return settings;
   }

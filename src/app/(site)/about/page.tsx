@@ -63,7 +63,7 @@ export default async function AboutPage() {
           {about.governanceCopy}
         </p>
         <Link
-          href="/reports"
+          href={about.governanceLinkHref || "/reports"}
           className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
         >
           {about.governanceLinkLabel}
@@ -71,7 +71,7 @@ export default async function AboutPage() {
       </div>
 
       <Link
-        href="/programs"
+        href={about.programsLinkHref || "/programs"}
         className="mt-14 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
       >
         {about.programsLinkLabel}

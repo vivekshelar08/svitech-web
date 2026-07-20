@@ -1,3 +1,5 @@
+import type { ProgramCategoryId } from "@/lib/program-categories";
+
 export type Program = {
   slug: string;
   name: string;
@@ -5,12 +7,14 @@ export type Program = {
   detail: string;
   body: string;
   coverImage?: string;
+  category: ProgramCategoryId;
   sortOrder: number;
 };
 
 export const programs: Program[] = [
   {
     slug: "financial-digital-inclusion",
+    category: "digital",
     name: "Financial and Digital Inclusion",
     summary:
       "Flagship programme promoting digital banking, UPI literacy, cyber safety, financial planning, and access to citizen digital services for underserved communities.",
@@ -26,6 +30,7 @@ Work is delivered through schools, colleges, community centres, residential comm
   },
   {
     slug: "digital-skills-training",
+    category: "digital",
     name: "Digital Skills Training",
     summary:
       "IT, computer applications, and digital entrepreneurship training for underprivileged youth and women—building pathways to livelihoods.",
@@ -39,6 +44,7 @@ Training prepares underprivileged youth and women for roles in local SMEs and em
   },
   {
     slug: "digital-financial-literacy",
+    category: "digital",
     name: "Digital & Financial Literacy",
     summary:
       "Awareness sessions on digital banking, UPI, cyber safety, budgeting, and financial planning for schools, colleges, and communities.",
@@ -52,6 +58,7 @@ Participants are educated on digital banking, UPI transactions, cyber safety, on
   },
   {
     slug: "women-empowerment",
+    category: "women",
     name: "Women Empowerment Initiatives",
     summary:
       "Vocational training, financial independence, digital literacy, welfare schemes, and livelihood pathways for women.",
@@ -65,6 +72,7 @@ Vocational and skill-development tracks help women become financially independen
   },
   {
     slug: "health-welfare-facilitation",
+    category: "health",
     name: "Health Awareness & Welfare Facilitation",
     summary:
       "Health camps, awareness campaigns, and enrolment support for schemes including Ayushman Bharat (PM-JAY).",
@@ -78,6 +86,7 @@ Volunteers also facilitate enrolment under government welfare schemes, including
   },
   {
     slug: "educational-support-schools",
+    category: "education",
     name: "Education for All & School Awareness",
     summary:
       "Educational resources for children in underserved areas, plus school sessions on digital literacy, life skills, and cyber safety.",
@@ -91,6 +100,7 @@ Complementary school awareness sessions focus on digital literacy, financial awa
   },
   {
     slug: "community-awareness-capacity-building",
+    category: "community",
     name: "Community Awareness & Capacity Building",
     summary:
       "Interactive workshops on welfare schemes, digital services, citizen rights, and community participation.",
@@ -104,6 +114,7 @@ These programmes encourage informed decision-making and improve access to public
   },
   {
     slug: "digital-service-camps",
+    category: "digital",
     name: "Digital Service Facilitation Camps",
     summary:
       "Community camps for digital documentation, online registrations, Aadhaar-linked services, and government scheme applications.",
@@ -117,6 +128,7 @@ Trained volunteers use digital platforms to streamline applications—particular
   },
   {
     slug: "road-safety-awareness",
+    category: "csr",
     name: "Road Safety Awareness Campaigns",
     summary:
       "Campaigns on traffic rules, pedestrian safety, helmet usage, seat belt compliance, and accident prevention.",
@@ -130,6 +142,7 @@ Activities include rallies, awareness drives, and community interactions.`,
   },
   {
     slug: "corporate-csr-engagement",
+    category: "csr",
     name: "Corporate CSR Engagement",
     summary:
       "Employee volunteering, ethics awareness, environmental initiatives, and social responsibility projects with corporate partners.",

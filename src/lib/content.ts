@@ -4,6 +4,7 @@ import { reports as seedReports, type Report } from "@/content/governance";
 import { posts as seedPosts, type Post } from "@/content/posts";
 import { programs as seedPrograms, type Program } from "@/content/programs";
 import { applyPublicDataCachePolicy } from "@/lib/cache-policy";
+import { resolveProgramCategory } from "@/lib/program-categories";
 import { getAnonClient } from "@/lib/supabase";
 
 /**
@@ -30,6 +31,7 @@ export async function getPrograms(): Promise<Program[]> {
     detail: row.detail,
     body: row.body,
     coverImage: row.cover_image ?? undefined,
+    category: resolveProgramCategory(row.category, row.slug, row.name),
     sortOrder: row.sort_order,
   }));
 }

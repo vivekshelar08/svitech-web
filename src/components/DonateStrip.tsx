@@ -1,12 +1,14 @@
 import Link from "next/link";
 
 export function DonateStrip({
+  eyebrow,
   headline,
   copy,
   amounts,
   donateHref,
   donateLabel,
 }: {
+  eyebrow: string;
   headline: string;
   copy: string;
   amounts: number[];
@@ -23,7 +25,7 @@ export function DonateStrip({
 
       <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-16 md:px-8 md:py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="site-eyebrow">Give today</p>
+          <p className="site-eyebrow">{eyebrow}</p>
           <h2
             id="donate-strip-heading"
             className="mt-3 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl md:text-4xl"

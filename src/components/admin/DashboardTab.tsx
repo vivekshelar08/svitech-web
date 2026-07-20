@@ -11,6 +11,7 @@ import {
 } from "@/components/admin/admin-ui";
 import {
   activityLabels,
+  websiteEditorMap,
   type ActivityItem,
   type AdminInbox,
   type AdminStats,
@@ -213,6 +214,38 @@ export function DashboardTab({
         {siteMsg && (
           <p className="mt-4 text-sm text-brand">{siteMsg}</p>
         )}
+      </AdminCard>
+
+      <AdminCard
+        title="Edit any website section"
+        description="Jump straight to the editor for every public page — then preview on the live site."
+      >
+        <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+          {websiteEditorMap.map((item) => (
+            <li
+              key={`${item.label}-${item.tab}`}
+              className="flex items-center gap-2 rounded-xl border border-line/70 bg-white px-3 py-2.5"
+            >
+              <button
+                type="button"
+                onClick={() => onNavigate(item.tab)}
+                className="min-w-0 flex-1 text-left"
+              >
+                <span className="block text-sm font-semibold text-ink">{item.label}</span>
+                <span className="block truncate text-xs text-ink-muted">{item.hint}</span>
+              </button>
+              <a
+                href={item.preview}
+                target="_blank"
+                rel="noreferrer"
+                className="shrink-0 rounded-lg border border-line px-2 py-1 text-[11px] font-semibold text-ink-muted transition hover:border-brand/40 hover:text-brand"
+                title={`Preview ${item.preview}`}
+              >
+                ↗
+              </a>
+            </li>
+          ))}
+        </ul>
       </AdminCard>
 
       {inbox?.message && (

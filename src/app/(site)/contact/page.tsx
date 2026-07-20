@@ -59,7 +59,15 @@ export default async function ContactPage() {
           </dl>
         </div>
 
-        <ContactForm />
+          <ContactForm
+            nameLabel={contact.formNameLabel}
+            emailLabel={contact.formEmailLabel}
+            topicLabel={contact.formTopicLabel}
+            messageLabel={contact.formMessageLabel}
+            submitLabel={contact.formSubmitLabel}
+            successMessage={contact.formSuccessMessage}
+            topics={contact.formTopics}
+          />
       </div>
     </div>
   );

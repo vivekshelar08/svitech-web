@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
+import { ProgramsExplorer } from "@/components/ProgramsExplorer";
 import { getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
 
@@ -13,53 +15,77 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ProgramsPage() {
   const programList = await getPrograms();
   const { programs } = await getSiteSettings();
+  const heroImage =
+    programs.bannerImage ||
+    programList.find((program) => program.coverImage)?.coverImage ||
+    "";
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        {programs.eyebrow}
-      </p>
-      <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        {programs.headline}
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        {programs.intro}
-      </p>
-
-      <ul className="mt-14 divide-y divide-line border-y border-line">
-        {programList.map((program) => (
-          <li
-            key={program.slug}
-            className="grid gap-3 py-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1.4fr)] md:gap-10"
-          >
-            <div>
-              <h2 className="font-display text-2xl font-bold text-ink">
-                <Link href={`/programs/${program.slug}`} className="hover:text-brand">
-                  {program.name}
-                </Link>
-              </h2>
-              <p className="mt-2 text-sm text-brand">{program.detail}</p>
-            </div>
-            <div>
-              <p className="leading-relaxed text-ink-muted">{program.summary}</p>
+    <div>
+      <section className="relative overflow-hidden">
+        <div className="relative min-h-[14rem] sm:min-h-[16rem] md:min-h-[18rem]">
+          {heroImage ? (
+            <Image
+              src={heroImage}
+              alt=""
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-brand via-brand-bright to-bg-deep" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/70 via-bg-deep/25 to-bg-deep/10" />
+          <div className="absolute inset-x-0 bottom-5 flex justify-center px-4 sm:bottom-6">
+            <nav
+              aria-label="Breadcrumb"
+              className="inline-flex items-center gap-2 rounded-full bg-white/15 p-1 backdrop-blur-md"
+            >
               <Link
-                href={`/programs/${program.slug}`}
-                className="mt-4 inline-block text-sm font-semibold text-brand"
+                href="/"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-white/30"
               >
-                {programs.itemCtaLabel}
+                <span className="sm:hidden">⌂</span> {programs.breadcrumbHome || "Home"}
               </Link>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <span className="rounded-full border border-white/70 bg-white px-3.5 py-2 text-xs font-semibold text-ink">
+                {programs.eyebrow || "Programmes"}
+              </span>
+            </nav>
+          </div>
+        </div>
+      </section>
 
-      <div className="mt-14">
-        <Link
-          href={programs.bottomCtaHref}
-          className="bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110"
-        >
-          {programs.bottomCtaLabel}
-        </Link>
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-5 sm:py-14 md:px-8 md:py-16">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
+            {programs.headline}
+          </h1>
+          <p className="mt-5 text-base leading-relaxed text-ink-muted md:text-lg">
+            {programs.intro}
+          </p>
+        </div>
+
+        <ProgramsExplorer
+          programs={programList}
+          itemCtaLabel={programs.itemCtaLabel}
+          filtersTitle={programs.filtersTitle || "Programmes"}
+        />
+
+        {programList.length === 0 && (
+          <p className="mt-10 text-center text-ink-muted">
+            {programs.emptyMessage}
+          </p>
+        )}
+
+        <div className="mt-14 text-center">
+          <Link
+            href={programs.bottomCtaHref}
+            className="inline-flex bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110"
+          >
+            {programs.bottomCtaLabel}
+          </Link>
+        </div>
       </div>
     </div>
   );

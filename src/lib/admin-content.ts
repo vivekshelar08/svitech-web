@@ -109,6 +109,7 @@ export async function upsertProgram(input: {
   detail: string;
   body: string;
   coverImage?: string;
+  category?: string;
   sortOrder?: number;
   published?: boolean;
 }) {
@@ -121,6 +122,7 @@ export async function upsertProgram(input: {
       detail: input.detail,
       body: input.body,
       cover_image: input.coverImage || null,
+      category: input.category || "community",
       sort_order: input.sortOrder ?? 0,
       published: input.published ?? true,
     },
@@ -321,6 +323,7 @@ export async function seedAllContent() {
       detail: program.detail,
       body: program.body,
       coverImage: program.coverImage,
+      category: program.category,
       sortOrder: program.sortOrder,
       published: true,
     });

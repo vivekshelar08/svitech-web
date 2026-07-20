@@ -88,7 +88,7 @@ export default async function ReportsPage() {
       <p className="mt-14 text-sm text-ink-muted">
         {reports.contactPrompt}{" "}
         <Link href="/contact" className="font-semibold text-brand underline">
-          Contact us
+          {reports.contactLinkLabel || "Contact us"}
         </Link>
         .
       </p>

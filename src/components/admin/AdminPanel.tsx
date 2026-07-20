@@ -40,6 +40,7 @@ export function AdminPanel({
   } | null>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [navQuery, setNavQuery] = useState("");
 
   useEffect(() => {
     void (async () => {
@@ -150,14 +151,38 @@ export function AdminPanel({
             )}
           </div>
 
+          <div className="border-b border-white/10 px-3 py-3">
+            <label className="sr-only" htmlFor="admin-nav-search">
+              Search admin sections
+            </label>
+            <input
+              id="admin-nav-search"
+              value={navQuery}
+              onChange={(e) => setNavQuery(e.target.value)}
+              placeholder="Search sections…"
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/35 outline-none focus:border-brand-bright/50"
+            />
+          </div>
+
           <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5" aria-label="Admin">
-            {navGroups.map((group) => (
+            {navGroups.map((group) => {
+              const q = navQuery.trim().toLowerCase();
+              const items = group.items.filter((key) => {
+                if (!q) return true;
+                return (
+                  tabLabels[key].toLowerCase().includes(q) ||
+                  tabHints[key].toLowerCase().includes(q) ||
+                  group.label.toLowerCase().includes(q)
+                );
+              });
+              if (items.length === 0) return null;
+              return (
               <div key={group.label}>
                 <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
                   {group.label}
                 </p>
                 <ul className="space-y-0.5">
-                  {group.items.map((key) => {
+                  {items.map((key) => {
                     const active = tab === key;
                     return (
                       <li key={key}>
@@ -166,6 +191,7 @@ export function AdminPanel({
                           onClick={() => {
                             setTab(key);
                             setNavOpen(false);
+                            setNavQuery("");
                           }}
                           className={cn(
                             "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition",
@@ -189,7 +215,21 @@ export function AdminPanel({
                   })}
                 </ul>
               </div>
-            ))}
+              );
+            })}
+            {navQuery.trim() &&
+              navGroups.every((group) =>
+                group.items.every((key) => {
+                  const q = navQuery.trim().toLowerCase();
+                  return !(
+                    tabLabels[key].toLowerCase().includes(q) ||
+                    tabHints[key].toLowerCase().includes(q) ||
+                    group.label.toLowerCase().includes(q)
+                  );
+                }),
+              ) && (
+                <p className="px-3 text-sm text-white/45">No matching sections.</p>
+              )}
           </nav>
 
           <div className="space-y-1 border-t border-white/10 p-3">

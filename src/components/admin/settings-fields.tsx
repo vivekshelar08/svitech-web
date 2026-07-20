@@ -730,6 +730,38 @@ export function SettingsFormBody({
             />
             Show Mission & Vision band on homepage (uses About page mission/vision copy)
           </label>
+          {settings.home.missionBandEnabled && (
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="Mission eyebrow"
+                value={settings.home.missionEyebrow}
+                onChange={(v) =>
+                  setSettings({ ...settings, home: { ...settings.home, missionEyebrow: v } })
+                }
+              />
+              <Field
+                label="Vision eyebrow"
+                value={settings.home.visionEyebrow}
+                onChange={(v) =>
+                  setSettings({ ...settings, home: { ...settings.home, visionEyebrow: v } })
+                }
+              />
+            </div>
+          )}
+          <Field
+            label="Programmes card CTA"
+            value={settings.home.programsItemCtaLabel}
+            onChange={(v) =>
+              setSettings({ ...settings, home: { ...settings.home, programsItemCtaLabel: v } })
+            }
+          />
+          <Field
+            label="Donate strip eyebrow"
+            value={settings.home.donateStripEyebrow}
+            onChange={(v) =>
+              setSettings({ ...settings, home: { ...settings.home, donateStripEyebrow: v } })
+            }
+          />
 
           <SectionTitle title="Approach block" />
           <div className="grid gap-4 md:grid-cols-2">
@@ -965,6 +997,9 @@ export function SettingsFormBody({
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Donate button label" value={settings.navigation.donateLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateLabel: v } })} />
           <Field label="Donate button link" value={settings.navigation.donateHref} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateHref: v } })} />
+          <Field label="Mobile donate short label" value={settings.navigation.donateShortLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateShortLabel: v } })} />
+          <Field label="Programs menu — all label" value={settings.navigation.programsMenuAllLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, programsMenuAllLabel: v } })} />
+          <Field label="Programs menu — empty text" value={settings.navigation.programsMenuEmpty} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, programsMenuEmpty: v } })} />
         </div>
         <NavLinksEditor label="Primary nav links" links={settings.navigation.primaryLinks} onChange={(links) => setSettings({ ...settings, navigation: { ...settings.navigation, primaryLinks: links } })} />
         <SectionTitle title="Sticky donate bar" copy="Appears after scrolling — like Seva.org. Hidden on donate and admin pages." />
@@ -1011,6 +1046,9 @@ export function SettingsFormBody({
           <Field label="Explore heading" value={settings.footer.exploreHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, exploreHeading: v } })} />
           <Field label="Take part heading" value={settings.footer.takePartHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, takePartHeading: v } })} />
           <Field label="Newsletter heading" value={settings.footer.newsletterHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, newsletterHeading: v } })} />
+          <Field label="Footer donate button" value={settings.footer.donateLabel} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, donateLabel: v } })} />
+          <Field label="Footer donate link" value={settings.footer.donateHref} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, donateHref: v } })} />
+          <Field label="Footer tagline" value={settings.footer.tagline} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, tagline: v } })} />
         </div>
         <NavLinksEditor label="Explore links" links={settings.footer.exploreLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, exploreLinks: links } })} />
         <NavLinksEditor label="Take part links" links={settings.footer.takePartLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, takePartLinks: links } })} />
@@ -1046,6 +1084,8 @@ export function SettingsFormBody({
             <Field label="Governance copy" value={settings.about.governanceCopy} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, governanceCopy: v } })} multiline />
             <Field label="Governance link label" value={settings.about.governanceLinkLabel} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, governanceLinkLabel: v } })} />
             <Field label="Programs link label" value={settings.about.programsLinkLabel} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, programsLinkLabel: v } })} />
+            <Field label="Governance link URL" value={settings.about.governanceLinkHref} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, governanceLinkHref: v } })} />
+            <Field label="Programs link URL" value={settings.about.programsLinkHref} onChange={(v) => setSettings({ ...settings, about: { ...settings.about, programsLinkHref: v } })} />
           </div>
           {settings.about.values.map((value, index) => (
             <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
@@ -1125,6 +1165,22 @@ export function SettingsFormBody({
             <Field label="Address label" value={settings.contact.addressLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, addressLabel: v } })} />
             <Field label="Response time label" value={settings.contact.responseTimeLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, responseTimeLabel: v } })} />
           </div>
+          <SectionTitle title="Contact form" />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Name label" value={settings.contact.formNameLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, formNameLabel: v } })} />
+            <Field label="Email field label" value={settings.contact.formEmailLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, formEmailLabel: v } })} />
+            <Field label="Topic label" value={settings.contact.formTopicLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, formTopicLabel: v } })} />
+            <Field label="Message label" value={settings.contact.formMessageLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, formMessageLabel: v } })} />
+            <Field label="Submit button" value={settings.contact.formSubmitLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, formSubmitLabel: v } })} />
+            <Field label="Success message" value={settings.contact.formSuccessMessage} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, formSuccessMessage: v } })} multiline />
+          </div>
+          <BulletsEditor
+            label="Topic options"
+            bullets={settings.contact.formTopics}
+            onChange={(formTopics) =>
+              setSettings({ ...settings, contact: { ...settings.contact, formTopics } })
+            }
+          />
         </div>
         <div className="space-y-4">
           <SectionTitle title="Get involved" />
@@ -1295,6 +1351,79 @@ export function SettingsFormBody({
               )}
               {"itemCtaLabel" in page && (
                 <Field label="Item CTA label" value={page.itemCtaLabel} onChange={(v) => setSettings({ ...settings, [key]: { ...page, itemCtaLabel: v } })} />
+              )}
+              {key === "programs" && "filtersTitle" in page && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Field
+                    label="Filter panel title"
+                    value={page.filtersTitle}
+                    onChange={(v) =>
+                      setSettings({ ...settings, programs: { ...settings.programs, filtersTitle: v } })
+                    }
+                  />
+                  <Field
+                    label="Breadcrumb home label"
+                    value={page.breadcrumbHome}
+                    onChange={(v) =>
+                      setSettings({ ...settings, programs: { ...settings.programs, breadcrumbHome: v } })
+                    }
+                  />
+                  <Field
+                    label="Empty list message"
+                    value={page.emptyMessage}
+                    onChange={(v) =>
+                      setSettings({ ...settings, programs: { ...settings.programs, emptyMessage: v } })
+                    }
+                    multiline
+                  />
+                  <MediaField
+                    label="Programmes banner image"
+                    value={page.bannerImage}
+                    onChange={(v) =>
+                      setSettings({ ...settings, programs: { ...settings.programs, bannerImage: v } })
+                    }
+                    folder="programs"
+                  />
+                </div>
+              )}
+              {key === "donate" && "presetAmounts" in page && (
+                <Field
+                  label="Donate amount presets (comma-separated)"
+                  value={page.presetAmounts.join(", ")}
+                  onChange={(v) => {
+                    const presetAmounts = v
+                      .split(",")
+                      .map((part) => Number(part.trim()))
+                      .filter((n) => Number.isFinite(n) && n > 0)
+                      .map((n) => Math.round(n));
+                    setSettings({
+                      ...settings,
+                      donate: { ...settings.donate, presetAmounts },
+                    });
+                  }}
+                  hint="e.g. 500, 1000, 2500, 5000"
+                />
+              )}
+              {key === "impact" && "storyCtaHref" in page && (
+                <Field
+                  label="Story CTA link"
+                  value={page.storyCtaHref}
+                  onChange={(v) =>
+                    setSettings({ ...settings, impact: { ...settings.impact, storyCtaHref: v } })
+                  }
+                />
+              )}
+              {key === "reports" && "contactLinkLabel" in page && (
+                <Field
+                  label="Contact link label"
+                  value={page.contactLinkLabel}
+                  onChange={(v) =>
+                    setSettings({
+                      ...settings,
+                      reports: { ...settings.reports, contactLinkLabel: v },
+                    })
+                  }
+                />
               )}
               {"mapHeadline" in page && (
                 <div className="grid gap-4 md:grid-cols-2">

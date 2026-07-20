@@ -130,12 +130,14 @@ export function AdminAlert({
 }: {
   title: string;
   children: React.ReactNode;
-  tone?: "warning" | "info";
+  tone?: "warning" | "info" | "error";
 }) {
   const styles =
     tone === "warning"
       ? "border-amber-200/80 bg-amber-50 text-amber-950"
-      : "border-brand/20 bg-brand/5 text-ink";
+      : tone === "error"
+        ? "border-red-200 bg-red-50 text-red-950"
+        : "border-brand/20 bg-brand/5 text-ink";
 
   return (
     <div className={cn("rounded-xl border px-4 py-3.5 text-sm", styles)}>

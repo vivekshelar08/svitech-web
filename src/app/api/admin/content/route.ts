@@ -47,6 +47,9 @@ const programSchema = z.object({
   detail: z.string().trim().min(2).max(300),
   body: z.string().trim().min(2),
   coverImage: z.string().trim().optional().or(z.literal("")),
+  category: z
+    .enum(["digital", "education", "health", "community", "women", "csr"])
+    .optional(),
   sortOrder: z.coerce.number().int().optional(),
   published: z.boolean().optional(),
 });

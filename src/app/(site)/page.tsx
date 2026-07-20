@@ -148,7 +148,7 @@ export default async function HomePage() {
         <section className="border-y border-line bg-surface">
           <div className="mx-auto grid max-w-6xl gap-0 md:grid-cols-2">
             <Reveal className="border-b border-line px-4 py-12 sm:px-5 sm:py-16 md:border-b-0 md:border-r md:px-8 md:py-20">
-              <p className="site-eyebrow">Mission</p>
+              <p className="site-eyebrow">{home.missionEyebrow}</p>
               <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
                 {about.missionTitle}
               </h2>
@@ -157,7 +157,7 @@ export default async function HomePage() {
               </p>
             </Reveal>
             <Reveal delayMs={100} className="px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-20">
-              <p className="site-eyebrow">Vision</p>
+              <p className="site-eyebrow">{home.visionEyebrow}</p>
               <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
                 {about.howTitle}
               </h2>
@@ -177,7 +177,7 @@ export default async function HomePage() {
           programs={programs}
           ctaLabel={home.programsCtaLabel}
           ctaHref={home.programsCtaHref}
-          itemCtaLabel="Know more"
+          itemCtaLabel={home.programsItemCtaLabel}
         />
       </Reveal>
 
@@ -245,6 +245,7 @@ export default async function HomePage() {
 
       <Reveal>
         <DonateStrip
+          eyebrow={home.donateStripEyebrow}
           headline={home.donateStripHeadline}
           copy={home.donateStripCopy}
           amounts={home.donateStripAmounts}

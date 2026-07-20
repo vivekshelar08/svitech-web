@@ -4,7 +4,7 @@ import Script from "next/script";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 
-const presets = [500, 1000, 2500, 5000];
+const defaultPresets = [500, 1000, 2500, 5000];
 
 type RazorpaySuccess = {
   razorpay_payment_id: string;
@@ -23,12 +23,21 @@ declare global {
   }
 }
 
-export function DonateForm({ initialAmount }: { initialAmount?: number }) {
+export function DonateForm({
+  initialAmount,
+  presetAmounts = defaultPresets,
+  organizationName = "SVITECH Foundation",
+}: {
+  initialAmount?: number;
+  presetAmounts?: number[];
+  organizationName?: string;
+}) {
   const router = useRouter();
+  const presets = presetAmounts.length > 0 ? presetAmounts : defaultPresets;
   const [frequency, setFrequency] = useState<"one_time" | "monthly">("one_time");
   const [amount, setAmount] = useState(() => {
     if (initialAmount && presets.includes(initialAmount)) return initialAmount;
-    return 1000;
+    return presets[1] ?? presets[0] ?? 1000;
   });
   const [custom, setCustom] = useState(() => {
     if (initialAmount && !presets.includes(initialAmount)) return String(initialAmount);
@@ -93,7 +102,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
         key: createJson.key,
         amount: createJson.amount,
         currency: createJson.currency || "INR",
-        name: "SVITECH Foundation",
+        name: organizationName,
         description:
           frequency === "monthly"
             ? "Monthly donation"

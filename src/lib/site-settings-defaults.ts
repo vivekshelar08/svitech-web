@@ -94,6 +94,9 @@ export type SiteSettings = {
     primaryLinks: NavLink[];
     donateLabel: string;
     donateHref: string;
+    donateShortLabel: string;
+    programsMenuAllLabel: string;
+    programsMenuEmpty: string;
     stickyDonate: StickyDonateSettings;
   };
   footer: {
@@ -102,6 +105,9 @@ export type SiteSettings = {
     takePartHeading: string;
     takePartLinks: NavLink[];
     newsletterHeading: string;
+    donateLabel: string;
+    donateHref: string;
+    tagline: string;
   };
   home: {
     heroHeadline: string;
@@ -130,6 +136,10 @@ export type SiteSettings = {
     impactStatsHeadline: string;
     impactStats: ImpactStat[];
     missionBandEnabled: boolean;
+    missionEyebrow: string;
+    visionEyebrow: string;
+    programsItemCtaLabel: string;
+    donateStripEyebrow: string;
     programsEyebrow: string;
     programsHeadline: string;
     programsIntro: string;
@@ -170,6 +180,8 @@ export type SiteSettings = {
     governanceCopy: string;
     governanceLinkLabel: string;
     programsLinkLabel: string;
+    governanceLinkHref: string;
+    programsLinkHref: string;
     seoTitle: string;
     seoDescription: string;
   };
@@ -195,6 +207,13 @@ export type SiteSettings = {
     phoneLabel: string;
     addressLabel: string;
     responseTimeLabel: string;
+    formNameLabel: string;
+    formEmailLabel: string;
+    formTopicLabel: string;
+    formMessageLabel: string;
+    formSubmitLabel: string;
+    formSuccessMessage: string;
+    formTopics: string[];
     seoTitle: string;
     seoDescription: string;
   };
@@ -204,6 +223,7 @@ export type SiteSettings = {
     intro: string;
     bullets: string[];
     footerNote: string;
+    presetAmounts: number[];
     seoTitle: string;
     seoDescription: string;
   };
@@ -233,6 +253,10 @@ export type SiteSettings = {
     itemCtaLabel: string;
     bottomCtaLabel: string;
     bottomCtaHref: string;
+    filtersTitle: string;
+    bannerImage: string;
+    breadcrumbHome: string;
+    emptyMessage: string;
     seoTitle: string;
     seoDescription: string;
   };
@@ -259,6 +283,7 @@ export type SiteSettings = {
     mapEyebrow: string;
     mapHeadline: string;
     storyCtaLabel: string;
+    storyCtaHref: string;
     seoTitle: string;
     seoDescription: string;
   };
@@ -271,6 +296,7 @@ export type SiteSettings = {
     downloadLabel: string;
     adminNote: string;
     contactPrompt: string;
+    contactLinkLabel: string;
     seoTitle: string;
     seoDescription: string;
   };
@@ -331,6 +357,9 @@ export const defaultSiteSettings: SiteSettings = {
     primaryLinks: defaultNav,
     donateLabel: "Donate",
     donateHref: "/donate",
+    donateShortLabel: "Give",
+    programsMenuAllLabel: "All programmes",
+    programsMenuEmpty: "No programmes published yet",
     stickyDonate: {
       enabled: true,
       message: "Support Financial and Digital Inclusion, health camps, and education outreach.",
@@ -355,6 +384,9 @@ export const defaultSiteSettings: SiteSettings = {
       { label: "Contact", href: "/contact" },
     ],
     newsletterHeading: "Newsletter",
+    donateLabel: "Donate",
+    donateHref: "/donate",
+    tagline: "Technology for social good",
   },
   home: {
     heroHeadline: "Digital skills. Dignity. Opportunity.",
@@ -420,6 +452,10 @@ export const defaultSiteSettings: SiteSettings = {
       { value: "5", label: "states with mapped programme presence" },
     ],
     missionBandEnabled: true,
+    missionEyebrow: "Mission",
+    visionEyebrow: "Vision",
+    programsItemCtaLabel: "Know more",
+    donateStripEyebrow: "Give today",
     programsEyebrow: "Our programmes",
     programsHeadline: "Flagship work serving underserved communities",
     programsIntro:
@@ -544,6 +580,8 @@ export const defaultSiteSettings: SiteSettings = {
       "Registered as a Section 8 company under the Companies Act, 2013, with 80G and 12AA exemptions. An Executive Board provides strategic oversight; community stakeholders inform participatory decision-making. Leadership bios and annual reports are published for public review.",
     governanceLinkLabel: "View reports & board",
     programsLinkLabel: "Explore our programmes",
+    governanceLinkHref: "/reports",
+    programsLinkHref: "/programs",
     seoTitle: "About",
     seoDescription:
       "SVITECH Foundation—founded 2023 in Mumbai—delivers digital skills, welfare access, education, and community development. Section 8 · 80G · 12AA.",
@@ -593,6 +631,13 @@ export const defaultSiteSettings: SiteSettings = {
     phoneLabel: "Phone",
     addressLabel: "Office",
     responseTimeLabel: "Response time",
+    formNameLabel: "Name",
+    formEmailLabel: "Email",
+    formTopicLabel: "Topic",
+    formMessageLabel: "Message",
+    formSubmitLabel: "Send message",
+    formSuccessMessage: "Thanks — we received your message and will reply soon.",
+    formTopics: ["Partnership", "Volunteer", "Donation", "Media", "Other"],
     seoTitle: "Contact",
     seoDescription:
       "Reach SVITECH Foundation in Ghatkopar West, Mumbai for partnerships, volunteering, and support.",
@@ -609,6 +654,7 @@ export const defaultSiteSettings: SiteSettings = {
     ],
     footerNote:
       "Prefer bank transfer, cheque, or CSR partnership? Contact us at info@svitech.in. Cheques may be mailed to our Ghatkopar West office. See impact stories and reports for how gifts are used.",
+    presetAmounts: [500, 1000, 2500, 5000],
     seoTitle: "Donate",
     seoDescription:
       "Support SVITECH Foundation with a one-time or monthly donation for digital skills, welfare access, and community programmes.",
@@ -643,9 +689,14 @@ export const defaultSiteSettings: SiteSettings = {
     headline: "Skills, access, and community development.",
     intro:
       "Financial and Digital Inclusion, digital skills training, women empowerment, health camps, education support, literacy sessions, digital service camps, road safety, and CSR partnerships.",
-    itemCtaLabel: "Learn more →",
+    itemCtaLabel: "Read more",
     bottomCtaLabel: "Partner with a programme",
     bottomCtaHref: "/get-involved",
+    filtersTitle: "Programmes",
+    bannerImage:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1800&q=80",
+    breadcrumbHome: "Home",
+    emptyMessage: "Programmes will appear here once they are published in the admin.",
     seoTitle: "Programmes",
     seoDescription:
       "Financial and Digital Inclusion, digital skills, women empowerment, health, education, and community outreach from SVITECH Foundation.",
@@ -675,6 +726,7 @@ export const defaultSiteSettings: SiteSettings = {
     mapEyebrow: "Where we work",
     mapHeadline: "Maharashtra full suite · Financial Inclusion elsewhere",
     storyCtaLabel: "Support work like this",
+    storyCtaHref: "/donate",
     seoTitle: "Impact",
     seoDescription:
       "SVITECH Foundation: all activities in Maharashtra, Digital Literacy in Pune, and Financial Inclusion projects in Delhi, Gujarat, Haryana, and Uttar Pradesh.",
@@ -690,6 +742,7 @@ export const defaultSiteSettings: SiteSettings = {
     adminNote:
       "Replace placeholder PDFs in public/reports/ with filed annual reports. Keep 80G / 12AA certificates available here when sharing with donors.",
     contactPrompt: "Questions about finances or partnerships?",
+    contactLinkLabel: "Contact us",
     seoTitle: "Reports & governance",
     seoDescription:
       "Annual reports, leadership, and transparency notes from SVITECH Foundation (Section 8 · 80G · 12AA).",

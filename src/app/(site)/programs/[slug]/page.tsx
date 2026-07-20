@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProgram, getPrograms } from "@/lib/content";
+import { programCategoryLabel } from "@/lib/program-categories";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export const revalidate = 60;
@@ -39,7 +40,7 @@ export default async function ProgramDetailPage({
         {detailPages.programsBack}
       </Link>
       {program.coverImage && (
-        <div className="relative mt-8 aspect-[16/9] overflow-hidden">
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl">
           <Image
             src={program.coverImage}
             alt=""
@@ -50,7 +51,10 @@ export default async function ProgramDetailPage({
           />
         </div>
       )}
-      <p className="mt-8 text-sm text-brand">{program.detail}</p>
+      <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.14em] text-brand">
+        {programCategoryLabel(program.category)}
+      </p>
+      <p className="mt-2 text-sm text-ink-muted">{program.detail}</p>
       <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-ink">
         {program.name}
       </h1>

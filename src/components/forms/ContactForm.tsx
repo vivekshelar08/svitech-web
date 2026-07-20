@@ -4,9 +4,26 @@ import { useState, type FormEvent } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export function ContactForm() {
+export function ContactForm({
+  nameLabel = "Name",
+  emailLabel = "Email",
+  topicLabel = "Topic",
+  messageLabel = "Message",
+  submitLabel = "Send message",
+  successMessage = "Thanks — we received your message and will reply soon.",
+  topics = ["Partnership", "Volunteer", "Donation", "Media", "Other"],
+}: {
+  nameLabel?: string;
+  emailLabel?: string;
+  topicLabel?: string;
+  messageLabel?: string;
+  submitLabel?: string;
+  successMessage?: string;
+  topics?: string[];
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const topicOptions = topics.length > 0 ? topics : ["Other"];
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -17,7 +34,7 @@ export function ContactForm() {
     const payload = {
       name: String(data.get("name") || ""),
       email: String(data.get("email") || ""),
-      topic: String(data.get("topic") || "Other"),
+      topic: String(data.get("topic") || topicOptions[0] || "Other"),
       message: String(data.get("message") || ""),
     };
 
@@ -44,7 +61,7 @@ export function ContactForm() {
     >
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-ink">
-          Name
+          {nameLabel}
         </label>
         <input
           id="name"
@@ -55,7 +72,7 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-ink">
-          Email
+          {emailLabel}
         </label>
         <input
           id="email"
@@ -67,24 +84,24 @@ export function ContactForm() {
       </div>
       <div>
         <label htmlFor="topic" className="block text-sm font-medium text-ink">
-          Topic
+          {topicLabel}
         </label>
         <select
           id="topic"
           name="topic"
           className="mt-2 w-full border border-line bg-white px-3 py-2.5 text-ink outline-none transition focus:border-brand"
-          defaultValue="Partnership"
+          defaultValue={topicOptions[0]}
         >
-          <option>Partnership</option>
-          <option>Volunteer</option>
-          <option>Donation</option>
-          <option>Press</option>
-          <option>Other</option>
+          {topicOptions.map((topic) => (
+            <option key={topic} value={topic}>
+              {topic}
+            </option>
+          ))}
         </select>
       </div>
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-ink">
-          Message
+          {messageLabel}
         </label>
         <textarea
           id="message"
@@ -99,11 +116,11 @@ export function ContactForm() {
         disabled={status === "loading"}
         className="bg-brand px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-brand-bright disabled:opacity-60"
       >
-        {status === "loading" ? "Sending…" : "Send message"}
+        {status === "loading" ? "Sending…" : submitLabel}
       </button>
       {status === "success" && (
         <p className="text-sm text-brand" role="status">
-          Thanks — we received your message and will reply soon.
+          {successMessage}
         </p>
       )}
       {status === "error" && (

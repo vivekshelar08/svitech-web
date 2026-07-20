@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { SiteLogo } from "@/components/SiteLogo";
 import type { SiteSettings } from "@/lib/site-settings-defaults";
 
@@ -20,8 +20,14 @@ type HeaderProps = {
 
 const PROGRAMS_HREF = "/programs";
 
+function isProgramsLink(href: string) {
+  const path = href.split("?")[0]?.replace(/\/$/, "") || "";
+  return path === PROGRAMS_HREF || path === "/programmes";
+}
+
 export function Header({ general, navigation, programs }: HeaderProps) {
   const pathname = usePathname();
+  const programsMenuId = useId();
   const [open, setOpen] = useState(false);
   const [programsOpen, setProgramsOpen] = useState(false);
   const [mobileProgramsOpen, setMobileProgramsOpen] = useState(false);
@@ -34,8 +40,8 @@ export function Header({ general, navigation, programs }: HeaderProps) {
   });
   const [programList, setProgramList] = useState(programs);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Keep in sync if the server layout re-renders with new props
   useEffect(() => {
     setNav(navigation);
   }, [navigation]);
@@ -52,7 +58,6 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     setProgramList(programs);
   }, [programs]);
 
-  // Refresh chrome from a no-store API so first paint never stays on a stale/short nav.
   useEffect(() => {
     let cancelled = false;
     void (async () => {
@@ -138,83 +143,97 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     };
   }, [open]);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  function openProgramsMenu() {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    setProgramsOpen(true);
+  }
+
+  function scheduleCloseProgramsMenu() {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => {
+      setProgramsOpen(false);
+      closeTimer.current = null;
+    }, 160);
+  }
+
   const links = nav.primaryLinks || [];
 
   function renderNavLink(link: { label: string; href: string }, index: number) {
-    if (link.href === PROGRAMS_HREF && programList.length > 0) {
+    if (isProgramsLink(link.href)) {
       return (
-        <div key={`nav-${index}-${link.href}`} ref={dropdownRef} className="relative shrink-0">
+        <div
+          key={`nav-${index}-${link.href}`}
+          ref={dropdownRef}
+          className="relative shrink-0"
+          onMouseEnter={openProgramsMenu}
+          onMouseLeave={scheduleCloseProgramsMenu}
+        >
           <button
             type="button"
             className="nav-link"
             data-active={programsActive || programsOpen ? "true" : "false"}
             aria-expanded={programsOpen}
             aria-haspopup="true"
+            aria-controls={programsMenuId}
             onClick={() => setProgramsOpen((v) => !v)}
-            onMouseEnter={() => setProgramsOpen(true)}
           >
             {link.label}
             <svg
-              className={`h-3 w-3 transition-transform duration-300 ${programsOpen ? "rotate-180" : ""}`}
+              className={`h-2.5 w-2.5 opacity-70 transition-transform duration-200 ${programsOpen ? "rotate-180" : ""}`}
               viewBox="0 0 12 12"
-              fill="none"
+              fill="currentColor"
               aria-hidden
             >
-              <path
-                d="M2.5 4.5L6 8l3.5-3.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="square"
-              />
+              <path d="M2.2 4.2 6 8l3.8-3.8L8.6 3 6 5.6 3.4 3z" />
             </svg>
           </button>
 
           {programsOpen && (
             <div
-              className="animate-dropdown absolute left-1/2 top-full z-50 mt-4 w-[min(28rem,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden border border-line/80 bg-white/95 shadow-[0_24px_60px_-20px_rgba(12,46,47,0.35)] backdrop-blur-xl"
-              onMouseLeave={() => setProgramsOpen(false)}
+              id={programsMenuId}
+              role="menu"
+              className="absolute left-0 top-full z-[60] min-w-[15rem] pt-2"
             >
-              <div className="h-1 w-full bg-gradient-to-r from-brand via-brand-bright to-accent" />
-              <div className="flex items-center justify-between border-b border-line bg-surface/80 px-5 py-3.5">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-brand">
-                    Explore
-                  </p>
-                  <p className="mt-0.5 font-display text-sm font-bold text-ink">
-                    Our programmes
-                  </p>
-                </div>
-                <Link
-                  href={PROGRAMS_HREF}
-                  className="link-underline text-xs"
-                  onClick={() => setProgramsOpen(false)}
-                >
-                  View all
-                </Link>
-              </div>
-              <ul className="max-h-[22rem] overflow-y-auto p-2">
-                {programList.map((program, programIndex) => (
-                  <li key={program.slug}>
+              <div className="animate-dropdown overflow-hidden bg-white shadow-[0_10px_28px_rgba(0,0,0,0.12)]">
+                <ul className="py-2">
+                  <li>
                     <Link
-                      href={`/programs/${program.slug}`}
-                      className="group flex gap-3 px-3 py-3 transition hover:bg-brand/[0.06]"
+                      href={PROGRAMS_HREF}
+                      role="menuitem"
+                      className="block px-5 py-3 text-[0.95rem] text-[#333] transition hover:bg-[#f7f7f7] hover:text-brand"
                       onClick={() => setProgramsOpen(false)}
                     >
-                      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-line bg-surface font-display text-[11px] font-bold text-brand transition group-hover:border-brand group-hover:bg-brand group-hover:text-white">
-                        {String(programIndex + 1).padStart(2, "0")}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-sm font-semibold text-ink group-hover:text-brand">
-                          {program.name}
-                        </span>
-                        <span className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-ink-muted">
-                          {program.summary}
-                        </span>
-                      </span>
+                      {nav.programsMenuAllLabel || "All programmes"}
                     </Link>
                   </li>
-                ))}
-              </ul>
+                  {programList.map((program) => (
+                    <li key={program.slug}>
+                      <Link
+                        href={`/programs/${program.slug}`}
+                        role="menuitem"
+                        className="block px-5 py-3 text-[0.95rem] text-[#333] transition hover:bg-[#f7f7f7] hover:text-brand"
+                        onClick={() => setProgramsOpen(false)}
+                      >
+                        {program.name}
+                      </Link>
+                    </li>
+                  ))}
+                  {programList.length === 0 && (
+                    <li className="px-5 py-3 text-sm text-ink-muted">
+                      {nav.programsMenuEmpty || "No programmes published yet"}
+                    </li>
+                  )}
+                </ul>
+              </div>
             </div>
           )}
         </div>
@@ -236,10 +255,10 @@ export function Header({ general, navigation, programs }: HeaderProps) {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "border-b border-line/80 bg-[color-mix(in_srgb,var(--bg)_92%,transparent)] shadow-[0_8px_30px_-18px_rgba(12,46,47,0.35)] backdrop-blur-xl"
-          : "border-b border-transparent bg-[color-mix(in_srgb,var(--bg)_72%,transparent)] backdrop-blur-md"
+          ? "border-b border-line/80 bg-white/95 shadow-[0_8px_30px_-18px_rgba(12,46,47,0.35)] backdrop-blur-xl"
+          : "border-b border-transparent bg-white/90 backdrop-blur-md"
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 sm:gap-3 sm:px-5 md:px-8 md:py-3.5">
@@ -253,7 +272,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
         </div>
 
         <nav
-          className="nav-scroll hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto rounded-sm border border-line/60 bg-white/55 px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm md:flex lg:gap-1 xl:gap-2 xl:px-4"
+          className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 overflow-visible lg:justify-center lg:gap-1 xl:gap-2 md:flex"
           aria-label="Primary"
         >
           {links.map((link, index) => renderNavLink(link, index))}
@@ -270,7 +289,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
             href={nav.donateHref}
             className="btn-primary !min-h-10 !w-auto !px-3 !py-2 text-sm sm:!px-4"
           >
-            <span className="sm:hidden">Give</span>
+            <span className="sm:hidden">{nav.donateShortLabel || "Give"}</span>
             <span className="hidden sm:inline">{nav.donateLabel}</span>
           </Link>
           <button
@@ -313,12 +332,12 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           />
           <nav
             id="mobile-nav"
-            className="animate-dropdown absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white/98 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl backdrop-blur-xl sm:px-5 md:hidden"
+            className="absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl md:hidden sm:px-5"
             aria-label="Mobile"
           >
             <ul className="flex flex-col">
               {links.map((link, index) => {
-                if (link.href === PROGRAMS_HREF && programList.length > 0) {
+                if (isProgramsLink(link.href)) {
                   return (
                     <li
                       key={`mnav-${index}-${link.href}`}
@@ -326,33 +345,36 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                     >
                       <button
                         type="button"
-                        className="flex min-h-12 w-full items-center justify-between py-3.5 font-display text-lg font-semibold text-ink"
+                        className="flex min-h-12 w-full items-center justify-between py-3.5 text-[1.05rem] font-medium text-ink"
                         aria-expanded={mobileProgramsOpen}
                         onClick={() => setMobileProgramsOpen((v) => !v)}
                       >
                         {link.label}
-                        <span
-                          className={`text-brand transition ${mobileProgramsOpen ? "rotate-180" : ""}`}
+                        <svg
+                          className={`h-3 w-3 text-ink-muted transition ${mobileProgramsOpen ? "rotate-180" : ""}`}
+                          viewBox="0 0 12 12"
+                          fill="currentColor"
+                          aria-hidden
                         >
-                          ▾
-                        </span>
+                          <path d="M2.2 4.2 6 8l3.8-3.8L8.6 3 6 5.6 3.4 3z" />
+                        </svg>
                       </button>
                       {mobileProgramsOpen && (
-                        <ul className="mb-3 space-y-0.5 border-l-2 border-brand/30 pl-4">
+                        <ul className="mb-2 bg-[#fafafa]">
                           <li>
                             <Link
                               href={PROGRAMS_HREF}
-                              className="block py-3 text-sm font-semibold text-brand"
+                              className="block px-4 py-3.5 text-[0.95rem] text-[#333]"
                               onClick={() => setOpen(false)}
                             >
-                              All programmes →
+                              {nav.programsMenuAllLabel || "All programmes"}
                             </Link>
                           </li>
                           {programList.map((program) => (
                             <li key={program.slug}>
                               <Link
                                 href={`/programs/${program.slug}`}
-                                className="block py-3 text-sm text-ink-muted transition hover:text-ink"
+                                className="block px-4 py-3.5 text-[0.95rem] text-[#333]"
                                 onClick={() => setOpen(false)}
                               >
                                 {program.name}
@@ -371,7 +393,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                   <li key={`mnav-${index}-${link.href}`}>
                     <Link
                       href={link.href}
-                      className={`flex min-h-12 items-center border-b border-line/40 py-3.5 font-display text-lg font-semibold transition ${
+                      className={`flex min-h-12 items-center border-b border-line/40 py-3.5 text-[1.05rem] font-medium transition ${
                         active ? "text-brand" : "text-ink hover:text-brand"
                       }`}
                       onClick={() => setOpen(false)}

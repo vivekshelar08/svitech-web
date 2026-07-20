@@ -69,7 +69,7 @@ export default async function ImpactPage() {
                 {story.body}
               </p>
               <Link
-                href="/donate"
+                href={impact.storyCtaHref || "/donate"}
                 className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
               >
                 {impact.storyCtaLabel}
