@@ -20,6 +20,7 @@ export default async function SiteLayout({
     <>
       <SiteTheme theme={settings.theme} />
       <Header
+        key={`nav-${settings.navigation.primaryLinks.map((l) => l.href).join("|")}`}
         general={settings.general}
         navigation={settings.navigation}
         programs={programs.map((p) => ({

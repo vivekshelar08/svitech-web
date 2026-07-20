@@ -6,6 +6,7 @@ import {
   mergeSiteSettings,
   type SiteSettings,
 } from "@/lib/site-settings-defaults";
+import { hasSupabase } from "@/lib/env";
 import { getAdminClient, getAnonClient } from "@/lib/supabase";
 
 const localPath = path.join(process.cwd(), "data", "site-settings.json");
@@ -24,13 +25,11 @@ async function writeLocal(settings: SiteSettings) {
   await fs.writeFile(localPath, JSON.stringify(settings, null, 2), "utf8");
 }
 
-export async function getSiteSettings(): Promise<SiteSettings> {
-  // Always read live settings so header/nav never flash an old cached bar.
-  noStore();
-
-  const anon = getAnonClient();
-  if (anon) {
-    const { data, error } = await anon
+async function readFromSupabase(): Promise<SiteSettings | null> {
+  const clients = [getAnonClient(), getAdminClient()].filter(Boolean);
+  for (const client of clients) {
+    if (!client) continue;
+    const { data, error } = await client
       .from("site_settings")
       .select("value")
       .eq("id", "default")
@@ -39,6 +38,24 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       return mergeSiteSettings(data.value);
     }
   }
+  return null;
+}
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  // Always read live settings so header/nav never flash an old cached bar.
+  noStore();
+
+  // When Supabase is configured, never fall back to a stale local JSON file —
+  // that caused the public nav to show fewer links on first load.
+  if (hasSupabase()) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const fromDb = await readFromSupabase();
+      if (fromDb) return fromDb;
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 150));
+    }
+    console.warn("[site-settings] supabase read failed; using defaults (not local file)");
+    return defaultSiteSettings;
+  }
 
   const local = await readLocal();
   if (local) return local;
@@ -46,7 +63,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 }
 
 function revalidatePublicSite() {
-  // Bust layout + every public route so Hostinger/CDN don't keep an old nav shell.
   revalidatePath("/", "layout");
   revalidatePath("/", "page");
   const paths = [

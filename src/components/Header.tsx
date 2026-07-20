@@ -26,12 +26,70 @@ export function Header({ general, navigation, programs }: HeaderProps) {
   const [programsOpen, setProgramsOpen] = useState(false);
   const [mobileProgramsOpen, setMobileProgramsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const logoProps = {
+  const [nav, setNav] = useState(navigation);
+  const [logo, setLogo] = useState({
     logoUrl: general.logoUrl,
     logoAlt: general.logoAlt,
     logoAriaLabel: general.logoAriaLabel,
-  };
+  });
+  const [programList, setProgramList] = useState(programs);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Keep in sync if the server layout re-renders with new props
+  useEffect(() => {
+    setNav(navigation);
+  }, [navigation]);
+
+  useEffect(() => {
+    setLogo({
+      logoUrl: general.logoUrl,
+      logoAlt: general.logoAlt,
+      logoAriaLabel: general.logoAriaLabel,
+    });
+  }, [general.logoUrl, general.logoAlt, general.logoAriaLabel]);
+
+  useEffect(() => {
+    setProgramList(programs);
+  }, [programs]);
+
+  // Refresh chrome from a no-store API so first paint never stays on a stale/short nav.
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/site-chrome", { cache: "no-store" });
+        if (!res.ok || cancelled) return;
+        const json = (await res.json()) as {
+          general?: {
+            logoUrl?: string;
+            logoAlt?: string;
+            logoAriaLabel?: string;
+          };
+          navigation?: SiteSettings["navigation"];
+          programs?: NavProgram[];
+        };
+        if (cancelled) return;
+        if (json.navigation?.primaryLinks?.length) {
+          setNav(json.navigation);
+        }
+        if (json.general?.logoUrl) {
+          setLogo({
+            logoUrl: json.general.logoUrl,
+            logoAlt: json.general.logoAlt || "",
+            logoAriaLabel: json.general.logoAriaLabel || "",
+          });
+        }
+        if (Array.isArray(json.programs)) {
+          setProgramList(json.programs);
+        }
+      } catch {
+        // Keep server-rendered props
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
 
   const programsActive =
     pathname === PROGRAMS_HREF || pathname.startsWith(`${PROGRAMS_HREF}/`);
@@ -80,10 +138,12 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     };
   }, [open]);
 
+  const links = nav.primaryLinks || [];
+
   function renderNavLink(link: { label: string; href: string }, index: number) {
-    if (link.href === PROGRAMS_HREF && programs.length > 0) {
+    if (link.href === PROGRAMS_HREF && programList.length > 0) {
       return (
-        <div key={`nav-${index}-${link.href}`} ref={dropdownRef} className="relative">
+        <div key={`nav-${index}-${link.href}`} ref={dropdownRef} className="relative shrink-0">
           <button
             type="button"
             className="nav-link"
@@ -133,7 +193,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                 </Link>
               </div>
               <ul className="max-h-[22rem] overflow-y-auto p-2">
-                {programs.map((program, programIndex) => (
+                {programList.map((program, programIndex) => (
                   <li key={program.slug}>
                     <Link
                       href={`/programs/${program.slug}`}
@@ -166,7 +226,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
       <Link
         key={`nav-${index}-${link.href}`}
         href={link.href}
-        className="nav-link"
+        className="nav-link shrink-0"
         data-active={active ? "true" : "false"}
       >
         {link.label}
@@ -182,10 +242,10 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           : "border-b border-transparent bg-[color-mix(in_srgb,var(--bg)_72%,transparent)] backdrop-blur-md"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-5 md:px-8 md:py-3.5">
+      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 sm:gap-3 sm:px-5 md:px-8 md:py-3.5">
         <div className="min-w-0 shrink">
           <SiteLogo
-            {...logoProps}
+            {...logo}
             size="sm"
             priority
             onClick={() => setOpen(false)}
@@ -193,25 +253,25 @@ export function Header({ general, navigation, programs }: HeaderProps) {
         </div>
 
         <nav
-          className="hidden items-center gap-1 rounded-sm border border-line/60 bg-white/55 px-4 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm lg:flex xl:gap-2"
+          className="nav-scroll hidden min-w-0 flex-1 items-center justify-center gap-0.5 overflow-x-auto rounded-sm border border-line/60 bg-white/55 px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm md:flex lg:gap-1 xl:gap-2 xl:px-4"
           aria-label="Primary"
         >
-          {navigation.primaryLinks.map((link, index) => renderNavLink(link, index))}
+          {links.map((link, index) => renderNavLink(link, index))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          <Link href={navigation.donateHref} className="btn-primary !px-5 !py-2.5">
-            {navigation.donateLabel}
+        <div className="ml-auto hidden shrink-0 items-center gap-2 md:flex">
+          <Link href={nav.donateHref} className="btn-primary !min-h-10 !px-4 !py-2 text-sm lg:!px-5 lg:!py-2.5">
+            {nav.donateLabel}
           </Link>
         </div>
 
-        <div className="flex shrink-0 items-center gap-2 lg:hidden">
+        <div className="ml-auto flex shrink-0 items-center gap-2 md:hidden">
           <Link
-            href={navigation.donateHref}
+            href={nav.donateHref}
             className="btn-primary !min-h-10 !w-auto !px-3 !py-2 text-sm sm:!px-4"
           >
             <span className="sm:hidden">Give</span>
-            <span className="hidden sm:inline">{navigation.donateLabel}</span>
+            <span className="hidden sm:inline">{nav.donateLabel}</span>
           </Link>
           <button
             type="button"
@@ -247,18 +307,18 @@ export function Header({ general, navigation, programs }: HeaderProps) {
         <>
           <button
             type="button"
-            className="fixed inset-0 z-40 bg-bg-deep/40 backdrop-blur-[2px] lg:hidden"
+            className="fixed inset-0 z-40 bg-bg-deep/40 backdrop-blur-[2px] md:hidden"
             aria-label="Close menu overlay"
             onClick={() => setOpen(false)}
           />
           <nav
             id="mobile-nav"
-            className="animate-dropdown absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white/98 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl backdrop-blur-xl sm:px-5 lg:hidden"
+            className="animate-dropdown absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white/98 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl backdrop-blur-xl sm:px-5 md:hidden"
             aria-label="Mobile"
           >
             <ul className="flex flex-col">
-              {navigation.primaryLinks.map((link, index) => {
-                if (link.href === PROGRAMS_HREF && programs.length > 0) {
+              {links.map((link, index) => {
+                if (link.href === PROGRAMS_HREF && programList.length > 0) {
                   return (
                     <li
                       key={`mnav-${index}-${link.href}`}
@@ -288,7 +348,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                               All programmes →
                             </Link>
                           </li>
-                          {programs.map((program) => (
+                          {programList.map((program) => (
                             <li key={program.slug}>
                               <Link
                                 href={`/programs/${program.slug}`}
@@ -323,11 +383,11 @@ export function Header({ general, navigation, programs }: HeaderProps) {
               })}
             </ul>
             <Link
-              href={navigation.donateHref}
+              href={nav.donateHref}
               className="btn-primary mt-5 w-full"
               onClick={() => setOpen(false)}
             >
-              {navigation.donateLabel}
+              {nav.donateLabel}
             </Link>
           </nav>
         </>
