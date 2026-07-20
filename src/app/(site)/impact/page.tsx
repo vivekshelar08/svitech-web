@@ -17,7 +17,7 @@ export default async function ImpactPage() {
   const { impact } = await getSiteSettings();
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
         {impact.eyebrow}
       </p>

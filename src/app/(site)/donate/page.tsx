@@ -20,7 +20,7 @@ export default async function DonatePage({
     Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : undefined;
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
       <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">

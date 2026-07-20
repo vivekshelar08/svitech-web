@@ -270,6 +270,8 @@ export function SettingsFormBody({
           <Field label="Logo alt text" value={settings.general.logoAlt} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAlt: v } })} />
           <Field label="Logo aria label" value={settings.general.logoAriaLabel} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAriaLabel: v } })} />
           <Field label="Contact email" value={settings.general.contactEmail} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactEmail: v } })} />
+          <Field label="Contact phone" value={settings.general.contactPhone} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactPhone: v } })} />
+          <Field label="Office address" value={settings.general.officeAddress} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, officeAddress: v } })} multiline />
           <Field label="Response time" value={settings.general.responseTime} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, responseTime: v } })} />
           <div>
             <Field label="SEO title" value={settings.general.seoTitle} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoTitle: v } })} />
@@ -881,6 +883,8 @@ export function SettingsFormBody({
           <PageIntroFields prefix="Contact" values={settings.contact} onChange={(p) => setSettings({ ...settings, contact: { ...settings.contact, ...p } })} />
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Email label" value={settings.contact.emailLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, emailLabel: v } })} />
+            <Field label="Phone label" value={settings.contact.phoneLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, phoneLabel: v } })} />
+            <Field label="Address label" value={settings.contact.addressLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, addressLabel: v } })} />
             <Field label="Response time label" value={settings.contact.responseTimeLabel} onChange={(v) => setSettings({ ...settings, contact: { ...settings.contact, responseTimeLabel: v } })} />
           </div>
         </div>

@@ -271,7 +271,7 @@ export function ContentTab({ type }: { type: ContentType }) {
           <ul className="divide-y divide-line/70">
             {filtered.map((item) => (
               <li key={String(item.id)} className="py-4 first:pt-0 last:pb-0">
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-ink">
                       {String(item.title || item.name || item.slug)}
@@ -287,7 +287,7 @@ export function ContentTab({ type }: { type: ContentType }) {
                       )}
                     </div>
                   </div>
-                  <div className="flex shrink-0 flex-wrap gap-1.5">
+                  <div className="flex w-full shrink-0 flex-wrap justify-end gap-1.5 sm:w-auto">
                     <AdminButton variant="secondary" size="sm" onClick={() => editItem(item)}>
                       Edit
                     </AdminButton>

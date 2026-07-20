@@ -146,7 +146,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <form
         onSubmit={onSubmit}
-        className="space-y-8 border border-line bg-surface p-6 md:p-8"
+        className="space-y-8 border border-line bg-surface p-4 sm:p-6 md:p-8"
       >
         <div>
           <p className="text-sm font-medium text-ink">Give</p>
@@ -206,7 +206,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
             value={custom}
             onChange={(e) => setCustom(e.target.value.replace(/[^\d]/g, ""))}
             placeholder="e.g. 1500"
-            className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+            className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
           />
         </div>
 
@@ -219,7 +219,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
               id="d-name"
               name="name"
               required
-              className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+              className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
             />
           </div>
           <div>
@@ -231,7 +231,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
               name="email"
               type="email"
               required
-              className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+              className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
             />
           </div>
         </div>
@@ -242,7 +242,7 @@ export function DonateForm({ initialAmount }: { initialAmount?: number }) {
           <input
             id="d-phone"
             name="phone"
-            className="mt-2 w-full border border-line bg-white px-3 py-2.5 outline-none focus:border-brand"
+            className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
           />
         </div>
 

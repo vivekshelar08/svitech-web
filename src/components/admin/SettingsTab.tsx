@@ -63,7 +63,7 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
         <SettingsFormBody section={section} settings={settings} setSettings={setSettings} />
       </AdminCard>
 
-      <div className="sticky bottom-4 z-10 flex flex-wrap items-center gap-4 rounded-2xl border border-line/80 bg-white/95 px-5 py-4 shadow-[0_8px_30px_rgba(12,46,47,0.08)] backdrop-blur">
+      <div className="sticky bottom-4 z-10 mx-0 flex flex-wrap items-center gap-3 rounded-2xl border border-line/80 bg-white/95 px-4 py-3 shadow-[0_8px_30px_rgba(12,46,47,0.08)] backdrop-blur sm:gap-4 sm:px-5 sm:py-4 mb-[env(safe-area-inset-bottom)]">
         <AdminButton type="submit" variant="primary" disabled={saving}>
           {saving ? "Saving…" : "Save changes"}
         </AdminButton>

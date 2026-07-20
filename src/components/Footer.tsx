@@ -28,7 +28,7 @@ export function Footer({
         aria-hidden
       />
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-[1.4fr_1fr_1fr_1.25fr] md:gap-10 md:px-8 md:py-20">
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:gap-12 sm:px-5 sm:py-16 md:grid-cols-[1.4fr_1fr_1fr_1.25fr] md:gap-10 md:px-8 md:py-20">
         <div>
           <SiteLogo size="md" {...logoProps} />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">

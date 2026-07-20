@@ -21,18 +21,18 @@ export function CampaignCards({
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+      <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
         <p className="site-eyebrow-bright text-[0.7rem] font-bold uppercase tracking-[0.18em]">
           {eyebrow}
         </p>
         <h2
           id="campaigns-heading"
-          className="mt-3 max-w-xl font-display text-3xl font-bold tracking-tight text-white md:text-4xl"
+          className="mt-3 max-w-xl font-display text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
         >
           {headline}
         </h2>
 
-        <ul className="mt-12 grid gap-5 md:grid-cols-2">
+        <ul className="mt-10 grid gap-4 sm:mt-12 sm:gap-5 md:grid-cols-2">
           {campaigns.map((campaign) => (
             <li key={campaign.title}>
               <Link

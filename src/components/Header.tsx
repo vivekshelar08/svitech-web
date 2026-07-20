@@ -71,6 +71,15 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     setMobileProgramsOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   function renderNavLink(link: { label: string; href: string }, index: number) {
     if (link.href === PROGRAMS_HREF && programs.length > 0) {
       return (
@@ -124,7 +133,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                 </Link>
               </div>
               <ul className="max-h-[22rem] overflow-y-auto p-2">
-                {programs.map((program, index) => (
+                {programs.map((program, programIndex) => (
                   <li key={program.slug}>
                     <Link
                       href={`/programs/${program.slug}`}
@@ -132,7 +141,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                       onClick={() => setProgramsOpen(false)}
                     >
                       <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center border border-line bg-surface font-display text-[11px] font-bold text-brand transition group-hover:border-brand group-hover:bg-brand group-hover:text-white">
-                        {String(index + 1).padStart(2, "0")}
+                        {String(programIndex + 1).padStart(2, "0")}
                       </span>
                       <span className="min-w-0">
                         <span className="block text-sm font-semibold text-ink group-hover:text-brand">
@@ -173,13 +182,15 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           : "border-b border-transparent bg-[color-mix(in_srgb,var(--bg)_72%,transparent)] backdrop-blur-md"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8 md:py-3.5">
-        <SiteLogo
-          {...logoProps}
-          size="sm"
-          priority
-          onClick={() => setOpen(false)}
-        />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-5 md:px-8 md:py-3.5">
+        <div className="min-w-0 shrink">
+          <SiteLogo
+            {...logoProps}
+            size="sm"
+            priority
+            onClick={() => setOpen(false)}
+          />
+        </div>
 
         <nav
           className="hidden items-center gap-1 rounded-sm border border-line/60 bg-white/55 px-4 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm lg:flex xl:gap-2"
@@ -194,16 +205,17 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex shrink-0 items-center gap-2 lg:hidden">
           <Link
             href={navigation.donateHref}
-            className="btn-primary !px-4 !py-2 text-sm"
+            className="btn-primary !min-h-10 !w-auto !px-3 !py-2 text-sm sm:!px-4"
           >
-            {navigation.donateLabel}
+            <span className="sm:hidden">Give</span>
+            <span className="hidden sm:inline">{navigation.donateLabel}</span>
           </Link>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center border border-line bg-white/70 text-ink transition hover:border-brand/40 hover:bg-white"
+            className="inline-flex h-11 w-11 items-center justify-center border border-line bg-white/70 text-ink transition hover:border-brand/40 hover:bg-white"
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -232,75 +244,93 @@ export function Header({ general, navigation, programs }: HeaderProps) {
       </div>
 
       {open && (
-        <nav
-          id="mobile-nav"
-          className="animate-dropdown border-t border-line bg-white/95 px-5 py-5 shadow-lg backdrop-blur-xl lg:hidden"
-          aria-label="Mobile"
-        >
-          <ul className="flex flex-col gap-0.5">
-            {navigation.primaryLinks.map((link, index) => {
-              if (link.href === PROGRAMS_HREF && programs.length > 0) {
-                return (
-                  <li key={`mnav-${index}-${link.href}`} className="border-b border-line/60 pb-2">
-                    <button
-                      type="button"
-                      className="flex w-full items-center justify-between py-3 font-display text-lg font-semibold text-ink"
-                      aria-expanded={mobileProgramsOpen}
-                      onClick={() => setMobileProgramsOpen((v) => !v)}
+        <>
+          <button
+            type="button"
+            className="fixed inset-0 z-40 bg-bg-deep/40 backdrop-blur-[2px] lg:hidden"
+            aria-label="Close menu overlay"
+            onClick={() => setOpen(false)}
+          />
+          <nav
+            id="mobile-nav"
+            className="animate-dropdown absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white/98 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl backdrop-blur-xl sm:px-5 lg:hidden"
+            aria-label="Mobile"
+          >
+            <ul className="flex flex-col">
+              {navigation.primaryLinks.map((link, index) => {
+                if (link.href === PROGRAMS_HREF && programs.length > 0) {
+                  return (
+                    <li
+                      key={`mnav-${index}-${link.href}`}
+                      className="border-b border-line/60"
                     >
-                      {link.label}
-                      <span
-                        className={`text-brand transition ${mobileProgramsOpen ? "rotate-180" : ""}`}
+                      <button
+                        type="button"
+                        className="flex min-h-12 w-full items-center justify-between py-3.5 font-display text-lg font-semibold text-ink"
+                        aria-expanded={mobileProgramsOpen}
+                        onClick={() => setMobileProgramsOpen((v) => !v)}
                       >
-                        ▾
-                      </span>
-                    </button>
-                    {mobileProgramsOpen && (
-                      <ul className="mb-2 space-y-1 border-l-2 border-brand/30 pl-4">
-                        <li>
-                          <Link
-                            href={PROGRAMS_HREF}
-                            className="block py-2 text-sm font-semibold text-brand"
-                            onClick={() => setOpen(false)}
-                          >
-                            All programmes →
-                          </Link>
-                        </li>
-                        {programs.map((program) => (
-                          <li key={program.slug}>
+                        {link.label}
+                        <span
+                          className={`text-brand transition ${mobileProgramsOpen ? "rotate-180" : ""}`}
+                        >
+                          ▾
+                        </span>
+                      </button>
+                      {mobileProgramsOpen && (
+                        <ul className="mb-3 space-y-0.5 border-l-2 border-brand/30 pl-4">
+                          <li>
                             <Link
-                              href={`/programs/${program.slug}`}
-                              className="block py-2 text-sm text-ink-muted transition hover:text-ink"
+                              href={PROGRAMS_HREF}
+                              className="block py-3 text-sm font-semibold text-brand"
                               onClick={() => setOpen(false)}
                             >
-                              {program.name}
+                              All programmes →
                             </Link>
                           </li>
-                        ))}
-                      </ul>
-                    )}
+                          {programs.map((program) => (
+                            <li key={program.slug}>
+                              <Link
+                                href={`/programs/${program.slug}`}
+                                className="block py-3 text-sm text-ink-muted transition hover:text-ink"
+                                onClick={() => setOpen(false)}
+                              >
+                                {program.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                }
+
+                const active =
+                  pathname === link.href || pathname.startsWith(`${link.href}/`);
+                return (
+                  <li key={`mnav-${index}-${link.href}`}>
+                    <Link
+                      href={link.href}
+                      className={`flex min-h-12 items-center border-b border-line/40 py-3.5 font-display text-lg font-semibold transition ${
+                        active ? "text-brand" : "text-ink hover:text-brand"
+                      }`}
+                      onClick={() => setOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
                   </li>
                 );
-              }
-
-              const active =
-                pathname === link.href || pathname.startsWith(`${link.href}/`);
-              return (
-                <li key={`mnav-${index}-${link.href}`}>
-                  <Link
-                    href={link.href}
-                    className={`block border-b border-line/40 py-3.5 font-display text-lg font-semibold transition ${
-                      active ? "text-brand" : "text-ink hover:text-brand"
-                    }`}
-                    onClick={() => setOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+              })}
+            </ul>
+            <Link
+              href={navigation.donateHref}
+              className="btn-primary mt-5 w-full"
+              onClick={() => setOpen(false)}
+            >
+              {navigation.donateLabel}
+            </Link>
+          </nav>
+        </>
       )}
     </header>
   );

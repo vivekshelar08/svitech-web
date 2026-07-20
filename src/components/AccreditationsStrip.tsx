@@ -26,17 +26,17 @@ export function AccreditationsStrip({
         className="absolute inset-0 bg-[radial-gradient(ellipse_50%_60%_at_100%_0%,rgba(14,107,92,0.07),transparent_55%)]"
         aria-hidden
       />
-      <div className="relative mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+      <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-16 md:px-8 md:py-20">
         {accreditations.length > 0 && (
           <div>
             <p className="site-eyebrow">{accreditationsEyebrow}</p>
             <h2
               id="accreditations-heading"
-              className="mt-3 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl"
+              className="mt-3 font-display text-xl font-bold tracking-tight text-ink sm:text-2xl md:text-3xl"
             >
               {accreditationsHeadline}
             </h2>
-            <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
               {accreditations.map((item, index) => (
                 <li
                   key={`${item.name}-${index}`}

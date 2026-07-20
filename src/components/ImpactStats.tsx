@@ -51,10 +51,10 @@ function StatItem({
           aria-hidden
         />
       )}
-      <p className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl">
+      <p className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
         {display}
         {stat.suffix && (
-          <span className="text-2xl text-brand-bright md:text-3xl">{stat.suffix}</span>
+          <span className="text-xl text-brand-bright sm:text-2xl md:text-3xl">{stat.suffix}</span>
         )}
       </p>
       <p className="mx-auto mt-3 max-w-[14rem] text-sm leading-snug text-white/65 md:text-[0.95rem]">
@@ -107,17 +107,17 @@ export function ImpactStats({
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-bright/50 to-transparent"
         aria-hidden
       />
-      <div className="relative mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-20">
+      <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-16 md:px-8 md:py-20">
         <p className="site-eyebrow-bright text-center text-[0.7rem] font-bold uppercase tracking-[0.18em]">
           {eyebrow}
         </p>
         <h2
           id="impact-stats-heading"
-          className="mt-3 text-center font-display text-2xl font-bold tracking-tight text-white md:text-3xl"
+          className="mt-3 text-center font-display text-xl font-bold tracking-tight text-white sm:text-2xl md:text-3xl"
         >
           {headline}
         </h2>
-        <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-2">
+        <ul className="mt-10 grid grid-cols-2 gap-8 sm:mt-12 sm:gap-10 lg:grid-cols-4 lg:gap-2">
           {stats.map((stat, index) => (
             <StatItem key={stat.label} stat={stat} active={active} index={index} />
           ))}

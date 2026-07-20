@@ -39,25 +39,25 @@ export default async function HomePage() {
           aria-hidden
         />
 
-        <div className="relative mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-6xl flex-col justify-end px-5 pb-16 pt-28 md:px-8 md:pb-20">
+        <div className="relative mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-6xl flex-col justify-end px-4 pb-14 pt-24 sm:px-5 sm:pb-16 sm:pt-28 md:px-8 md:pb-20">
           <div className="animate-rise">
             <SiteLogo href="" size="lg" priority {...logoProps} />
           </div>
           <span
-            className="animate-draw mt-5 block h-1 w-28 bg-gradient-to-r from-brand-bright to-accent"
+            className="animate-draw mt-5 block h-1 w-20 bg-gradient-to-r from-brand-bright to-accent sm:w-28"
             aria-hidden
           />
-          <h1 className="animate-rise-delay-1 mt-6 max-w-2xl font-display text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl md:text-4xl">
+          <h1 className="animate-rise-delay-1 mt-5 max-w-2xl font-display text-[1.65rem] font-semibold leading-snug tracking-tight text-white sm:mt-6 sm:text-3xl md:text-4xl">
             {home.heroHeadline}
           </h1>
-          <p className="animate-rise-delay-1 mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="animate-rise-delay-1 mt-3 max-w-xl text-[0.95rem] leading-relaxed text-white/80 sm:mt-4 sm:text-lg">
             {home.heroSubhead}
           </p>
-          <div className="animate-rise-delay-2 mt-8 flex flex-wrap gap-3">
-            <Link href={home.heroCtaPrimaryHref} className="btn-primary">
+          <div className="animate-rise-delay-2 btn-row mt-8 flex flex-wrap gap-3 sm:flex-row">
+            <Link href={home.heroCtaPrimaryHref} className="btn-primary sm:w-auto">
               {home.heroCtaPrimary}
             </Link>
-            <Link href={home.heroCtaSecondaryHref} className="btn-ghost">
+            <Link href={home.heroCtaSecondaryHref} className="btn-ghost sm:w-auto">
               {home.heroCtaSecondary}
             </Link>
           </div>
@@ -70,9 +70,9 @@ export default async function HomePage() {
         stats={home.impactStats}
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
         <p className="site-eyebrow">{home.focusEyebrow}</p>
-        <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
+        <h2 className="mt-3 max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl md:text-4xl">
           {home.focusHeadline}
         </h2>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted md:text-lg">
@@ -173,7 +173,7 @@ export default async function HomePage() {
         donateLabel={home.donateStripLabel}
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
         <div className="relative max-w-2xl overflow-hidden border border-line/70 bg-white/60 p-8 md:p-10">
           <div
             className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-brand to-accent"
@@ -185,12 +185,12 @@ export default async function HomePage() {
           <p className="mt-4 text-base leading-relaxed text-ink-muted md:text-lg">
             {home.ctaCopy}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 btn-row flex flex-wrap gap-3 sm:flex-row">
             {home.ctaButtons.map((btn, i) => (
               <Link
                 key={btn.href}
                 href={btn.href}
-                className={i === 0 ? "btn-primary" : "btn-secondary"}
+                className={`${i === 0 ? "btn-primary" : "btn-secondary"} sm:w-auto`}
               >
                 {btn.label}
               </Link>

@@ -34,7 +34,7 @@ export default async function NewsArticlePage({
   const { detailPages } = await getSiteSettings();
 
   return (
-    <article className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
+    <article className="mx-auto max-w-3xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
       <Link href="/news" className="text-sm font-semibold text-brand">
         {detailPages.newsBack}
       </Link>

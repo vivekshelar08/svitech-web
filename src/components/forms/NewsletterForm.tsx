@@ -51,14 +51,14 @@ export function NewsletterForm({
         type="email"
         required
         placeholder="you@example.com"
-        className={`border border-line bg-white px-3 py-2.5 text-ink outline-none focus:border-brand ${
+        className={`border border-line bg-white px-3 py-3 text-base text-ink outline-none focus:border-brand sm:text-sm ${
           compact ? "min-w-0 flex-1" : "w-full"
         }`}
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="bg-brand px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-bright disabled:opacity-60"
+        className="min-h-11 bg-brand px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-bright disabled:opacity-60"
       >
         {status === "loading" ? "…" : "Subscribe"}
       </button>

@@ -10,14 +10,14 @@ export const reports: Report[] = [
     year: 2025,
     title: "Annual report 2025",
     description:
-      "Program outcomes, financial overview, and governance notes for the year.",
+      "Programme outcomes, financial overview, and governance notes for the year.",
     fileUrl: "/reports/annual-report-2025.pdf",
   },
   {
     year: 2024,
     title: "Annual report 2024",
     description:
-      "Founding-year summary of labs launched, partners engaged, and open materials released.",
+      "Founding-year summary of community outreach, digital skills work, and partnerships.",
     fileUrl: "/reports/annual-report-2024.pdf",
   },
 ];
@@ -30,23 +30,13 @@ export type BoardMember = {
 
 export const board: BoardMember[] = [
   {
-    name: "Asha Menon",
-    role: "Chair",
-    bio: "Educator and open-learning advocate with two decades in community colleges.",
+    name: "Vivek G. Shelar",
+    role: "Founder & President",
+    bio: "Experienced in accounts and inventory management, and actively engaged in community development using digital technologies. Recognised for contributions to Digital India and the e-Shram Yojana.",
   },
   {
-    name: "Rohan Desai",
-    role: "Treasurer",
-    bio: "Finance professional focused on nonprofit stewardship and transparent reporting.",
-  },
-  {
-    name: "Priya Nair",
+    name: "Rajani G. Kulaye",
     role: "Secretary",
-    bio: "Community organizer bridging grassroots groups with digital literacy programs.",
-  },
-  {
-    name: "Imran Khan",
-    role: "Board member",
-    bio: "Technologist building maintainable tools for small civil-society teams.",
+    bio: "Over a decade imparting IT skills to students and communities. Holds a Bachelor of Social Work and leads community outreach programmes.",
   },
 ];

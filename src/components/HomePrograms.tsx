@@ -24,15 +24,15 @@ export function HomePrograms({
 
   return (
     <section
-      className="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28"
+      className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28"
       aria-labelledby="home-programs-heading"
     >
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <p className="site-eyebrow">{eyebrow}</p>
           <h2
             id="home-programs-heading"
-            className="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl"
+            className="mt-3 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl md:text-4xl"
           >
             {headline}
           </h2>

@@ -46,6 +46,8 @@ export type SiteSettings = {
     logoAlt: string;
     logoAriaLabel: string;
     contactEmail: string;
+    contactPhone: string;
+    officeAddress: string;
     responseTime: string;
     footerBlurb: string;
     copyrightNote: string;
@@ -165,6 +167,8 @@ export type SiteSettings = {
     headline: string;
     intro: string;
     emailLabel: string;
+    phoneLabel: string;
+    addressLabel: string;
     responseTimeLabel: string;
     seoTitle: string;
     seoDescription: string;
@@ -268,19 +272,22 @@ const defaultNav: NavLink[] = [
 export const defaultSiteSettings: SiteSettings = {
   general: {
     siteName: "SVITECH Foundation",
-    tagline: "Technology for Social Good",
+    tagline: "Technology · Education · Community Happiness",
     logoUrl: "/svitech-logo.png",
     logoAlt: "SVITECH Foundation — Education, Technology, Community",
     logoAriaLabel: "SVITECH Foundation home",
-    contactEmail: "hello@svitech.org",
+    contactEmail: "info@svitech.org",
+    contactPhone: "+91 93210 23332",
+    officeAddress:
+      "Bhaiyalal Chawl, R No. 4, NSS Road, Ghatkopar West, Mumbai 400084, Maharashtra, India",
     responseTime: "Usually within 2–3 business days",
     footerBlurb:
-      "A nonprofit putting technology in service of communities—through digital literacy, open education, and tools that people can trust.",
-    copyrightNote: "Built for social impact.",
-    newsletterBlurb: "Program updates and impact notes—rarely, and never spam.",
-    seoTitle: "SVITECH Foundation — Technology for Social Good",
+      "Section 8 nonprofit empowering underprivileged youth, women, children, and senior citizens through digital skills, welfare access, education, and community development across Maharashtra.",
+    copyrightNote: "Working for inclusive community development.",
+    newsletterBlurb: "Programme updates and impact notes—rarely, and never spam.",
+    seoTitle: "SVITECH Foundation — Digital Skills, Education & Community Welfare",
     seoDescription:
-      "SVITECH Foundation bridges communities with digital skills, open education, and technology that serves people first.",
+      "SVITECH Foundation: Section 8 nonprofit in Mumbai delivering Financial and Digital Inclusion, health camps, and community outreach. 80G & 12AA registered.",
   },
   theme: {
     bg: "#f2f5fa",
@@ -299,7 +306,7 @@ export const defaultSiteSettings: SiteSettings = {
     donateHref: "/donate",
     stickyDonate: {
       enabled: true,
-      message: "Restore access to digital skills—your gift funds labs, curriculum, and local facilitators.",
+      message: "Support Financial and Digital Inclusion, health camps, and education outreach.",
       ctaLabel: "Donate now",
       ctaHref: "/donate",
     },
@@ -323,245 +330,251 @@ export const defaultSiteSettings: SiteSettings = {
     newsletterHeading: "Newsletter",
   },
   home: {
-    heroHeadline: "Technology that serves people first.",
+    heroHeadline: "Digital skills. Dignity. Opportunity.",
     heroSubhead:
-      "We connect communities with digital skills, open education, and tools built for real-world impact—not just the next trend.",
+      "SVITECH Foundation empowers underprivileged youth, women, children, and seniors through digital training, welfare access, education, and community development.",
     heroImage:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=2400&q=80",
-    heroImageAlt: "People gathered around laptops in a community learning space",
+    heroImageAlt: "Community members gathered for an awareness programme",
     heroCtaPrimary: "Donate",
     heroCtaPrimaryHref: "/donate",
     heroCtaSecondary: "See our impact",
     heroCtaSecondaryHref: "/impact",
     focusEyebrow: "What we do",
-    focusHeadline: "Bridging the gap between people and digital opportunity.",
+    focusHeadline: "Skills, access, and community empowerment.",
     focusIntro:
-      "SVITECH Foundation partners with local leaders to make technology accessible, ethical, and useful—especially where access has been limited.",
+      "We break cycles of poverty with digital skills training, e-government facilitation, health and education outreach, and partnerships with schools, agencies, and CSR teams.",
     focusAreas: [
       {
-        title: "Digital literacy",
-        copy: "Hands-on workshops that help people navigate tools, safety, and opportunity online.",
+        title: "Financial and Digital Inclusion",
+        copy: "Flagship programme for digital banking, UPI safety, financial planning, and citizen digital service access.",
       },
       {
-        title: "Open education",
-        copy: "Free learning paths built with local educators—practical, multilingual, and open to all.",
+        title: "Health & welfare facilitation",
+        copy: "Health camps and enrolment support for schemes including Ayushman Bharat (PM-JAY).",
       },
       {
-        title: "Community tech",
-        copy: "Lightweight tools for nonprofits and organizers who need reliability without complexity.",
+        title: "Education & women empowerment",
+        copy: "School programmes, education support in underserved areas, and livelihood training for women.",
       },
     ],
     approachEyebrow: "Our approach",
-    approachHeadline: "Local partners. Open methods. Lasting skills.",
+    approachHeadline: "Train. Facilitate. Mobilize.",
     approachCopy:
-      "We don’t drop in with one-size-fits-all software. We listen, co-design with communities, and leave behind skills—and systems—people can own.",
+      "Capacity building, community mobilization, and strategic partnerships—with educational institutions, government agencies, corporate CSR partners, and local communities—drive sustainable change where it is needed most.",
     approachImage:
       "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
     approachImageAlt: "Workshop facilitator helping a learner at a shared table",
     approachLinkLabel: "Learn about SVITECH Foundation",
     approachLinkHref: "/about",
-    ctaHeadline: "Ready to help us expand access?",
+    ctaHeadline: "Join us in building a more self-reliant society",
     ctaCopy:
-      "Volunteer your skills, partner with a program, or support the work that keeps learning free and open.",
+      "Volunteer, partner through CSR, or donate—help expand Financial and Digital Inclusion, health camps, and education outreach.",
     ctaButtons: [
       { label: "Donate", href: "/donate" },
       { label: "Volunteer", href: "/volunteer" },
       { label: "Upcoming events", href: "/events" },
     ],
     impactStatsEyebrow: "Our impact",
-    impactStatsHeadline: "Communities reached, skills left behind",
+    impactStatsHeadline: "Where the work reaches",
     impactStats: [
-      { value: "12000", suffix: "+", label: "learners trained through labs and workshops" },
-      { value: "48", suffix: "+", label: "partner sites across villages and cities" },
-      { value: "4", label: "core programs built for local ownership" },
-      { value: "12", suffix: "+", label: "states where facilitators lead independently" },
+      { value: "5", label: "states with active programme achievements" },
+      { value: "9", label: "core programme areas across education, health & welfare" },
+      { value: "MH", label: "Financial and Digital Inclusion hubs in Maharashtra" },
+      { value: "NCR", label: "women empowerment, road safety & CSR outreach" },
     ],
     programsEyebrow: "Our programmes",
-    programsHeadline: "Practical work that communities can sustain",
+    programsHeadline: "Flagship work serving underserved communities",
     programsIntro:
-      "Like leading NGOs, we organize our work into clear programme areas—each designed to be taught, remixed, and carried forward by local partners.",
+      "From Financial and Digital Inclusion to health camps, education support, and women empowerment—each programme is built for measurable community need.",
     programsCtaLabel: "View all programmes →",
     programsCtaHref: "/programs",
     spotlightEyebrow: "Stories & updates",
     spotlightHeadline: "Latest from the field",
     spotlightViewAllLabel: "View all news →",
     spotlightViewAllHref: "/news",
-    quoteEyebrow: "Voices from partners",
+    quoteEyebrow: "Voices from the work",
     quote: {
-      text: "SVITECH didn't drop in with a product pitch—they listened, co-designed with our librarians, and left us facilitators who still run the lab every weekend.",
-      attribution: "Neighborhood library partner",
-      role: "Pune, India",
+      text: "Awareness alone is not enough—SVITECH volunteers helped our community complete documents and enrol for benefits we were entitled to but could not navigate alone.",
+      attribution: "Community outreach participant",
+      role: "Mumbai, Maharashtra",
     },
-    donateStripHeadline: "Your gift turns into labs, curriculum, and lasting skills",
+    donateStripHeadline: "Your gift funds skills, camps, and access",
     donateStripCopy:
-      "Choose a quick amount or give what you can. Every contribution supports facilitator stipends, shared devices, and open learning materials.",
+      "Choose a quick amount or give what you can. Contributions support Financial and Digital Inclusion, health camps, and volunteer-driven outreach.",
     donateStripAmounts: [500, 1000, 2500, 5000],
     donateStripLabel: "Donate now",
     campaignsEyebrow: "Support a cause",
-    campaignsHeadline: "Campaigns you can stand behind",
+    campaignsHeadline: "Programmes you can stand behind",
     campaigns: [
       {
-        title: "Labs for Every Library",
-        copy: "Help neighbourhood libraries run weekend digital labs with shared devices and trained facilitators.",
-        href: "/programs/community-digital-labs",
+        title: "Financial and Digital Inclusion",
+        copy: "Support our flagship programme for digital banking literacy, cyber safety, and access to citizen digital services.",
+        href: "/programs/financial-digital-inclusion",
         cta: "Know more →",
         image:
-          "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80",
+          "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        title: "Open Curriculum, Local Languages",
-        copy: "Fund translation and adaptation of open learning kits for educators in rural and semi-urban centres.",
-        href: "/programs/open-learning-paths",
+        title: "Digital Skills Training",
+        copy: "Fund job-ready IT and digital entrepreneurship training for youth and women.",
+        href: "/programs/digital-skills-training",
         cta: "Know more →",
         image:
-          "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80",
+          "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        title: "Youth Mentor Circles",
-        copy: "Pair emerging community technologists with mentors for monthly project coaching and real outcomes.",
-        href: "/programs/mentor-circles",
+        title: "Women Empowerment",
+        copy: "Support vocational and livelihood training that builds women's financial independence.",
+        href: "/programs/women-empowerment",
         cta: "Know more →",
         image:
-          "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
+          "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&q=80",
       },
       {
-        title: "Tools Nonprofits Can Keep",
-        copy: "Support lightweight websites and intake systems that small organizations can maintain themselves.",
-        href: "/programs/nonprofit-tooling",
+        title: "Health & Welfare",
+        copy: "Enable health camps and PM-JAY enrolment support for underserved families.",
+        href: "/programs/health-welfare-facilitation",
         cta: "Know more →",
         image:
-          "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
+          "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
       },
     ],
     accreditationsEyebrow: "Trust & transparency",
-    accreditationsHeadline: "Empanelment & accreditations",
+    accreditationsHeadline: "Accountability we publish",
     accreditations: [
       {
+        name: "Section 8 company",
+        description: "Registered under the Companies Act, 2013 as a nonprofit with formal governance.",
+      },
+      {
+        name: "80G & 12AA",
+        description: "Income-tax exemptions enabling tax-efficient giving for eligible donors.",
+      },
+      {
         name: "Published annual reports",
-        description: "Financial notes and board information available for public review every year.",
-      },
-      {
-        name: "Open curriculum licenses",
-        description: "Learning materials released under open licenses communities can adapt and share.",
-      },
-      {
-        name: "Partner-verified impact",
-        description: "Outcomes tracked with local partners—not vanity metrics from a distant dashboard.",
+        description: "Financial notes and board information available for public review.",
       },
       {
         name: "Secure online giving",
         description: "Donations processed through Razorpay with emailed receipts after successful payment.",
       },
     ],
-    partnersEyebrow: "Our partners in change",
+    partnersEyebrow: "States we serve",
     partners: [
-      { name: "Public library networks" },
-      { name: "Rural educator collectives" },
-      { name: "Youth development centres" },
-      { name: "Grassroots nonprofits" },
-      { name: "CSR & philanthropy partners" },
+      { name: "Maharashtra" },
+      { name: "Delhi" },
+      { name: "Gujarat" },
+      { name: "Haryana" },
+      { name: "Uttar Pradesh" },
     ],
   },
   about: {
     eyebrow: "About",
-    headline: "Built for communities that deserve better tech.",
+    headline: "Social venture for technology, education, and community happiness.",
     intro:
-      "SVITECH Foundation began with a simple conviction: technology should widen opportunity, not deepen divides. Today we work with educators, organizers, and local leaders to make digital skills and tools accessible where they matter most.",
+      "SVITECH Foundation was established in 2023 by Vivek G. Shelar and Rajani G. Kulaye in Ghatkopar West, Mumbai. ‘Svitech’ means social venture initiative for technology, education, and community happiness. We empower underprivileged women, youth, children, and senior citizens across Maharashtra through digital innovation and inclusive development.",
     heroImage:
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80",
     heroImageAlt: "Team collaborating around a shared workspace",
     missionTitle: "Our mission",
     missionCopy:
-      "Equip people with the confidence and capability to use technology for learning, livelihood, and community care—on their own terms.",
-    howTitle: "How we work",
+      "Provide digital skills that make beneficiaries job-ready, connect communities to essential government services, and build capacity for long-term socio-economic growth—so every person can realize their potential with dignity.",
+    howTitle: "Our vision",
     howCopy:
-      "We co-design with partners, publish open materials, train facilitators, and measure success by what communities keep long after a project ends.",
+      "A society where every underprivileged woman and youth can lead a life of dignity and purpose through digital innovation, quality education, healthcare access, and sustainable employment.",
     valuesTitle: "Values we hold",
     values: [
       {
-        title: "Dignity",
-        copy: "People are partners, not beneficiaries of a product pitch.",
+        title: "Inclusivity",
+        copy: "Opportunities for all—regardless of socio-economic background.",
       },
       {
-        title: "Openness",
-        copy: "Knowledge we create should be shareable, adaptable, and free.",
+        title: "Integrity",
+        copy: "The highest ethical standards in programmes, partnerships, and stewardship.",
       },
       {
-        title: "Stewardship",
-        copy: "We choose tools that communities can maintain without us.",
+        title: "Innovation",
+        copy: "Digital tools and practical methods to solve complex community challenges.",
+      },
+      {
+        title: "Collaboration",
+        copy: "Partnerships with schools, agencies, CSR teams, and communities to multiply impact.",
       },
     ],
     governanceTitle: "Governance",
     governanceCopy:
-      "Board members, annual reports, and financial notes are published for public review—because trust should not require a scavenger hunt.",
+      "Registered as a Section 8 company under the Companies Act, 2013, with 80G and 12AA exemptions. An Executive Board provides strategic oversight; community stakeholders inform participatory decision-making. Leadership bios and annual reports are published for public review.",
     governanceLinkLabel: "View reports & board",
-    programsLinkLabel: "Explore our programs",
+    programsLinkLabel: "Explore our programmes",
     seoTitle: "About",
     seoDescription:
-      "Learn how SVITECH Foundation started and why we put communities at the center of technology.",
+      "SVITECH Foundation—founded 2023 in Mumbai—delivers digital skills, welfare access, education, and community development. Section 8 · 80G · 12AA.",
   },
   getInvolved: {
     eyebrow: "Get involved",
-    headline: "Help put technology in service of people.",
+    headline: "Help expand skills, access, and opportunity.",
     intro:
-      "Whether you give time, expertise, or resources, you strengthen programs that communities can grow on their own.",
+      "Whether you give time, expertise, or resources, you strengthen programmes that train youth, empower women, and help families reach public services.",
     ways: [
       {
         title: "Volunteer",
-        copy: "Teach a workshop, mentor a cohort, or help translate open learning materials.",
+        copy: "Teach, coordinate events, support digital camps, or help with welfare facilitation—flexible local options.",
         href: "/volunteer",
         cta: "Apply to volunteer",
       },
       {
-        title: "Partner",
-        copy: "Bring SVITECH Foundation programs to your school, library, or community organization.",
+        title: "Corporate partnership",
+        copy: "Collaborate on CSR volunteering, ethics sessions, and large-scale community projects.",
         href: "/contact",
         cta: "Start a partnership",
       },
       {
-        title: "Advocate",
-        copy: "Share our open curriculum and help more communities find tools they can trust.",
-        href: "/news",
-        cta: "Read & share",
+        title: "Sponsor education",
+        copy: "Support a child’s learning resources and wellbeing through our Education for All programme.",
+        href: "/donate",
+        cta: "Give toward education",
       },
     ],
     donateHeadline: "Donate",
     donateCopy:
-      "Support facilitator stipends, shared lab equipment, and free curriculum with a one-time or monthly gift.",
+      "Support Financial and Digital Inclusion, health camps, and volunteer-driven outreach with a one-time or monthly gift.",
     donateCtaPrimary: "Give now",
     donateCtaPrimaryHref: "/donate",
     donateCtaSecondary: "See how gifts are used",
     donateCtaSecondaryHref: "/reports",
     seoTitle: "Get Involved",
     seoDescription:
-      "Volunteer, partner, or donate to support SVITECH Foundation’s community technology programs.",
+      "Volunteer, partner, or donate to support SVITECH Foundation’s community programmes.",
   },
   contact: {
     eyebrow: "Contact",
     headline: "Let’s start a conversation.",
     intro:
-      "Tell us about your community, your organization, or how you’d like to help. We read every message.",
+      "Tell us about your community, CSR goals, or how you’d like to help. We welcome partnerships, volunteering, and donations.",
     emailLabel: "Email",
+    phoneLabel: "Phone",
+    addressLabel: "Office",
     responseTimeLabel: "Response time",
     seoTitle: "Contact",
     seoDescription:
-      "Reach the SVITECH Foundation team for partnerships, volunteering, and support.",
+      "Reach SVITECH Foundation in Ghatkopar West, Mumbai for partnerships, volunteering, and support.",
   },
   donate: {
     eyebrow: "Donate",
-    headline: "Fund skills communities can keep.",
+    headline: "Fund programmes that change lives.",
     intro:
-      "Your gift supports facilitator stipends, shared devices, and open learning materials—not overhead theater. Choose one-time or monthly giving.",
+      "Your gift provides education, healthcare access, digital skills, and livelihood opportunities. Every contribution helps us reach more underserved families across Maharashtra.",
     bullets: [
-      "Transparent programs and published reports",
-      "Receipt emailed after successful payment",
-      "Card, UPI, and netbanking via Razorpay",
+      "80G & 12AA registered Section 8 nonprofit",
+      "Receipt emailed after successful online payment",
+      "Card, UPI, and netbanking via Razorpay · bank transfer & cheque on request",
     ],
     footerNote:
-      "Prefer partnership or CSR? Talk to us via contact. See impact stories and reports for how gifts are used.",
+      "Prefer bank transfer, cheque, or CSR partnership? Contact us at info@svitech.org. Cheques may be mailed to our Ghatkopar West office. See impact stories and reports for how gifts are used.",
     seoTitle: "Donate",
     seoDescription:
-      "Support SVITECH Foundation with a one-time or monthly donation. Funds facilitator stipends, lab equipment, and open curriculum.",
+      "Support SVITECH Foundation with a one-time or monthly donation for digital skills, welfare access, and community programmes.",
   },
   donateThanks: {
     eyebrow: "Thank you",
@@ -576,76 +589,77 @@ export const defaultSiteSettings: SiteSettings = {
   },
   volunteer: {
     eyebrow: "Volunteer",
-    headline: "Share skills where they multiply.",
+    headline: "Share time where it multiplies.",
     intro:
-      "Facilitate labs, mentor a cohort, translate open curriculum, or help a partner nonprofit keep their tools running.",
+      "Teach children, coordinate events, support digital camps, or help families enrol for welfare schemes. Orientation is provided for facilitation roles.",
     bullets: [
-      "Flexible hours; remote and in-person options",
-      "Training and curriculum kits provided",
-      "Prefer donating time and money? Also see our donate page",
+      "Volunteer teacher: ~4 hours/week preferred; teaching experience helpful but not required",
+      "Event coordinator: organise camps and gatherings with strong communication skills",
+      "Flexible local and campaign-based options · also see our donate page",
     ],
     seoTitle: "Volunteer",
     seoDescription:
-      "Apply to volunteer with SVITECH Foundation—teach, mentor, translate, or support community labs.",
+      "Apply to volunteer with SVITECH Foundation—teaching, events, digital camps, and welfare facilitation.",
   },
   programs: {
-    eyebrow: "Programs",
-    headline: "Practical programs that leave skills behind.",
+    eyebrow: "Programmes",
+    headline: "Skills, access, and community development.",
     intro:
-      "Every SVITECH Foundation program is built to be taught, remixed, and sustained by the communities who use it.",
+      "Financial and Digital Inclusion, digital skills training, women empowerment, health camps, education support, literacy sessions, digital service camps, road safety, and CSR partnerships.",
     itemCtaLabel: "Learn more →",
-    bottomCtaLabel: "Partner with a program",
+    bottomCtaLabel: "Partner with a programme",
     bottomCtaHref: "/get-involved",
-    seoTitle: "Programs",
+    seoTitle: "Programmes",
     seoDescription:
-      "Digital literacy labs, open learning paths, and community tech builds from SVITECH Foundation.",
+      "Financial and Digital Inclusion, digital skills, women empowerment, health, education, and community outreach from SVITECH Foundation.",
   },
   events: {
     eyebrow: "Events",
-    headline: "Trainings and gatherings you can join.",
+    headline: "Camps, workshops, and gatherings you can join.",
     intro: "Register online—we’ll confirm by email.",
     registerOpenCta: "View & register",
     registerClosedCta: "View details",
     seoTitle: "Events",
     seoDescription:
-      "Upcoming trainings, meetups, and demo days from SVITECH Foundation.",
+      "Upcoming health drives, digital literacy workshops, and fundraising gatherings from SVITECH Foundation.",
   },
   news: {
     eyebrow: "News",
     headline: "Notes from the work.",
-    intro: "Program updates, open curriculum thinking, and how gifts turn into labs.",
+    intro: "Activity notes, education and health stories, and how skills programmes turn into livelihoods.",
     seoTitle: "News",
-    seoDescription: "Updates, essays, and transparency notes from SVITECH Foundation.",
+    seoDescription: "Updates and activity notes from SVITECH Foundation.",
   },
   impact: {
     eyebrow: "Impact",
-    headline: "Proof over pledges.",
+    headline: "Outcomes you can measure.",
     intro:
-      "Specific places, measurable outcomes, and stories communities can verify—not vague statistics.",
+      "Explore programme work across Maharashtra, Delhi, Gujarat, Haryana, and Uttar Pradesh—Financial and Digital Inclusion, digital skills, women empowerment, health camps, literacy drives, and community outreach.",
     mapEyebrow: "Where we work",
-    mapHeadline: "Impact across communities",
+    mapHeadline: "Impact across five states",
     storyCtaLabel: "Support work like this",
     seoTitle: "Impact",
     seoDescription:
-      "See where SVITECH Foundation programs create measurable community outcomes.",
+      "See SVITECH Foundation achievements across Maharashtra, Delhi, Gujarat, Haryana, and Uttar Pradesh.",
   },
   reports: {
     eyebrow: "Transparency",
     headline: "Reports, board, and how we steward gifts.",
-    intro: "Governance should be findable in two clicks. Here is ours.",
-    boardTitle: "Board",
+    intro:
+      "Section 8 governance, 80G & 12AA status, leadership bios, and annual reports—findable in two clicks.",
+    boardTitle: "Leadership",
     annualReportsTitle: "Annual reports",
     downloadLabel: "Download PDF",
     adminNote:
-      "Placeholder PDFs can be replaced in public/reports/. For tax exemption / 80G documents, add them here when available.",
+      "Replace placeholder PDFs in public/reports/ with filed annual reports. Keep 80G / 12AA certificates available here when sharing with donors.",
     contactPrompt: "Questions about finances or partnerships?",
     seoTitle: "Reports & governance",
     seoDescription:
-      "Annual reports, board information, and transparency notes from SVITECH Foundation.",
+      "Annual reports, leadership, and transparency notes from SVITECH Foundation (Section 8 · 80G · 12AA).",
   },
   detailPages: {
-    programsBack: "← All programs",
-    programsPartnerCta: "Partner with this program",
+    programsBack: "← All programmes",
+    programsPartnerCta: "Partner with this programme",
     programsVolunteerCta: "Volunteer",
     eventsBack: "← All events",
     eventsClosedNote: "Registration is closed.",

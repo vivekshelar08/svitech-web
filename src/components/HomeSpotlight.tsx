@@ -27,13 +27,13 @@ export function HomeSpotlight({
         className="absolute inset-0 bg-[radial-gradient(ellipse_40%_50%_at_0%_50%,rgba(196,92,38,0.06),transparent_55%)]"
         aria-hidden
       />
-      <div className="relative mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+      <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="site-eyebrow">{eyebrow}</p>
             <h2
               id="home-spotlight-heading"
-              className="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl"
+              className="mt-3 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl md:text-4xl"
             >
               {headline}
             </h2>

@@ -34,7 +34,7 @@ export default async function ProgramDetailPage({
   const { detailPages } = await getSiteSettings();
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
       <Link href="/programs" className="text-sm font-semibold text-brand">
         {detailPages.programsBack}
       </Link>

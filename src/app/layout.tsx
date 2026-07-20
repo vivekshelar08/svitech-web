@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Syne, IBM_Plex_Sans } from "next/font/google";
 import { getSiteSettings } from "@/lib/site-settings";
 import "./globals.css";
@@ -14,6 +14,16 @@ const ibmPlex = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2f5fa" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1424" },
+  ],
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -33,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${syne.variable} ${ibmPlex.variable} h-full`}>
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="flex min-h-full flex-col overflow-x-clip antialiased">
         <div className="site-grain" aria-hidden />
         {children}
       </body>

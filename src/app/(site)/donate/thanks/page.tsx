@@ -21,7 +21,7 @@ export default async function DonateThanksPage({
   const { donateThanks } = await getSiteSettings();
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-20 md:px-8 md:py-28">
+    <div className="mx-auto max-w-3xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
         {donateThanks.eyebrow}
       </p>

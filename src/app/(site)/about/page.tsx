@@ -12,7 +12,7 @@ export default async function AboutPage() {
   const { about } = await getSiteSettings();
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-16 md:px-8 md:py-24">
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
         {about.eyebrow}
       </p>
@@ -47,7 +47,7 @@ export default async function AboutPage() {
 
       <div className="mt-16 border-t border-line pt-12">
         <h2 className="font-display text-2xl font-bold text-ink">{about.valuesTitle}</h2>
-        <ul className="mt-8 grid gap-8 sm:grid-cols-3">
+        <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {about.values.map((value) => (
             <li key={value.title}>
               <h3 className="font-display text-lg font-bold text-ink">{value.title}</h3>
