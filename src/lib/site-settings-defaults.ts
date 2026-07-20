@@ -95,8 +95,8 @@ export type SiteSettings = {
     donateLabel: string;
     donateHref: string;
     donateShortLabel: string;
-    programsMenuAllLabel: string;
-    programsMenuEmpty: string;
+    /** Dropdown under Programs — e.g. Projects, Activities, Upcoming Events */
+    programsMenuLinks: NavLink[];
     stickyDonate: StickyDonateSettings;
   };
   footer: {
@@ -317,9 +317,14 @@ const defaultNav: NavLink[] = [
   { label: "About", href: "/about" },
   { label: "Programs", href: "/programs" },
   { label: "Impact", href: "/impact" },
-  { label: "News", href: "/news" },
   { label: "Reports", href: "/reports" },
   { label: "Get Involved", href: "/get-involved" },
+];
+
+const defaultProgramsMenu: NavLink[] = [
+  { label: "Projects", href: "/programs" },
+  { label: "Activities", href: "/news" },
+  { label: "Upcoming Events", href: "/events" },
 ];
 
 export const defaultSiteSettings: SiteSettings = {
@@ -358,8 +363,7 @@ export const defaultSiteSettings: SiteSettings = {
     donateLabel: "Donate",
     donateHref: "/donate",
     donateShortLabel: "Give",
-    programsMenuAllLabel: "All programmes",
-    programsMenuEmpty: "No programmes published yet",
+    programsMenuLinks: defaultProgramsMenu,
     stickyDonate: {
       enabled: true,
       message: "Support Financial and Digital Inclusion, health camps, and education outreach.",
@@ -371,10 +375,10 @@ export const defaultSiteSettings: SiteSettings = {
     exploreHeading: "Our work",
     exploreLinks: [
       { label: "About", href: "/about" },
-      { label: "Programs", href: "/programs" },
+      { label: "Projects", href: "/programs" },
       { label: "Impact", href: "/impact" },
-      { label: "Events", href: "/events" },
-      { label: "News", href: "/news" },
+      { label: "Upcoming Events", href: "/events" },
+      { label: "Activities", href: "/news" },
     ],
     takePartHeading: "Take part",
     takePartLinks: [
@@ -712,11 +716,11 @@ export const defaultSiteSettings: SiteSettings = {
       "Upcoming health drives, digital literacy workshops, and fundraising gatherings from SVITECH Foundation.",
   },
   news: {
-    eyebrow: "News",
+    eyebrow: "Activities",
     headline: "Notes from the work.",
     intro: "Activity notes, education and health stories, and how skills programmes turn into livelihoods.",
-    seoTitle: "News",
-    seoDescription: "Updates and activity notes from SVITECH Foundation.",
+    seoTitle: "Activities",
+    seoDescription: "Activity updates and field notes from SVITECH Foundation.",
   },
   impact: {
     eyebrow: "Impact",

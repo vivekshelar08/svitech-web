@@ -4,28 +4,33 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { SiteLogo } from "@/components/SiteLogo";
-import type { SiteSettings } from "@/lib/site-settings-defaults";
-
-export type NavProgram = {
-  slug: string;
-  name: string;
-  summary: string;
-};
+import type { NavLink, SiteSettings } from "@/lib/site-settings-defaults";
 
 type HeaderProps = {
   general: SiteSettings["general"];
   navigation: SiteSettings["navigation"];
-  programs: NavProgram[];
 };
 
 const PROGRAMS_HREF = "/programs";
+
+const fallbackProgramsMenu: NavLink[] = [
+  { label: "Projects", href: "/programs" },
+  { label: "Activities", href: "/news" },
+  { label: "Upcoming Events", href: "/events" },
+];
 
 function isProgramsLink(href: string) {
   const path = href.split("?")[0]?.replace(/\/$/, "") || "";
   return path === PROGRAMS_HREF || path === "/programmes";
 }
 
-export function Header({ general, navigation, programs }: HeaderProps) {
+function pathMatches(pathname: string, href: string) {
+  const path = href.split("?")[0]?.replace(/\/$/, "") || "";
+  if (!path) return false;
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
+export function Header({ general, navigation }: HeaderProps) {
   const pathname = usePathname();
   const programsMenuId = useId();
   const [open, setOpen] = useState(false);
@@ -38,7 +43,6 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     logoAlt: general.logoAlt,
     logoAriaLabel: general.logoAriaLabel,
   });
-  const [programList, setProgramList] = useState(programs);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -55,10 +59,6 @@ export function Header({ general, navigation, programs }: HeaderProps) {
   }, [general.logoUrl, general.logoAlt, general.logoAriaLabel]);
 
   useEffect(() => {
-    setProgramList(programs);
-  }, [programs]);
-
-  useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
@@ -71,7 +71,6 @@ export function Header({ general, navigation, programs }: HeaderProps) {
             logoAriaLabel?: string;
           };
           navigation?: SiteSettings["navigation"];
-          programs?: NavProgram[];
         };
         if (cancelled) return;
         if (json.navigation?.primaryLinks?.length) {
@@ -84,9 +83,6 @@ export function Header({ general, navigation, programs }: HeaderProps) {
             logoAriaLabel: json.general.logoAriaLabel || "",
           });
         }
-        if (Array.isArray(json.programs)) {
-          setProgramList(json.programs);
-        }
       } catch {
         // Keep server-rendered props
       }
@@ -96,8 +92,12 @@ export function Header({ general, navigation, programs }: HeaderProps) {
     };
   }, [pathname]);
 
+  const programsMenu =
+    nav.programsMenuLinks?.length > 0 ? nav.programsMenuLinks : fallbackProgramsMenu;
+
   const programsActive =
-    pathname === PROGRAMS_HREF || pathname.startsWith(`${PROGRAMS_HREF}/`);
+    programsMenu.some((item) => pathMatches(pathname, item.href)) ||
+    pathMatches(pathname, PROGRAMS_HREF);
 
   useEffect(() => {
     function onScroll() {
@@ -167,6 +167,33 @@ export function Header({ general, navigation, programs }: HeaderProps) {
 
   const links = nav.primaryLinks || [];
 
+  function renderProgramsMenu(onNavigate?: () => void) {
+    return (
+      <ul className="py-2">
+        {programsMenu.map((item) => {
+          const active = pathMatches(pathname, item.href);
+          return (
+            <li key={`${item.label}-${item.href}`}>
+              <Link
+                href={item.href}
+                role="menuitem"
+                className={`block px-5 py-3 text-[0.95rem] transition hover:bg-[#f7f7f7] hover:text-brand ${
+                  active ? "font-semibold text-brand" : "text-[#333]"
+                }`}
+                onClick={() => {
+                  setProgramsOpen(false);
+                  onNavigate?.();
+                }}
+              >
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
   function renderNavLink(link: { label: string; href: string }, index: number) {
     if (isProgramsLink(link.href)) {
       return (
@@ -204,35 +231,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
               className="absolute left-0 top-full z-[60] min-w-[15rem] pt-2"
             >
               <div className="animate-dropdown overflow-hidden bg-white shadow-[0_10px_28px_rgba(0,0,0,0.12)]">
-                <ul className="py-2">
-                  <li>
-                    <Link
-                      href={PROGRAMS_HREF}
-                      role="menuitem"
-                      className="block px-5 py-3 text-[0.95rem] text-[#333] transition hover:bg-[#f7f7f7] hover:text-brand"
-                      onClick={() => setProgramsOpen(false)}
-                    >
-                      {nav.programsMenuAllLabel || "All programmes"}
-                    </Link>
-                  </li>
-                  {programList.map((program) => (
-                    <li key={program.slug}>
-                      <Link
-                        href={`/programs/${program.slug}`}
-                        role="menuitem"
-                        className="block px-5 py-3 text-[0.95rem] text-[#333] transition hover:bg-[#f7f7f7] hover:text-brand"
-                        onClick={() => setProgramsOpen(false)}
-                      >
-                        {program.name}
-                      </Link>
-                    </li>
-                  ))}
-                  {programList.length === 0 && (
-                    <li className="px-5 py-3 text-sm text-ink-muted">
-                      {nav.programsMenuEmpty || "No programmes published yet"}
-                    </li>
-                  )}
-                </ul>
+                {renderProgramsMenu()}
               </div>
             </div>
           )}
@@ -240,7 +239,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
       );
     }
 
-    const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+    const active = pathMatches(pathname, link.href);
     return (
       <Link
         key={`nav-${index}-${link.href}`}
@@ -272,7 +271,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
         </div>
 
         <nav
-          className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 overflow-visible lg:justify-center lg:gap-1 xl:gap-2 md:flex"
+          className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 overflow-visible md:flex lg:justify-center lg:gap-1 xl:gap-2"
           aria-label="Primary"
         >
           {links.map((link, index) => renderNavLink(link, index))}
@@ -332,7 +331,7 @@ export function Header({ general, navigation, programs }: HeaderProps) {
           />
           <nav
             id="mobile-nav"
-            className="absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl md:hidden sm:px-5"
+            className="absolute inset-x-0 top-full z-50 max-h-[min(85svh,36rem)] overflow-y-auto overscroll-contain border-t border-line bg-white px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-2 shadow-2xl sm:px-5 md:hidden"
             aria-label="Mobile"
           >
             <ul className="flex flex-col">
@@ -360,35 +359,15 @@ export function Header({ general, navigation, programs }: HeaderProps) {
                         </svg>
                       </button>
                       {mobileProgramsOpen && (
-                        <ul className="mb-2 bg-[#fafafa]">
-                          <li>
-                            <Link
-                              href={PROGRAMS_HREF}
-                              className="block px-4 py-3.5 text-[0.95rem] text-[#333]"
-                              onClick={() => setOpen(false)}
-                            >
-                              {nav.programsMenuAllLabel || "All programmes"}
-                            </Link>
-                          </li>
-                          {programList.map((program) => (
-                            <li key={program.slug}>
-                              <Link
-                                href={`/programs/${program.slug}`}
-                                className="block px-4 py-3.5 text-[0.95rem] text-[#333]"
-                                onClick={() => setOpen(false)}
-                              >
-                                {program.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                        <div className="mb-2 bg-[#fafafa]">
+                          {renderProgramsMenu(() => setOpen(false))}
+                        </div>
                       )}
                     </li>
                   );
                 }
 
-                const active =
-                  pathname === link.href || pathname.startsWith(`${link.href}/`);
+                const active = pathMatches(pathname, link.href);
                 return (
                   <li key={`mnav-${index}-${link.href}`}>
                     <Link

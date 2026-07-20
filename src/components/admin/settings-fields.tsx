@@ -998,10 +998,18 @@ export function SettingsFormBody({
           <Field label="Donate button label" value={settings.navigation.donateLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateLabel: v } })} />
           <Field label="Donate button link" value={settings.navigation.donateHref} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateHref: v } })} />
           <Field label="Mobile donate short label" value={settings.navigation.donateShortLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateShortLabel: v } })} />
-          <Field label="Programs menu — all label" value={settings.navigation.programsMenuAllLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, programsMenuAllLabel: v } })} />
-          <Field label="Programs menu — empty text" value={settings.navigation.programsMenuEmpty} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, programsMenuEmpty: v } })} />
         </div>
         <NavLinksEditor label="Primary nav links" links={settings.navigation.primaryLinks} onChange={(links) => setSettings({ ...settings, navigation: { ...settings.navigation, primaryLinks: links } })} />
+        <NavLinksEditor
+          label="Programs dropdown (Projects · Activities · Upcoming Events)"
+          links={settings.navigation.programsMenuLinks}
+          onChange={(links) =>
+            setSettings({
+              ...settings,
+              navigation: { ...settings.navigation, programsMenuLinks: links },
+            })
+          }
+        />
         <SectionTitle title="Sticky donate bar" copy="Appears after scrolling — like Seva.org. Hidden on donate and admin pages." />
         <div className="grid gap-4 md:grid-cols-2">
           <label className="flex items-center gap-3 text-sm font-medium text-ink">
