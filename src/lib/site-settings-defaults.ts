@@ -1,7 +1,31 @@
 import { board as seedBoard } from "@/content/governance";
 
 export type NavLink = { label: string; href: string };
-export type FocusArea = { title: string; copy: string };
+export type FocusArea = {
+  title: string;
+  copy: string;
+  image?: string;
+  href?: string;
+};
+export type SitePopupSettings = {
+  enabled: boolean;
+  title: string;
+  body: string;
+  image: string;
+  ctaLabel: string;
+  ctaHref: string;
+  dismissLabel: string;
+  /** once = forever after dismiss; session = until browser closes; daily = once per day */
+  frequency: "once" | "session" | "daily";
+};
+export type SiteCacheSettings = {
+  /** live = always fresh; cached = allow ISR / page revalidate */
+  mode: "live" | "cached";
+  /** Seconds used when mode is cached (page ISR hint) */
+  revalidateSeconds: number;
+  /** Keep header/footer/nav reading live even in cached mode */
+  forceLiveChrome: boolean;
+};
 export type ImpactStat = { value: string; suffix?: string; label: string };
 export type TestimonialQuote = { text: string; attribution: string; role?: string };
 export type CampaignCard = {
@@ -105,6 +129,7 @@ export type SiteSettings = {
     impactStatsEyebrow: string;
     impactStatsHeadline: string;
     impactStats: ImpactStat[];
+    missionBandEnabled: boolean;
     programsEyebrow: string;
     programsHeadline: string;
     programsIntro: string;
@@ -257,6 +282,8 @@ export type SiteSettings = {
     eventsClosedNote: string;
     newsBack: string;
   };
+  popup: SitePopupSettings;
+  cache: SiteCacheSettings;
   board: BoardMemberSetting[];
 };
 
@@ -348,14 +375,23 @@ export const defaultSiteSettings: SiteSettings = {
       {
         title: "Financial and Digital Inclusion",
         copy: "Flagship programme for digital banking, UPI safety, financial planning, and citizen digital service access.",
+        image:
+          "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=80",
+        href: "/programs/financial-digital-inclusion",
       },
       {
         title: "Health & welfare facilitation",
         copy: "Health camps and enrolment support for schemes including Ayushman Bharat (PM-JAY).",
+        image:
+          "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
+        href: "/programs/health-welfare-facilitation",
       },
       {
         title: "Education & women empowerment",
         copy: "School programmes, education support in underserved areas, and livelihood training for women.",
+        image:
+          "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=900&q=80",
+        href: "/programs/women-empowerment",
       },
     ],
     approachEyebrow: "Our approach",
@@ -383,6 +419,7 @@ export const defaultSiteSettings: SiteSettings = {
       { value: "4", label: "other states with Financial Inclusion projects" },
       { value: "5", label: "states with mapped programme presence" },
     ],
+    missionBandEnabled: true,
     programsEyebrow: "Our programmes",
     programsHeadline: "Flagship work serving underserved communities",
     programsIntro:
@@ -664,6 +701,22 @@ export const defaultSiteSettings: SiteSettings = {
     eventsBack: "← All events",
     eventsClosedNote: "Registration is closed.",
     newsBack: "← All news",
+  },
+  popup: {
+    enabled: false,
+    title: "Support community programmes today",
+    body: "Your gift funds digital skills, health camps, and welfare access for underserved families across Maharashtra.",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80",
+    ctaLabel: "Donate now",
+    ctaHref: "/donate",
+    dismissLabel: "Maybe later",
+    frequency: "session",
+  },
+  cache: {
+    mode: "live",
+    revalidateSeconds: 60,
+    forceLiveChrome: true,
   },
   board: seedBoard.map((m) => ({ ...m })),
 };

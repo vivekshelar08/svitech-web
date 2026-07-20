@@ -407,6 +407,19 @@ a {
   animation: slide-up-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.reveal-block {
+  opacity: 0;
+  transform: translateY(1.1rem);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-block--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-rise,
   .animate-rise-delay-1,
@@ -416,6 +429,13 @@ a {
   .animate-dropdown,
   .animate-slide-up {
     animation: none;
+  }
+
+  .reveal-block,
+  .reveal-block--in {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .btn-primary:hover,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   AdminAlert,
   AdminBadge,
@@ -16,6 +17,7 @@ import {
   type AdminTab,
   type ContentCounts,
 } from "@/components/admin/admin-types";
+import type { SiteSettings } from "@/lib/site-settings-defaults";
 
 export function DashboardTab({
   inbox,
@@ -33,6 +35,92 @@ export function DashboardTab({
   onNavigate: (tab: AdminTab) => void;
 }) {
   const stats = inbox?.stats;
+  const [popupEnabled, setPopupEnabled] = useState(false);
+  const [cacheMode, setCacheMode] = useState<"live" | "cached">("live");
+  const [siteBusy, setSiteBusy] = useState(false);
+  const [siteMsg, setSiteMsg] = useState("");
+
+  useEffect(() => {
+    void (async () => {
+      const res = await fetch("/api/admin/settings");
+      if (!res.ok) return;
+      const json = (await res.json()) as {
+        settings?: {
+          popup?: { enabled?: boolean };
+          cache?: { mode?: "live" | "cached" };
+        };
+      };
+      setPopupEnabled(Boolean(json.settings?.popup?.enabled));
+      setCacheMode(json.settings?.cache?.mode === "cached" ? "cached" : "live");
+    })();
+  }, []);
+
+  async function patchSettings(
+    patch: (settings: SiteSettings) => SiteSettings,
+    okMessage: string,
+  ) {
+    setSiteBusy(true);
+    setSiteMsg("");
+    try {
+      const res = await fetch("/api/admin/settings");
+      if (!res.ok) throw new Error("Could not load settings");
+      const json = (await res.json()) as { settings: SiteSettings };
+      const next = patch(json.settings);
+      const save = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ settings: next }),
+      });
+      if (!save.ok) {
+        const err = (await save.json()) as { error?: string };
+        throw new Error(err.error || "Save failed");
+      }
+      setSiteMsg(okMessage);
+    } catch (err) {
+      setSiteMsg(err instanceof Error ? err.message : "Update failed");
+    } finally {
+      setSiteBusy(false);
+    }
+  }
+
+  async function togglePopup(enabled: boolean) {
+    setPopupEnabled(enabled);
+    await patchSettings(
+      (settings) => ({
+        ...settings,
+        popup: { ...settings.popup, enabled },
+      }),
+      enabled ? "Popup enabled on the public site." : "Popup disabled.",
+    );
+  }
+
+  async function toggleCacheMode(mode: "live" | "cached") {
+    setCacheMode(mode);
+    await patchSettings(
+      (settings) => ({
+        ...settings,
+        cache: { ...settings.cache, mode },
+      }),
+      mode === "live" ? "Cache mode: live (always fresh)." : "Cache mode: cached (ISR).",
+    );
+  }
+
+  async function purgeCache() {
+    setSiteBusy(true);
+    setSiteMsg("");
+    try {
+      const res = await fetch("/api/admin/revalidate", { method: "POST" });
+      if (!res.ok) {
+        const err = (await res.json()) as { error?: string };
+        throw new Error(err.error || "Purge failed");
+      }
+      setSiteMsg("Public cache purged — pages will rebuild on next visit.");
+    } catch (err) {
+      setSiteMsg(err instanceof Error ? err.message : "Purge failed");
+    } finally {
+      setSiteBusy(false);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -49,6 +137,83 @@ export function DashboardTab({
           )}
         </div>
       </div>
+
+      <AdminCard
+        title="Site controls"
+        description="Enable the announcement popup, switch cache policy, or jump to homepage images."
+      >
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
+            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Popup</p>
+            <p className="mt-1 text-sm text-ink-muted">
+              Post-style announcement with image + CTA
+            </p>
+            <label className="mt-4 flex items-center gap-3 text-sm font-semibold text-ink">
+              <input
+                type="checkbox"
+                checked={popupEnabled}
+                disabled={siteBusy}
+                onChange={(e) => void togglePopup(e.target.checked)}
+                className="h-4 w-4 rounded border-line"
+              />
+              {popupEnabled ? "Enabled" : "Disabled"}
+            </label>
+            <AdminButton
+              variant="ghost"
+              size="sm"
+              className="mt-3"
+              onClick={() => onNavigate("popup")}
+            >
+              Edit popup content →
+            </AdminButton>
+          </div>
+
+          <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
+            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Cache</p>
+            <p className="mt-1 text-sm text-ink-muted">Live while editing · cached for speed</p>
+            <select
+              className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm"
+              value={cacheMode}
+              disabled={siteBusy}
+              onChange={(e) => void toggleCacheMode(e.target.value as "live" | "cached")}
+            >
+              <option value="live">Live — always fresh</option>
+              <option value="cached">Cached — allow ISR</option>
+            </select>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <AdminButton
+                variant="secondary"
+                size="sm"
+                disabled={siteBusy}
+                onClick={() => void purgeCache()}
+              >
+                Purge cache
+              </AdminButton>
+              <AdminButton variant="ghost" size="sm" onClick={() => onNavigate("cache")}>
+                Policy →
+              </AdminButton>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
+            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Home images</p>
+            <p className="mt-1 text-sm text-ink-muted">
+              Hero, focus areas, approach, and campaigns
+            </p>
+            <AdminButton
+              variant="primary"
+              size="sm"
+              className="mt-4"
+              onClick={() => onNavigate("home")}
+            >
+              Customize homepage
+            </AdminButton>
+          </div>
+        </div>
+        {siteMsg && (
+          <p className="mt-4 text-sm text-brand">{siteMsg}</p>
+        )}
+      </AdminCard>
 
       {inbox?.message && (
         <AdminAlert title="Backend not fully configured" tone="warning">
@@ -103,11 +268,11 @@ export function DashboardTab({
 
           <AdminCard title="Quick actions" padding="sm">
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+              <QuickAction label="Home page" onClick={() => onNavigate("home")} />
               <QuickAction label="Inbox" onClick={() => onNavigate("inbox")} />
               <QuickAction label="New article" onClick={() => onNavigate("posts")} />
-              <QuickAction label="Events" onClick={() => onNavigate("events")} />
-              <QuickAction label="Site settings" onClick={() => onNavigate("site")} />
-              <QuickAction label="Page copy" onClick={() => onNavigate("pages")} />
+              <QuickAction label="Popup" onClick={() => onNavigate("popup")} />
+              <QuickAction label="Cache" onClick={() => onNavigate("cache")} />
               <QuickAction label="Colors" onClick={() => onNavigate("theme")} />
             </div>
           </AdminCard>

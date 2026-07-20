@@ -6,6 +6,7 @@ export type AdminTab =
   | "programs"
   | "impact_stories"
   | "reports"
+  | "home"
   | "site"
   | "theme"
   | "navigation"
@@ -13,6 +14,8 @@ export type AdminTab =
   | "listings"
   | "board"
   | "detail"
+  | "popup"
+  | "cache"
   | "account";
 
 export type {
@@ -36,8 +39,12 @@ export const navGroups: NavGroup[] = [
     items: ["posts", "events", "programs", "impact_stories", "reports"],
   },
   {
-    label: "Customize",
-    items: ["site", "theme", "navigation", "pages", "listings", "board", "detail"],
+    label: "Website",
+    items: ["home", "popup", "cache", "site", "theme", "navigation"],
+  },
+  {
+    label: "Pages & people",
+    items: ["pages", "listings", "board", "detail"],
   },
   { label: "You", items: ["account"] },
 ];
@@ -50,6 +57,7 @@ export const tabLabels: Record<AdminTab, string> = {
   programs: "Programs",
   impact_stories: "Impact",
   reports: "Reports",
+  home: "Home page",
   site: "Brand & SEO",
   theme: "Colors",
   navigation: "Navigation",
@@ -57,25 +65,30 @@ export const tabLabels: Record<AdminTab, string> = {
   listings: "List pages",
   board: "Board",
   detail: "Detail pages",
+  popup: "Site popup",
+  cache: "Cache policy",
   account: "Account",
 };
 
 export const tabHints: Record<AdminTab, string> = {
-  dashboard: "Command center — activity, content health, and quick actions",
+  dashboard: "Quick toggles for popup & cache, plus activity and content health",
   inbox: "Form submissions and registrations",
   posts: "News — upload covers, duplicate drafts, publish/unpublish",
   events: "Events with covers, registration toggle, and live preview",
   programs: "Programs with cover upload and sort order",
   impact_stories: "Impact stories with metrics, map coords, and covers",
   reports: "Annual reports — upload PDF or paste a URL",
+  home: "Hero image, focus areas (with photos), campaigns, and homepage blocks",
   site: "Brand, logo upload, SEO counters, and footer copy",
   theme: "Brand colors applied across the whole site",
   navigation: "Header/footer links and sticky donate — reorder with ↑↓",
-  pages: "Every homepage and core-page block — add, edit, remove lists",
+  pages: "About, get involved, and contact page copy & images",
   listings: "Donate, volunteer, programs, events, news, impact, reports intros",
   board: "Board members with optional photos — add, reorder, remove",
   detail: "Back links and CTAs on detail pages",
-  account: "Password change and recovery",
+  popup: "Homepage announcement popup — enable, copy, image, and CTA",
+  cache: "Live vs cached pages, revalidate interval, and purge",
+  account: "Password, recovery, and full website data backup",
 };
 
 export const contentTabs = [
@@ -89,6 +102,7 @@ export const contentTabs = [
 export type ContentTabType = (typeof contentTabs)[number];
 
 export const settingsTabs = [
+  "home",
   "site",
   "theme",
   "navigation",
@@ -96,6 +110,8 @@ export const settingsTabs = [
   "listings",
   "board",
   "detail",
+  "popup",
+  "cache",
 ] as const;
 
 export type SettingsTabType = (typeof settingsTabs)[number];

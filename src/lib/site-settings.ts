@@ -41,12 +41,8 @@ async function readFromSupabase(): Promise<SiteSettings | null> {
   return null;
 }
 
-export async function getSiteSettings(): Promise<SiteSettings> {
-  // Always read live settings so header/nav never flash an old cached bar.
-  noStore();
-
-  // When Supabase is configured, never fall back to a stale local JSON file —
-  // that caused the public nav to show fewer links on first load.
+/** Raw settings read — does not opt the render into dynamic mode. */
+export async function readSiteSettings(): Promise<SiteSettings> {
   if (hasSupabase()) {
     for (let attempt = 0; attempt < 2; attempt++) {
       const fromDb = await readFromSupabase();
@@ -62,7 +58,17 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   return defaultSiteSettings;
 }
 
-function revalidatePublicSite() {
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const settings = await readSiteSettings();
+  // Live mode: never serve a stale settings/content snapshot.
+  // Cached mode relies on ISR + Header's /api/site-chrome refresh for nav.
+  if (settings.cache.mode === "live") {
+    noStore();
+  }
+  return settings;
+}
+
+export function revalidatePublicSite() {
   revalidatePath("/", "layout");
   revalidatePath("/", "page");
   const paths = [

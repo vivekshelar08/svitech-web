@@ -3,7 +3,7 @@ import { impactStories as seedImpact, type ImpactStory } from "@/content/impact"
 import { reports as seedReports, type Report } from "@/content/governance";
 import { posts as seedPosts, type Post } from "@/content/posts";
 import { programs as seedPrograms, type Program } from "@/content/programs";
-import { unstable_noStore as noStore } from "next/cache";
+import { applyPublicDataCachePolicy } from "@/lib/cache-policy";
 import { getAnonClient } from "@/lib/supabase";
 
 /**
@@ -11,7 +11,7 @@ import { getAnonClient } from "@/lib/supabase";
  * Do not fall back to seed content — that revived unpublished items on the public site.
  */
 export async function getPrograms(): Promise<Program[]> {
-  noStore();
+  await applyPublicDataCachePolicy();
   const supabase = getAnonClient();
   if (!supabase) return seedPrograms;
 
@@ -40,6 +40,7 @@ export async function getProgram(slug: string) {
 }
 
 export async function getImpactStories(): Promise<ImpactStory[]> {
+  await applyPublicDataCachePolicy();
   const supabase = getAnonClient();
   if (!supabase) return seedImpact;
 
@@ -72,6 +73,7 @@ export async function getImpactStory(slug: string) {
 }
 
 export async function getPosts(): Promise<Post[]> {
+  await applyPublicDataCachePolicy();
   const supabase = getAnonClient();
   if (!supabase) {
     return [...seedPosts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
@@ -101,6 +103,7 @@ export async function getPost(slug: string) {
 }
 
 export async function getEvents(): Promise<EventItem[]> {
+  await applyPublicDataCachePolicy();
   const supabase = getAnonClient();
   if (!supabase) return seedEvents;
 
@@ -131,6 +134,7 @@ export async function getEvent(slug: string) {
 }
 
 export async function getReports(): Promise<Report[]> {
+  await applyPublicDataCachePolicy();
   const supabase = getAnonClient();
   if (!supabase) return seedReports;
 

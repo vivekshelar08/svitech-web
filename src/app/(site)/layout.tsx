@@ -1,13 +1,10 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { SitePopup } from "@/components/SitePopup";
 import { StickyDonateBar } from "@/components/StickyDonateBar";
 import { SiteTheme } from "@/components/SiteTheme";
 import { getPrograms } from "@/lib/content";
 import { getSiteSettings } from "@/lib/site-settings";
-
-// Header/footer/nav must always match the latest admin settings — never a
-// stale statically generated shell from build or ISR cache.
-export const dynamic = "force-dynamic";
 
 export default async function SiteLayout({
   children,
@@ -37,6 +34,7 @@ export default async function SiteLayout({
         ctaLabel={settings.navigation.stickyDonate.ctaLabel}
         ctaHref={settings.navigation.stickyDonate.ctaHref}
       />
+      <SitePopup popup={settings.popup} />
     </>
   );
 }

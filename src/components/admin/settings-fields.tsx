@@ -234,259 +234,54 @@ export function PageIntroFields({
 }
 
 export type SettingsSection =
+  | "home"
   | "site"
   | "theme"
   | "navigation"
   | "pages"
   | "listings"
   | "board"
-  | "detail";
+  | "detail"
+  | "popup"
+  | "cache";
 
-export function SettingsFormBody({
-  section,
+
+function HomeExtraBlocks({
   settings,
   setSettings,
 }: {
-  section: SettingsSection;
   settings: SiteSettings;
   setSettings: (s: SiteSettings) => void;
 }) {
-  if (section === "site") {
-    return (
-      <div className="space-y-8">
-        <SectionTitle title="Brand & identity" />
+  return (
+    <>
+      <div className="space-y-4">
+        <SectionTitle title="Bottom CTA" />
         <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Site name" value={settings.general.siteName} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, siteName: v } })} />
-          <Field label="Tagline" value={settings.general.tagline} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, tagline: v } })} />
-          <div className="md:col-span-2">
-            <MediaField
-              label="Logo"
-              value={settings.general.logoUrl}
-              onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoUrl: v } })}
-              hint="Upload a file or paste a public URL /public path"
-              folder="brand"
-            />
-          </div>
-          <Field label="Logo alt text" value={settings.general.logoAlt} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAlt: v } })} />
-          <Field label="Logo aria label" value={settings.general.logoAriaLabel} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAriaLabel: v } })} />
-          <Field label="Contact email" value={settings.general.contactEmail} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactEmail: v } })} />
-          <Field label="Contact phone" value={settings.general.contactPhone} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactPhone: v } })} />
-          <Field label="Office address" value={settings.general.officeAddress} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, officeAddress: v } })} multiline />
-          <Field label="Response time" value={settings.general.responseTime} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, responseTime: v } })} />
-          <div>
-            <Field label="SEO title" value={settings.general.seoTitle} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoTitle: v } })} />
-            <SeoHint value={settings.general.seoTitle} softLimit={60} />
-          </div>
-          <div>
-            <Field label="SEO description" value={settings.general.seoDescription} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoDescription: v } })} multiline />
-            <SeoHint value={settings.general.seoDescription} softLimit={155} />
-          </div>
-          <Field label="Footer blurb" value={settings.general.footerBlurb} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, footerBlurb: v } })} multiline />
-          <Field label="Newsletter blurb" value={settings.general.newsletterBlurb} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, newsletterBlurb: v } })} multiline />
-          <Field label="Copyright note" value={settings.general.copyrightNote} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, copyrightNote: v } })} />
-        </div>
-      </div>
-    );
-  }
-
-  if (section === "theme") {
-    return (
-      <div className="space-y-6">
-        <SectionTitle title="Brand colors" copy="Applied site-wide via CSS variables." />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(Object.keys(settings.theme) as Array<keyof SiteSettings["theme"]>).map((key) => (
-            <ColorField
-              key={key}
-              label={key}
-              value={settings.theme[key]}
-              onChange={(v) => setSettings({ ...settings, theme: { ...settings.theme, [key]: v } })}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (section === "navigation") {
-    return (
-      <div className="space-y-10">
-        <SectionTitle title="Header navigation" />
-        <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Donate button label" value={settings.navigation.donateLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateLabel: v } })} />
-          <Field label="Donate button link" value={settings.navigation.donateHref} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateHref: v } })} />
-        </div>
-        <NavLinksEditor label="Primary nav links" links={settings.navigation.primaryLinks} onChange={(links) => setSettings({ ...settings, navigation: { ...settings.navigation, primaryLinks: links } })} />
-        <SectionTitle title="Sticky donate bar" copy="Appears after scrolling — like Seva.org. Hidden on donate and admin pages." />
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="flex items-center gap-3 text-sm font-medium text-ink">
-            <input
-              type="checkbox"
-              checked={settings.navigation.stickyDonate.enabled}
-              onChange={(e) => setSettings({
-                ...settings,
-                navigation: {
-                  ...settings.navigation,
-                  stickyDonate: { ...settings.navigation.stickyDonate, enabled: e.target.checked },
-                },
-              })}
-              className="h-4 w-4 rounded border-line"
-            />
-            Enabled
-          </label>
-          <Field label="CTA label" value={settings.navigation.stickyDonate.ctaLabel} onChange={(v) => setSettings({
-            ...settings,
-            navigation: {
-              ...settings.navigation,
-              stickyDonate: { ...settings.navigation.stickyDonate, ctaLabel: v },
-            },
-          })} />
-          <Field label="CTA link" value={settings.navigation.stickyDonate.ctaHref} onChange={(v) => setSettings({
-            ...settings,
-            navigation: {
-              ...settings.navigation,
-              stickyDonate: { ...settings.navigation.stickyDonate, ctaHref: v },
-            },
-          })} />
-          <Field label="Message" value={settings.navigation.stickyDonate.message} onChange={(v) => setSettings({
-            ...settings,
-            navigation: {
-              ...settings.navigation,
-              stickyDonate: { ...settings.navigation.stickyDonate, message: v },
-            },
-          })} multiline />
-        </div>
-        <SectionTitle title="Footer navigation" />
-        <div className="grid gap-4 md:grid-cols-3">
-          <Field label="Explore heading" value={settings.footer.exploreHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, exploreHeading: v } })} />
-          <Field label="Take part heading" value={settings.footer.takePartHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, takePartHeading: v } })} />
-          <Field label="Newsletter heading" value={settings.footer.newsletterHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, newsletterHeading: v } })} />
-        </div>
-        <NavLinksEditor label="Explore links" links={settings.footer.exploreLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, exploreLinks: links } })} />
-        <NavLinksEditor label="Take part links" links={settings.footer.takePartLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, takePartLinks: links } })} />
-      </div>
-    );
-  }
-
-  if (section === "pages") {
-    return (
-      <div className="space-y-12">
-        <div className="space-y-4">
-          <SectionTitle title="Home page" copy="Every homepage block is editable — including hero CTAs, focus areas, and approach imagery." />
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field label="Hero headline" value={settings.home.heroHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroHeadline: v } })} />
-            <Field label="Hero subhead" value={settings.home.heroSubhead} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroSubhead: v } })} multiline />
-            <div className="md:col-span-2">
-              <MediaField
-                label="Hero image"
-                value={settings.home.heroImage}
-                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImage: v } })}
-                folder="home"
-              />
-            </div>
-            <Field label="Hero image alt" value={settings.home.heroImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImageAlt: v } })} />
-            <Field label="Primary CTA label" value={settings.home.heroCtaPrimary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimary: v } })} />
-            <Field label="Primary CTA link" value={settings.home.heroCtaPrimaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimaryHref: v } })} />
-            <Field label="Secondary CTA label" value={settings.home.heroCtaSecondary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondary: v } })} />
-            <Field label="Secondary CTA link" value={settings.home.heroCtaSecondaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondaryHref: v } })} />
-          </div>
-
-          <SectionTitle title="Focus areas" />
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field label="Focus eyebrow" value={settings.home.focusEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusEyebrow: v } })} />
-            <Field label="Focus headline" value={settings.home.focusHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusHeadline: v } })} />
-            <Field label="Focus intro" value={settings.home.focusIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusIntro: v } })} multiline />
-          </div>
-          {settings.home.focusAreas.map((area, index) => (
-            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Area {index + 1}</p>
-                <div className="flex items-center gap-2">
-                  <ReorderButtons
-                    index={index}
-                    total={settings.home.focusAreas.length}
-                    onMove={(from, to) =>
-                      setSettings({
-                        ...settings,
-                        home: { ...settings.home, focusAreas: moveItem(settings.home.focusAreas, from, to) },
-                      })
-                    }
-                  />
-                  <AdminButton
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      setSettings({
-                        ...settings,
-                        home: {
-                          ...settings.home,
-                          focusAreas: settings.home.focusAreas.filter((_, i) => i !== index),
-                        },
-                      })
-                    }
-                  >
-                    Remove
-                  </AdminButton>
-                </div>
-              </div>
-              <Field
-                label="Title"
-                value={area.title}
-                onChange={(v) => {
-                  const next = [...settings.home.focusAreas];
-                  next[index] = { ...next[index], title: v };
-                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
-                }}
-              />
-              <Field
-                label="Copy"
-                value={area.copy}
-                onChange={(v) => {
-                  const next = [...settings.home.focusAreas];
-                  next[index] = { ...next[index], copy: v };
-                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
-                }}
-                multiline
-              />
-            </div>
-          ))}
-          <AdminButton
-            variant="secondary"
-            size="sm"
-            onClick={() =>
-              setSettings({
-                ...settings,
-                home: {
-                  ...settings.home,
-                  focusAreas: [...settings.home.focusAreas, { title: "New focus area", copy: "" }],
-                },
-              })
+          <Field
+            label="Bottom CTA headline"
+            value={settings.home.ctaHeadline}
+            onChange={(v) =>
+              setSettings({ ...settings, home: { ...settings.home, ctaHeadline: v } })
             }
-          >
-            Add focus area
-          </AdminButton>
-
-          <SectionTitle title="Approach block" />
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field label="Approach eyebrow" value={settings.home.approachEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachEyebrow: v } })} />
-            <Field label="Approach headline" value={settings.home.approachHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachHeadline: v } })} />
-            <Field label="Approach copy" value={settings.home.approachCopy} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachCopy: v } })} multiline />
-            <div className="md:col-span-2">
-              <MediaField
-                label="Approach image"
-                value={settings.home.approachImage}
-                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImage: v } })}
-                folder="home"
-              />
-            </div>
-            <Field label="Approach image alt" value={settings.home.approachImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImageAlt: v } })} />
-            <Field label="Approach link label" value={settings.home.approachLinkLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkLabel: v } })} />
-            <Field label="Approach link href" value={settings.home.approachLinkHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkHref: v } })} />
-            <Field label="Bottom CTA headline" value={settings.home.ctaHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, ctaHeadline: v } })} />
-            <Field label="Bottom CTA copy" value={settings.home.ctaCopy} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, ctaCopy: v } })} multiline />
-          </div>
-          <NavLinksEditor label="Bottom CTA buttons" links={settings.home.ctaButtons} onChange={(ctaButtons) => setSettings({ ...settings, home: { ...settings.home, ctaButtons } })} />
+          />
+          <Field
+            label="Bottom CTA copy"
+            value={settings.home.ctaCopy}
+            onChange={(v) => setSettings({ ...settings, home: { ...settings.home, ctaCopy: v } })}
+            multiline
+          />
         </div>
-        <div className="space-y-4">
+        <NavLinksEditor
+          label="Bottom CTA buttons"
+          links={settings.home.ctaButtons}
+          onChange={(ctaButtons) =>
+            setSettings({ ...settings, home: { ...settings.home, ctaButtons } })
+          }
+        />
+      </div>
+
+      <div className="space-y-4">
           <SectionTitle title="Impact stats band" copy="Large counters shown below the hero — inspired by Smile Foundation and Pratham." />
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Eyebrow" value={settings.home.impactStatsEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, impactStatsEyebrow: v } })} />
@@ -786,7 +581,450 @@ export function SettingsFormBody({
             },
           })}>Add partner</AdminButton>
         </div>
+            </>
+  );
+}
+
+export function SettingsFormBody({
+  section,
+  settings,
+  setSettings,
+}: {
+  section: SettingsSection;
+  settings: SiteSettings;
+  setSettings: (s: SiteSettings) => void;
+}) {
+  if (section === "home") {
+    return (
+      <div className="space-y-12">
+        <div className="rounded-xl border border-brand/15 bg-brand/5 px-4 py-3 text-sm text-ink-muted">
+          Edit the public homepage in one place — hero photo, focus-area images, campaigns, and CTAs.
+          Changes go live after you save.
+        </div>
         <div className="space-y-4">
+          <SectionTitle title="Hero" copy="Full-bleed background image, headline, and primary actions." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Hero headline" value={settings.home.heroHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroHeadline: v } })} />
+            <Field label="Hero subhead" value={settings.home.heroSubhead} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroSubhead: v } })} multiline />
+            <div className="md:col-span-2">
+              <MediaField
+                label="Hero image"
+                value={settings.home.heroImage}
+                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImage: v } })}
+                folder="home"
+              />
+            </div>
+            <Field label="Hero image alt" value={settings.home.heroImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImageAlt: v } })} />
+            <Field label="Primary CTA label" value={settings.home.heroCtaPrimary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimary: v } })} />
+            <Field label="Primary CTA link" value={settings.home.heroCtaPrimaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimaryHref: v } })} />
+            <Field label="Secondary CTA label" value={settings.home.heroCtaSecondary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondary: v } })} />
+            <Field label="Secondary CTA link" value={settings.home.heroCtaSecondaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondaryHref: v } })} />
+          </div>
+
+          <SectionTitle title="Focus areas" copy="Image cards under the hero — like an “areas of work” strip. Upload a photo per area." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Focus eyebrow" value={settings.home.focusEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusEyebrow: v } })} />
+            <Field label="Focus headline" value={settings.home.focusHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusHeadline: v } })} />
+            <Field label="Focus intro" value={settings.home.focusIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusIntro: v } })} multiline />
+          </div>
+          {settings.home.focusAreas.map((area, index) => (
+            <div key={index} className="space-y-3 rounded-xl border border-line/70 bg-surface/40 p-4">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Area {index + 1}</p>
+                <div className="flex items-center gap-2">
+                  <ReorderButtons
+                    index={index}
+                    total={settings.home.focusAreas.length}
+                    onMove={(from, to) =>
+                      setSettings({
+                        ...settings,
+                        home: { ...settings.home, focusAreas: moveItem(settings.home.focusAreas, from, to) },
+                      })
+                    }
+                  />
+                  <AdminButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setSettings({
+                        ...settings,
+                        home: {
+                          ...settings.home,
+                          focusAreas: settings.home.focusAreas.filter((_, i) => i !== index),
+                        },
+                      })
+                    }
+                  >
+                    Remove
+                  </AdminButton>
+                </div>
+              </div>
+              <Field
+                label="Title"
+                value={area.title}
+                onChange={(v) => {
+                  const next = [...settings.home.focusAreas];
+                  next[index] = { ...next[index], title: v };
+                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
+                }}
+              />
+              <Field
+                label="Copy"
+                value={area.copy}
+                onChange={(v) => {
+                  const next = [...settings.home.focusAreas];
+                  next[index] = { ...next[index], copy: v };
+                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
+                }}
+                multiline
+              />
+              <MediaField
+                label="Area image"
+                value={area.image || ""}
+                onChange={(v) => {
+                  const next = [...settings.home.focusAreas];
+                  next[index] = { ...next[index], image: v || undefined };
+                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
+                }}
+                folder="home"
+              />
+              <Field
+                label="Link (optional)"
+                value={area.href || ""}
+                onChange={(v) => {
+                  const next = [...settings.home.focusAreas];
+                  next[index] = { ...next[index], href: v || undefined };
+                  setSettings({ ...settings, home: { ...settings.home, focusAreas: next } });
+                }}
+                hint="e.g. /programs/financial-digital-inclusion"
+              />
+            </div>
+          ))}
+          <AdminButton
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              setSettings({
+                ...settings,
+                home: {
+                  ...settings.home,
+                  focusAreas: [...settings.home.focusAreas, { title: "New focus area", copy: "", image: "", href: "" }],
+                },
+              })
+            }
+          >
+            Add focus area
+          </AdminButton>
+
+          <label className="flex items-center gap-3 rounded-xl border border-line/70 bg-surface/40 px-4 py-3 text-sm font-medium text-ink">
+            <input
+              type="checkbox"
+              checked={settings.home.missionBandEnabled}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  home: { ...settings.home, missionBandEnabled: e.target.checked },
+                })
+              }
+              className="h-4 w-4 rounded border-line"
+            />
+            Show Mission & Vision band on homepage (uses About page mission/vision copy)
+          </label>
+
+          <SectionTitle title="Approach block" />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Approach eyebrow" value={settings.home.approachEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachEyebrow: v } })} />
+            <Field label="Approach headline" value={settings.home.approachHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachHeadline: v } })} />
+            <Field label="Approach copy" value={settings.home.approachCopy} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachCopy: v } })} multiline />
+            <div className="md:col-span-2">
+              <MediaField
+                label="Approach image"
+                value={settings.home.approachImage}
+                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImage: v } })}
+                folder="home"
+              />
+            </div>
+            <Field label="Approach image alt" value={settings.home.approachImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImageAlt: v } })} />
+            <Field label="Approach link label" value={settings.home.approachLinkLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkLabel: v } })} />
+            <Field label="Approach link href" value={settings.home.approachLinkHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkHref: v } })} />
+          </div>
+        </div>
+
+        {/* Remaining homepage blocks reused from previous pages section */}
+        <HomeExtraBlocks settings={settings} setSettings={setSettings} />
+      </div>
+    );
+  }
+
+  if (section === "popup") {
+    return (
+      <div className="space-y-6">
+        <SectionTitle
+          title="Site announcement popup"
+          copy="Shows once per session (or per your frequency) when enabled. Toggle quickly from Dashboard too."
+        />
+        <label className="flex items-center gap-3 text-sm font-medium text-ink">
+          <input
+            type="checkbox"
+            checked={settings.popup.enabled}
+            onChange={(e) =>
+              setSettings({
+                ...settings,
+                popup: { ...settings.popup, enabled: e.target.checked },
+              })
+            }
+            className="h-4 w-4 rounded border-line"
+          />
+          Popup enabled
+        </label>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field
+            label="Title"
+            value={settings.popup.title}
+            onChange={(v) => setSettings({ ...settings, popup: { ...settings.popup, title: v } })}
+          />
+          <Field
+            label="Body"
+            value={settings.popup.body}
+            onChange={(v) => setSettings({ ...settings, popup: { ...settings.popup, body: v } })}
+            multiline
+          />
+          <div className="md:col-span-2">
+            <MediaField
+              label="Popup image (optional)"
+              value={settings.popup.image}
+              onChange={(v) => setSettings({ ...settings, popup: { ...settings.popup, image: v } })}
+              folder="popup"
+            />
+          </div>
+          <Field
+            label="CTA label"
+            value={settings.popup.ctaLabel}
+            onChange={(v) => setSettings({ ...settings, popup: { ...settings.popup, ctaLabel: v } })}
+          />
+          <Field
+            label="CTA link"
+            value={settings.popup.ctaHref}
+            onChange={(v) => setSettings({ ...settings, popup: { ...settings.popup, ctaHref: v } })}
+          />
+          <Field
+            label="Dismiss label"
+            value={settings.popup.dismissLabel}
+            onChange={(v) => setSettings({ ...settings, popup: { ...settings.popup, dismissLabel: v } })}
+          />
+          <label className="block">
+            <span className="text-sm font-medium text-ink">Show frequency</span>
+            <select
+              value={settings.popup.frequency}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  popup: {
+                    ...settings.popup,
+                    frequency: e.target.value as SiteSettings["popup"]["frequency"],
+                  },
+                })
+              }
+              className={adminInputClass}
+            >
+              <option value="session">Once per browser session</option>
+              <option value="daily">Once per day</option>
+              <option value="once">Once ever (until storage cleared)</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    );
+  }
+
+  if (section === "cache") {
+    return (
+      <div className="space-y-6">
+        <SectionTitle
+          title="Cache policy"
+          copy="Live mode always fetches fresh content (recommended while editing). Cached mode can speed up traffic using ISR."
+        />
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="block">
+            <span className="text-sm font-medium text-ink">Mode</span>
+            <select
+              value={settings.cache.mode}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  cache: {
+                    ...settings.cache,
+                    mode: e.target.value as SiteSettings["cache"]["mode"],
+                  },
+                })
+              }
+              className={adminInputClass}
+            >
+              <option value="live">Live — always fresh</option>
+              <option value="cached">Cached — allow page revalidation</option>
+            </select>
+          </label>
+          <Field
+            label="Revalidate seconds (cached mode)"
+            type="number"
+            value={String(settings.cache.revalidateSeconds)}
+            onChange={(v) =>
+              setSettings({
+                ...settings,
+                cache: {
+                  ...settings.cache,
+                  revalidateSeconds: Math.max(10, Number(v) || 60),
+                },
+              })
+            }
+            hint="Hint for ISR pages (default 60). Purge anytime from Dashboard."
+          />
+          <label className="flex items-center gap-3 text-sm font-medium text-ink md:col-span-2">
+            <input
+              type="checkbox"
+              checked={settings.cache.forceLiveChrome}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  cache: { ...settings.cache, forceLiveChrome: e.target.checked },
+                })
+              }
+              className="h-4 w-4 rounded border-line"
+            />
+            Keep header / navigation refreshed via live chrome API (recommended)
+          </label>
+          <p className="text-xs text-ink-muted md:col-span-2">
+            Use <strong>Live</strong> while editing the site. Switch to <strong>Cached</strong> for
+            traffic speed, then use Dashboard → Purge cache after publishing big updates.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (section === "site") {
+    return (
+      <div className="space-y-8">
+        <SectionTitle title="Brand & identity" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field label="Site name" value={settings.general.siteName} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, siteName: v } })} />
+          <Field label="Tagline" value={settings.general.tagline} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, tagline: v } })} />
+          <div className="md:col-span-2">
+            <MediaField
+              label="Logo"
+              value={settings.general.logoUrl}
+              onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoUrl: v } })}
+              hint="Upload a file or paste a public URL /public path"
+              folder="brand"
+            />
+          </div>
+          <Field label="Logo alt text" value={settings.general.logoAlt} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAlt: v } })} />
+          <Field label="Logo aria label" value={settings.general.logoAriaLabel} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, logoAriaLabel: v } })} />
+          <Field label="Contact email" value={settings.general.contactEmail} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactEmail: v } })} />
+          <Field label="Contact phone" value={settings.general.contactPhone} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, contactPhone: v } })} />
+          <Field label="Office address" value={settings.general.officeAddress} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, officeAddress: v } })} multiline />
+          <Field label="Response time" value={settings.general.responseTime} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, responseTime: v } })} />
+          <div>
+            <Field label="SEO title" value={settings.general.seoTitle} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoTitle: v } })} />
+            <SeoHint value={settings.general.seoTitle} softLimit={60} />
+          </div>
+          <div>
+            <Field label="SEO description" value={settings.general.seoDescription} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, seoDescription: v } })} multiline />
+            <SeoHint value={settings.general.seoDescription} softLimit={155} />
+          </div>
+          <Field label="Footer blurb" value={settings.general.footerBlurb} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, footerBlurb: v } })} multiline />
+          <Field label="Newsletter blurb" value={settings.general.newsletterBlurb} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, newsletterBlurb: v } })} multiline />
+          <Field label="Copyright note" value={settings.general.copyrightNote} onChange={(v) => setSettings({ ...settings, general: { ...settings.general, copyrightNote: v } })} />
+        </div>
+      </div>
+    );
+  }
+
+  if (section === "theme") {
+    return (
+      <div className="space-y-6">
+        <SectionTitle title="Brand colors" copy="Applied site-wide via CSS variables." />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {(Object.keys(settings.theme) as Array<keyof SiteSettings["theme"]>).map((key) => (
+            <ColorField
+              key={key}
+              label={key}
+              value={settings.theme[key]}
+              onChange={(v) => setSettings({ ...settings, theme: { ...settings.theme, [key]: v } })}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (section === "navigation") {
+    return (
+      <div className="space-y-10">
+        <SectionTitle title="Header navigation" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field label="Donate button label" value={settings.navigation.donateLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateLabel: v } })} />
+          <Field label="Donate button link" value={settings.navigation.donateHref} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateHref: v } })} />
+        </div>
+        <NavLinksEditor label="Primary nav links" links={settings.navigation.primaryLinks} onChange={(links) => setSettings({ ...settings, navigation: { ...settings.navigation, primaryLinks: links } })} />
+        <SectionTitle title="Sticky donate bar" copy="Appears after scrolling — like Seva.org. Hidden on donate and admin pages." />
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex items-center gap-3 text-sm font-medium text-ink">
+            <input
+              type="checkbox"
+              checked={settings.navigation.stickyDonate.enabled}
+              onChange={(e) => setSettings({
+                ...settings,
+                navigation: {
+                  ...settings.navigation,
+                  stickyDonate: { ...settings.navigation.stickyDonate, enabled: e.target.checked },
+                },
+              })}
+              className="h-4 w-4 rounded border-line"
+            />
+            Enabled
+          </label>
+          <Field label="CTA label" value={settings.navigation.stickyDonate.ctaLabel} onChange={(v) => setSettings({
+            ...settings,
+            navigation: {
+              ...settings.navigation,
+              stickyDonate: { ...settings.navigation.stickyDonate, ctaLabel: v },
+            },
+          })} />
+          <Field label="CTA link" value={settings.navigation.stickyDonate.ctaHref} onChange={(v) => setSettings({
+            ...settings,
+            navigation: {
+              ...settings.navigation,
+              stickyDonate: { ...settings.navigation.stickyDonate, ctaHref: v },
+            },
+          })} />
+          <Field label="Message" value={settings.navigation.stickyDonate.message} onChange={(v) => setSettings({
+            ...settings,
+            navigation: {
+              ...settings.navigation,
+              stickyDonate: { ...settings.navigation.stickyDonate, message: v },
+            },
+          })} multiline />
+        </div>
+        <SectionTitle title="Footer navigation" />
+        <div className="grid gap-4 md:grid-cols-3">
+          <Field label="Explore heading" value={settings.footer.exploreHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, exploreHeading: v } })} />
+          <Field label="Take part heading" value={settings.footer.takePartHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, takePartHeading: v } })} />
+          <Field label="Newsletter heading" value={settings.footer.newsletterHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, newsletterHeading: v } })} />
+        </div>
+        <NavLinksEditor label="Explore links" links={settings.footer.exploreLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, exploreLinks: links } })} />
+        <NavLinksEditor label="Take part links" links={settings.footer.takePartLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, takePartLinks: links } })} />
+      </div>
+    );
+  }
+
+  if (section === "pages") {
+    return (
+      <div className="space-y-12">
+        <div className="rounded-xl border border-brand/15 bg-brand/5 px-4 py-3 text-sm text-ink-muted">
+          Homepage images and blocks moved to <strong>Home page</strong> in the sidebar.
+        </div>
+<div className="space-y-4">
           <SectionTitle title="About" />
           <PageIntroFields prefix="About" values={settings.about} onChange={(p) => setSettings({ ...settings, about: { ...settings.about, ...p } })} />
           <div className="grid gap-4 md:grid-cols-2">
