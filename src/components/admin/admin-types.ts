@@ -16,6 +16,7 @@ export type AdminTab =
   | "detail"
   | "popup"
   | "cache"
+  | "maintenance"
   | "account";
 
 export type {
@@ -44,7 +45,7 @@ export const navGroups: NavGroup[] = [
   },
   {
     label: "Look & controls",
-    items: ["site", "theme", "popup", "cache", "detail"],
+    items: ["site", "theme", "popup", "cache", "maintenance", "detail"],
   },
   { label: "You", items: ["account"] },
 ];
@@ -72,6 +73,7 @@ export const websiteEditorMap: {
   { label: "Colors", preview: "/", tab: "theme", hint: "Brand palette" },
   { label: "Site popup", preview: "/", tab: "popup", hint: "Announcement overlay" },
   { label: "Cache", preview: "/", tab: "cache", hint: "Live vs cached pages" },
+  { label: "Maintenance", preview: "/", tab: "maintenance", hint: "Take the public site offline" },
 ];
 
 export const tabLabels: Record<AdminTab, string> = {
@@ -92,11 +94,12 @@ export const tabLabels: Record<AdminTab, string> = {
   detail: "Detail pages",
   popup: "Site popup",
   cache: "Cache policy",
+  maintenance: "Maintenance",
   account: "Account",
 };
 
 export const tabHints: Record<AdminTab, string> = {
-  dashboard: "Quick toggles for popup & cache, plus activity and content health",
+  dashboard: "Quick toggles for popup, cache & maintenance, plus activity and content health",
   inbox: "Form submissions and registrations",
   posts: "News — upload covers, duplicate drafts, publish/unpublish",
   events: "Events with covers, registration toggle, and live preview",
@@ -113,6 +116,7 @@ export const tabHints: Record<AdminTab, string> = {
   detail: "Back links and CTAs on detail pages",
   popup: "Homepage announcement popup — enable, copy, image, and CTA",
   cache: "Live vs cached pages, revalidate interval, and purge",
+  maintenance: "Take the public website offline with a custom message — admin stays available",
   account: "Password, recovery, and full website data backup",
 };
 
@@ -137,6 +141,7 @@ export const settingsTabs = [
   "detail",
   "popup",
   "cache",
+  "maintenance",
 ] as const;
 
 export type SettingsTabType = (typeof settingsTabs)[number];

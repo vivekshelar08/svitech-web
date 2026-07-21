@@ -37,6 +37,7 @@ export function DashboardTab({
 }) {
   const stats = inbox?.stats;
   const [popupEnabled, setPopupEnabled] = useState(false);
+  const [maintenanceEnabled, setMaintenanceEnabled] = useState(false);
   const [cacheMode, setCacheMode] = useState<"live" | "cached">("live");
   const [siteBusy, setSiteBusy] = useState(false);
   const [siteMsg, setSiteMsg] = useState("");
@@ -48,10 +49,12 @@ export function DashboardTab({
       const json = (await res.json()) as {
         settings?: {
           popup?: { enabled?: boolean };
+          maintenance?: { enabled?: boolean };
           cache?: { mode?: "live" | "cached" };
         };
       };
       setPopupEnabled(Boolean(json.settings?.popup?.enabled));
+      setMaintenanceEnabled(Boolean(json.settings?.maintenance?.enabled));
       setCacheMode(json.settings?.cache?.mode === "cached" ? "cached" : "live");
     })();
   }, []);
@@ -92,6 +95,22 @@ export function DashboardTab({
         popup: { ...settings.popup, enabled },
       }),
       enabled ? "Popup enabled on the public site." : "Popup disabled.",
+    );
+  }
+
+  async function toggleMaintenance(enabled: boolean) {
+    setMaintenanceEnabled(enabled);
+    await patchSettings(
+      (settings) => ({
+        ...settings,
+        maintenance: {
+          ...settings.maintenance,
+          enabled,
+        },
+      }),
+      enabled
+        ? "Maintenance mode ON — public site shows the maintenance page."
+        : "Maintenance mode OFF — public site is live again.",
     );
   }
 
@@ -141,9 +160,42 @@ export function DashboardTab({
 
       <AdminCard
         title="Site controls"
-        description="Enable the announcement popup, switch cache policy, or jump to homepage images."
+        description="Take the site offline, enable the announcement popup, switch cache policy, or jump to homepage images."
       >
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
+          <div
+            className={`rounded-xl border p-4 ${
+              maintenanceEnabled
+                ? "border-accent/50 bg-accent/10"
+                : "border-line/70 bg-surface/50"
+            }`}
+          >
+            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
+              Maintenance
+            </p>
+            <p className="mt-1 text-sm text-ink-muted">
+              Public site offline · admin still works
+            </p>
+            <label className="mt-4 flex items-center gap-3 text-sm font-semibold text-ink">
+              <input
+                type="checkbox"
+                checked={maintenanceEnabled}
+                disabled={siteBusy}
+                onChange={(e) => void toggleMaintenance(e.target.checked)}
+                className="h-4 w-4 rounded border-line"
+              />
+              {maintenanceEnabled ? "ON — site offline" : "Off"}
+            </label>
+            <AdminButton
+              variant="ghost"
+              size="sm"
+              className="mt-3"
+              onClick={() => onNavigate("maintenance")}
+            >
+              Edit message →
+            </AdminButton>
+          </div>
+
           <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
             <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Popup</p>
             <p className="mt-1 text-sm text-ink-muted">
@@ -305,6 +357,7 @@ export function DashboardTab({
               <QuickAction label="Inbox" onClick={() => onNavigate("inbox")} />
               <QuickAction label="New article" onClick={() => onNavigate("posts")} />
               <QuickAction label="Popup" onClick={() => onNavigate("popup")} />
+              <QuickAction label="Maintenance" onClick={() => onNavigate("maintenance")} />
               <QuickAction label="Cache" onClick={() => onNavigate("cache")} />
               <QuickAction label="Colors" onClick={() => onNavigate("theme")} />
             </div>

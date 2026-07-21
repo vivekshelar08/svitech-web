@@ -243,7 +243,8 @@ export type SettingsSection =
   | "board"
   | "detail"
   | "popup"
-  | "cache";
+  | "cache"
+  | "maintenance";
 
 
 function HomeExtraBlocks({
@@ -929,6 +930,78 @@ export function SettingsFormBody({
             Use <strong>Live</strong> while editing the site. Switch to <strong>Cached</strong> for
             traffic speed, then use Dashboard → Purge cache after publishing big updates.
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (section === "maintenance") {
+    return (
+      <div className="space-y-6">
+        <SectionTitle
+          title="Maintenance mode"
+          copy="When enabled, every public page shows a maintenance screen. /admin stays available so you can turn it off."
+        />
+        <label className="flex items-center gap-3 text-sm font-semibold text-ink">
+          <input
+            type="checkbox"
+            checked={settings.maintenance.enabled}
+            onChange={(e) =>
+              setSettings({
+                ...settings,
+                maintenance: { ...settings.maintenance, enabled: e.target.checked },
+              })
+            }
+            className="h-4 w-4 rounded border-line"
+          />
+          Enable maintenance mode (public site offline)
+        </label>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Field
+            label="Headline"
+            value={settings.maintenance.title}
+            onChange={(v) =>
+              setSettings({ ...settings, maintenance: { ...settings.maintenance, title: v } })
+            }
+          />
+          <Field
+            label="Optional status note"
+            value={settings.maintenance.note}
+            onChange={(v) =>
+              setSettings({ ...settings, maintenance: { ...settings.maintenance, note: v } })
+            }
+            hint="e.g. Back online this evening"
+          />
+          <div className="md:col-span-2">
+            <Field
+              label="Message"
+              value={settings.maintenance.message}
+              onChange={(v) =>
+                setSettings({
+                  ...settings,
+                  maintenance: { ...settings.maintenance, message: v },
+                })
+              }
+              multiline
+            />
+          </div>
+          <label className="flex items-center gap-3 text-sm font-medium text-ink md:col-span-2">
+            <input
+              type="checkbox"
+              checked={settings.maintenance.showContact}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  maintenance: {
+                    ...settings.maintenance,
+                    showContact: e.target.checked,
+                  },
+                })
+              }
+              className="h-4 w-4 rounded border-line"
+            />
+            Show contact email / phone from Brand settings
+          </label>
         </div>
       </div>
     );

@@ -26,6 +26,14 @@ export type SiteCacheSettings = {
   /** Keep header/footer/nav reading live even in cached mode */
   forceLiveChrome: boolean;
 };
+export type SiteMaintenanceSettings = {
+  enabled: boolean;
+  title: string;
+  message: string;
+  /** Optional note e.g. "Back online this evening" */
+  note: string;
+  showContact: boolean;
+};
 export type ImpactStat = { value: string; suffix?: string; label: string };
 export type TestimonialQuote = { text: string; attribution: string; role?: string };
 export type CampaignCard = {
@@ -310,6 +318,7 @@ export type SiteSettings = {
   };
   popup: SitePopupSettings;
   cache: SiteCacheSettings;
+  maintenance: SiteMaintenanceSettings;
   board: BoardMemberSetting[];
 };
 
@@ -774,6 +783,14 @@ export const defaultSiteSettings: SiteSettings = {
     mode: "live",
     revalidateSeconds: 60,
     forceLiveChrome: true,
+  },
+  maintenance: {
+    enabled: false,
+    title: "We’ll be right back",
+    message:
+      "SVITECH Foundation’s website is undergoing brief maintenance. Thank you for your patience — please check again shortly.",
+    note: "",
+    showContact: true,
   },
   board: seedBoard.map((m) => ({ ...m })),
 };

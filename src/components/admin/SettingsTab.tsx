@@ -20,6 +20,7 @@ const previewBySection: Partial<Record<SettingsSection, string>> = {
   detail: "/programs",
   popup: "/",
   cache: "/",
+  maintenance: "/",
 };
 
 export function SettingsTab({ section }: { section: SettingsSection }) {
