@@ -10,12 +10,15 @@ import { Reveal } from "@/components/Reveal";
 import { SiteLogo } from "@/components/SiteLogo";
 import { TestimonialQuote } from "@/components/TestimonialQuote";
 import { getPosts, getPrograms } from "@/lib/content";
-import { getSiteSettings } from "@/lib/site-settings";
+import { getPublicSiteSettings } from "@/lib/public-site-gate";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const { home, general, navigation, about, cache } = await getSiteSettings();
+  const settings = await getPublicSiteSettings();
+  if (settings.maintenance?.enabled) return null;
+
+  const { home, general, navigation, about, cache } = settings;
   const [programs, posts] = await Promise.all([getPrograms(), getPosts()]);
   const logoProps = {
     logoUrl: general.logoUrl,

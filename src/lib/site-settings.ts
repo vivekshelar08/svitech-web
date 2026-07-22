@@ -61,8 +61,9 @@ export async function readSiteSettings(): Promise<SiteSettings> {
 export async function getSiteSettings(): Promise<SiteSettings> {
   const settings = await readSiteSettings();
   // Live mode: never serve a stale settings/content snapshot.
+  // Maintenance: never serve a stale ISR page shell under the site layout.
   // Cached mode relies on ISR + Header's /api/site-chrome refresh for nav.
-  if (settings.cache.mode === "live") {
+  if (settings.cache.mode === "live" || settings.maintenance?.enabled) {
     noStore();
   }
   return settings;

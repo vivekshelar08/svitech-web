@@ -1,10 +1,21 @@
 import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
-import { getAdminClient, getAnonClient } from "@/lib/supabase";
+import { getAdminClient } from "@/lib/supabase";
 import { hasSupabase } from "@/lib/env";
 
 const dataDir = path.join(process.cwd(), "data", "submissions");
+
+/** Server-only writes — never use the anon key for inbox tables (open RLS = spam vector). */
+function requireAdminClient() {
+  const admin = getAdminClient();
+  if (!admin) {
+    throw new Error(
+      "SUPABASE_SERVICE_ROLE_KEY is required for form submissions when Supabase is configured.",
+    );
+  }
+  return admin;
+}
 
 async function ensureDataDir() {
   await fs.mkdir(dataDir, { recursive: true });
@@ -31,9 +42,7 @@ export async function saveContact(input: {
   message: string;
 }) {
   if (hasSupabase()) {
-    const client = getAnonClient();
-    if (!client) throw new Error("Supabase client unavailable");
-    const { error } = await client.from("contact_messages").insert(input);
+    const { error } = await requireAdminClient().from("contact_messages").insert(input);
     if (error) throw new Error(error.message);
     return;
   }
@@ -49,9 +58,7 @@ export async function saveVolunteer(input: {
   motivation: string;
 }) {
   if (hasSupabase()) {
-    const client = getAnonClient();
-    if (!client) throw new Error("Supabase client unavailable");
-    const { error } = await client.from("volunteer_applications").insert({
+    const { error } = await requireAdminClient().from("volunteer_applications").insert({
       ...input,
       phone: input.phone || null,
     });
@@ -63,9 +70,7 @@ export async function saveVolunteer(input: {
 
 export async function saveNewsletter(input: { email: string; source?: string }) {
   if (hasSupabase()) {
-    const client = getAnonClient();
-    if (!client) throw new Error("Supabase client unavailable");
-    const { error } = await client.from("newsletter_subscribers").insert({
+    const { error } = await requireAdminClient().from("newsletter_subscribers").insert({
       email: input.email,
       source: input.source || "website",
     });
@@ -86,9 +91,7 @@ export async function saveEventRegistration(input: {
   notes?: string | null;
 }) {
   if (hasSupabase()) {
-    const client = getAnonClient();
-    if (!client) throw new Error("Supabase client unavailable");
-    const { error } = await client.from("event_registrations").insert({
+    const { error } = await requireAdminClient().from("event_registrations").insert({
       ...input,
       phone: input.phone || null,
       notes: input.notes || null,

@@ -4,14 +4,14 @@ import { MaintenanceScreen } from "@/components/MaintenanceScreen";
 import { SitePopup } from "@/components/SitePopup";
 import { StickyDonateBar } from "@/components/StickyDonateBar";
 import { SiteTheme } from "@/components/SiteTheme";
-import { getSiteSettings } from "@/lib/site-settings";
+import { getPublicSiteSettings } from "@/lib/public-site-gate";
 
 export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
+  const settings = await getPublicSiteSettings();
 
   if (settings.maintenance?.enabled) {
     return (
