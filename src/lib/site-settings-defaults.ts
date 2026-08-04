@@ -305,6 +305,20 @@ export type SiteSettings = {
     adminNote: string;
     contactPrompt: string;
     contactLinkLabel: string;
+    emailAutomation: {
+      /** Send activity mail when a project starts */
+      sendActivityMailAtProjectStart: boolean;
+      /** Send activity mail later during project execution */
+      sendActivityMailLater: boolean;
+      /** Keep beneficiary status mails off until workflow is finalized */
+      sendStatusMail: boolean;
+      /** Include report links/files in selected formats */
+      reportFormats: {
+        pdf: boolean;
+        csv: boolean;
+        xlsx: boolean;
+      };
+    };
     seoTitle: string;
     seoDescription: string;
   };
@@ -756,6 +770,16 @@ export const defaultSiteSettings: SiteSettings = {
       "Replace placeholder PDFs in public/reports/ with filed annual reports. Keep 80G / 12AA certificates available here when sharing with donors.",
     contactPrompt: "Questions about finances or partnerships?",
     contactLinkLabel: "Contact us",
+    emailAutomation: {
+      sendActivityMailAtProjectStart: true,
+      sendActivityMailLater: false,
+      sendStatusMail: false,
+      reportFormats: {
+        pdf: true,
+        csv: false,
+        xlsx: false,
+      },
+    },
     seoTitle: "Reports & governance",
     seoDescription:
       "Annual reports, leadership, and transparency notes from SVITECH Foundation (Section 8 · 80G · 12AA).",

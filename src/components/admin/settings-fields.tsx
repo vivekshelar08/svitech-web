@@ -1495,16 +1495,161 @@ export function SettingsFormBody({
                 />
               )}
               {key === "reports" && "contactLinkLabel" in page && (
-                <Field
-                  label="Contact link label"
-                  value={page.contactLinkLabel}
-                  onChange={(v) =>
-                    setSettings({
-                      ...settings,
-                      reports: { ...settings.reports, contactLinkLabel: v },
-                    })
-                  }
-                />
+                <div className="space-y-4">
+                  <Field
+                    label="Contact link label"
+                    value={page.contactLinkLabel}
+                    onChange={(v) =>
+                      setSettings({
+                        ...settings,
+                        reports: { ...settings.reports, contactLinkLabel: v },
+                      })
+                    }
+                  />
+                  <div className="rounded-xl border border-line/70 bg-surface/40 p-4">
+                    <SectionTitle
+                      title="Report email automation"
+                      copy="Control when activity mails should be sent and which report formats can be included."
+                    />
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <label className="flex items-center gap-3 text-sm font-medium text-ink">
+                        <input
+                          type="checkbox"
+                          checked={settings.reports.emailAutomation.sendActivityMailAtProjectStart}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              reports: {
+                                ...settings.reports,
+                                emailAutomation: {
+                                  ...settings.reports.emailAutomation,
+                                  sendActivityMailAtProjectStart: e.target.checked,
+                                },
+                              },
+                            })
+                          }
+                          className="h-4 w-4 rounded border-line"
+                        />
+                        Send activity mail at project start
+                      </label>
+                      <label className="flex items-center gap-3 text-sm font-medium text-ink">
+                        <input
+                          type="checkbox"
+                          checked={settings.reports.emailAutomation.sendActivityMailLater}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              reports: {
+                                ...settings.reports,
+                                emailAutomation: {
+                                  ...settings.reports.emailAutomation,
+                                  sendActivityMailLater: e.target.checked,
+                                },
+                              },
+                            })
+                          }
+                          className="h-4 w-4 rounded border-line"
+                        />
+                        Send activity mail later
+                      </label>
+                      <label className="flex items-center gap-3 text-sm font-medium text-ink md:col-span-2">
+                        <input
+                          type="checkbox"
+                          checked={settings.reports.emailAutomation.sendStatusMail}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              reports: {
+                                ...settings.reports,
+                                emailAutomation: {
+                                  ...settings.reports.emailAutomation,
+                                  sendStatusMail: e.target.checked,
+                                },
+                              },
+                            })
+                          }
+                          className="h-4 w-4 rounded border-line"
+                        />
+                        Send beneficiary status email (off for now)
+                      </label>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                      <p className="text-sm font-medium text-ink">Report formats to include in email</p>
+                      <div className="grid gap-3 md:grid-cols-3">
+                        <label className="flex items-center gap-2 text-sm text-ink">
+                          <input
+                            type="checkbox"
+                            checked={settings.reports.emailAutomation.reportFormats.pdf}
+                            onChange={(e) =>
+                              setSettings({
+                                ...settings,
+                                reports: {
+                                  ...settings.reports,
+                                  emailAutomation: {
+                                    ...settings.reports.emailAutomation,
+                                    reportFormats: {
+                                      ...settings.reports.emailAutomation.reportFormats,
+                                      pdf: e.target.checked,
+                                    },
+                                  },
+                                },
+                              })
+                            }
+                            className="h-4 w-4 rounded border-line"
+                          />
+                          PDF
+                        </label>
+                        <label className="flex items-center gap-2 text-sm text-ink">
+                          <input
+                            type="checkbox"
+                            checked={settings.reports.emailAutomation.reportFormats.csv}
+                            onChange={(e) =>
+                              setSettings({
+                                ...settings,
+                                reports: {
+                                  ...settings.reports,
+                                  emailAutomation: {
+                                    ...settings.reports.emailAutomation,
+                                    reportFormats: {
+                                      ...settings.reports.emailAutomation.reportFormats,
+                                      csv: e.target.checked,
+                                    },
+                                  },
+                                },
+                              })
+                            }
+                            className="h-4 w-4 rounded border-line"
+                          />
+                          CSV
+                        </label>
+                        <label className="flex items-center gap-2 text-sm text-ink">
+                          <input
+                            type="checkbox"
+                            checked={settings.reports.emailAutomation.reportFormats.xlsx}
+                            onChange={(e) =>
+                              setSettings({
+                                ...settings,
+                                reports: {
+                                  ...settings.reports,
+                                  emailAutomation: {
+                                    ...settings.reports.emailAutomation,
+                                    reportFormats: {
+                                      ...settings.reports.emailAutomation.reportFormats,
+                                      xlsx: e.target.checked,
+                                    },
+                                  },
+                                },
+                              })
+                            }
+                            className="h-4 w-4 rounded border-line"
+                          />
+                          XLSX
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               )}
               {"mapHeadline" in page && (
                 <div className="grid gap-4 md:grid-cols-2">
