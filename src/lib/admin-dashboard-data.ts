@@ -12,7 +12,7 @@ function weekAgoIso() {
 
 async function countPublished(
   admin: SupabaseClient,
-  table: "posts" | "events" | "programs" | "impact_stories" | "reports",
+  table: "posts" | "events" | "programs" | "impact_stories" | "reports" | "gallery_items",
 ): Promise<ContentCounts> {
   const [totalRes, publishedRes] = await Promise.all([
     admin.from(table).select("id", { count: "exact", head: true }),
@@ -118,6 +118,7 @@ export async function fetchAdminDashboard(admin: SupabaseClient) {
     programsCounts,
     impactCounts,
     reportsCounts,
+    galleryCounts,
   ] = await Promise.all([
     admin.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(50),
     admin.from("volunteer_applications").select("*").order("created_at", { ascending: false }).limit(50),
@@ -134,6 +135,7 @@ export async function fetchAdminDashboard(admin: SupabaseClient) {
     countPublished(admin, "programs"),
     countPublished(admin, "impact_stories"),
     countPublished(admin, "reports"),
+    countPublished(admin, "gallery_items"),
   ]);
 
   const contactRows = contact.data || [];
@@ -168,6 +170,7 @@ export async function fetchAdminDashboard(admin: SupabaseClient) {
       programs: programsCounts.total,
       impactStories: impactCounts.total,
       reports: reportsCounts.total,
+      galleryItems: galleryCounts.total,
       donationsInr,
       donationsPaid: paidDonations.length,
       upcomingEvents: upcomingEvents.count || 0,
@@ -184,6 +187,7 @@ export async function fetchAdminDashboard(admin: SupabaseClient) {
         programs: programsCounts,
         impactStories: impactCounts,
         reports: reportsCounts,
+        galleryItems: galleryCounts,
       },
     },
     activity: buildActivity({
@@ -220,6 +224,7 @@ export function emptyAdminDashboard(message: string) {
       programs: empty,
       impactStories: empty,
       reports: empty,
+      galleryItems: empty,
     },
   };
 }

@@ -73,7 +73,9 @@ export function MediaField({
     <div className="space-y-2">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-medium text-ink">{label}</p>
+          <label htmlFor={`media-${folder}-${label}`} className="text-sm font-semibold text-ink">
+            {label}
+          </label>
           {hint && (
             <p className="mt-0.5 text-xs font-normal text-ink-muted">{hint}</p>
           )}
@@ -94,6 +96,7 @@ export function MediaField({
 
       <input
         ref={inputRef}
+        id={`media-${folder}-${label}`}
         type="file"
         className="hidden"
         accept={kind === "image" ? "image/*" : "image/*,.pdf,.doc,.docx"}

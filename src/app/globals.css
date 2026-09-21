@@ -306,6 +306,22 @@ a {
     );
 }
 
+.circuit-mesh {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-bright) 18%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-bright) 14%, transparent) 1px, transparent 1px),
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 42%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+.circuit-mesh-soft {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand) 8%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
 .panel-lift {
   transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -378,6 +394,44 @@ a {
   }
 }
 
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes gallery-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 42s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.way-pillar:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--brand) 28%, transparent);
+  box-shadow: 0 18px 36px -24px rgba(11, 20, 36, 0.35);
+}
+
+.gallery-fade {
+  animation: gallery-fade-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .animate-rise {
   animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -427,8 +481,14 @@ a {
   .animate-ken,
   .animate-draw,
   .animate-dropdown,
-  .animate-slide-up {
+  .animate-slide-up,
+  .marquee-track,
+  .gallery-fade {
     animation: none;
+  }
+
+  .way-pillar:hover {
+    transform: none;
   }
 
   .reveal-block,
@@ -463,3 +523,73 @@ a {
 main {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* —— Admin console —— */
+body:has(.admin-app) {
+  background-image: none;
+  background: var(--bg);
+}
+
+body:has(.admin-app) .site-grain {
+  display: none;
+}
+
+.admin-app {
+  --admin-canvas: #f2f5fa;
+  --admin-sidebar: #0b1424;
+  background: var(--admin-canvas);
+  color: var(--ink);
+  isolation: isolate;
+}
+
+.admin-app .admin-topbar {
+  background: color-mix(in srgb, var(--admin-canvas) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  border-radius: 0.75rem;
+  background: var(--brand);
+  color: white;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.admin-skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.admin-dialog-panel {
+  animation: admin-dialog-in 160ms ease-out;
+}
+
+@keyframes admin-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-dialog-panel {
+    animation: none;
+  }
+
+  .admin-app aside {
+    transition: none !important;
+  }
+}
+

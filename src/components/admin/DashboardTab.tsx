@@ -356,6 +356,7 @@ export function DashboardTab({
               <QuickAction label="Home page" onClick={() => onNavigate("home")} />
               <QuickAction label="Inbox" onClick={() => onNavigate("inbox")} />
               <QuickAction label="New article" onClick={() => onNavigate("posts")} />
+              <QuickAction label="Gallery" onClick={() => onNavigate("gallery_items")} />
               <QuickAction label="Popup" onClick={() => onNavigate("popup")} />
               <QuickAction label="Maintenance" onClick={() => onNavigate("maintenance")} />
               <QuickAction label="Cache" onClick={() => onNavigate("cache")} />
@@ -383,6 +384,7 @@ export function DashboardTab({
                   <ContentBar label="Events" counts={stats.content.events} onClick={() => onNavigate("events")} />
                   <ContentBar label="Programs" counts={stats.content.programs} onClick={() => onNavigate("programs")} />
                   <ContentBar label="Impact" counts={stats.content.impactStories} onClick={() => onNavigate("impact_stories")} />
+                  <ContentBar label="Gallery" counts={stats.content.galleryItems} onClick={() => onNavigate("gallery_items")} />
                   <ContentBar label="Reports" counts={stats.content.reports} onClick={() => onNavigate("reports")} />
                 </div>
               </AdminCard>
@@ -410,7 +412,7 @@ export function DashboardTab({
 
       <AdminCard
         title="Starter content"
-        description="Import demo news, events, programs, impact stories, and reports into your database."
+        description="Import demo news, events, programs, impact stories, gallery photos, and reports into your database."
         action={
           <AdminButton variant="accent" size="sm" onClick={onSeed}>
             Import now
@@ -439,7 +441,14 @@ function getGreeting() {
 
 function totalDrafts(stats: AdminStats) {
   const c = stats.content;
-  return c.posts.drafts + c.events.drafts + c.programs.drafts + c.impactStories.drafts + c.reports.drafts;
+  return (
+    c.posts.drafts +
+    c.events.drafts +
+    c.programs.drafts +
+    c.impactStories.drafts +
+    c.reports.drafts +
+    c.galleryItems.drafts
+  );
 }
 
 function MetricCard({

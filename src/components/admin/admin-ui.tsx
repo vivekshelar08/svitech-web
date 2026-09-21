@@ -1,15 +1,157 @@
+"use client";
+
+import { forwardRef, type ReactNode } from "react";
 import type { AdminTab } from "@/components/admin/admin-types";
 
 export const adminInputClass =
-  "mt-2 w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-sm outline-none transition placeholder:text-ink-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/15";
+  "mt-1.5 w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-[0_1px_2px_rgba(18,28,46,0.04)] outline-none transition placeholder:text-ink-muted/55 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:cursor-not-allowed disabled:bg-surface disabled:opacity-70";
 
-export const adminTextareaClass = `${adminInputClass} min-h-[88px] resize-y`;
+export const adminTextareaClass = `${adminInputClass} min-h-[96px] resize-y`;
 
 export const adminSelectClass =
-  "rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-sm outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
+  "rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-[0_1px_2px_rgba(18,28,46,0.04)] outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
 
 export function cn(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
+}
+
+export function AdminPage({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("admin-page mx-auto w-full max-w-6xl space-y-6", className)}>{children}</div>;
+}
+
+export function AdminToolbar({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-3 rounded-2xl border border-line/80 bg-white/90 p-3 shadow-[0_1px_2px_rgba(18,28,46,0.04)] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-4",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function AdminField({
+  label,
+  htmlFor,
+  hint,
+  error,
+  children,
+  required,
+}: {
+  label: string;
+  htmlFor?: string;
+  hint?: string;
+  error?: string;
+  children: ReactNode;
+  required?: boolean;
+}) {
+  return (
+    <div className="min-w-0">
+      <label htmlFor={htmlFor} className="block text-sm font-semibold text-ink">
+        {label}
+        {required ? (
+          <span className="ml-1 text-brand" aria-hidden>
+            *
+          </span>
+        ) : null}
+      </label>
+      {hint ? <p className="mt-0.5 text-xs leading-relaxed text-ink-muted">{hint}</p> : null}
+      {children}
+      {error ? (
+        <p className="mt-1.5 text-xs font-medium text-red-700" role="alert">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+export function AdminFilterGroup({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div role="group" aria-label={label} className="flex flex-wrap gap-1.5">
+      <span className="sr-only">{label}</span>
+      {children}
+    </div>
+  );
+}
+
+export function AdminChip({
+  active,
+  children,
+  count,
+  onClick,
+}: {
+  active?: boolean;
+  children: ReactNode;
+  count?: number;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={Boolean(active)}
+      onClick={onClick}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
+        active
+          ? "bg-brand text-white shadow-sm"
+          : "border border-line bg-white text-ink-muted hover:border-brand/35 hover:text-ink",
+      )}
+    >
+      {children}
+      {typeof count === "number" ? (
+        <span
+          className={cn(
+            "rounded-full px-1.5 py-0.5 text-[10px] font-bold",
+            active ? "bg-white/20 text-white" : "bg-ink/5 text-ink-muted",
+          )}
+        >
+          {count}
+        </span>
+      ) : null}
+    </button>
+  );
+}
+
+export function AdminStatus({
+  children,
+  tone = "info",
+}: {
+  children: ReactNode;
+  tone?: "info" | "success" | "error";
+}) {
+  if (!children) return null;
+  const styles =
+    tone === "success"
+      ? "text-emerald-700"
+      : tone === "error"
+        ? "text-red-700"
+        : "text-brand";
+  return (
+    <p className={cn("text-sm font-medium", styles)} role="status" aria-live="polite">
+      {children}
+    </p>
+  );
 }
 
 export function AdminCard({
@@ -19,94 +161,89 @@ export function AdminCard({
   children,
   className,
   padding = "md",
+  as: Tag = "section",
 }: {
   title?: string;
   description?: string;
-  action?: React.ReactNode;
-  children: React.ReactNode;
+  action?: ReactNode;
+  children: ReactNode;
   className?: string;
   padding?: "sm" | "md" | "lg";
+  as?: "section" | "div" | "article";
 }) {
   const pad =
-    padding === "sm" ? "p-4" : padding === "lg" ? "p-6 md:p-8" : "p-5 md:p-6";
+    padding === "sm" ? "p-4" : padding === "lg" ? "p-5 md:p-7" : "p-5 md:p-6";
 
   return (
-    <section
+    <Tag
       className={cn(
-        "overflow-hidden rounded-2xl border border-line/80 bg-white shadow-[0_1px_2px_rgba(12,46,47,0.04),0_12px_40px_rgba(12,46,47,0.06)]",
+        "overflow-hidden rounded-2xl border border-line/80 bg-white shadow-[0_1px_2px_rgba(18,28,46,0.04),0_10px_28px_rgba(18,28,46,0.05)]",
         className,
       )}
     >
       {(title || action) && (
-        <div
-          className={cn(
-            "flex items-start justify-between gap-4 border-b border-line/70",
-            pad,
-            "pb-4",
-          )}
-        >
-          <div>
-            {title && (
-              <h3 className="font-display text-lg font-bold tracking-tight text-ink">
-                {title}
-              </h3>
-            )}
-            {description && (
-              <p className="mt-1 text-sm leading-relaxed text-ink-muted">{description}</p>
-            )}
+        <div className={cn("flex items-start justify-between gap-4 border-b border-line/60", pad, "pb-4")}>
+          <div className="min-w-0">
+            {title ? (
+              <h3 className="font-display text-lg font-bold tracking-tight text-ink">{title}</h3>
+            ) : null}
+            {description ? (
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-ink-muted">{description}</p>
+            ) : null}
           </div>
-          {action}
+          {action ? <div className="shrink-0">{action}</div> : null}
         </div>
       )}
       <div className={title || action ? cn(pad, "pt-4") : pad}>{children}</div>
-    </section>
+    </Tag>
   );
 }
 
-export function AdminButton({
-  children,
-  variant = "primary",
-  size = "md",
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "ghost" | "danger" | "accent";
-  size?: "sm" | "md";
-}) {
+export const AdminButton = forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    variant?: "primary" | "secondary" | "ghost" | "danger" | "accent";
+    size?: "sm" | "md";
+  }
+>(function AdminButton(
+  { children, variant = "primary", size = "md", className, type = "button", ...props },
+  ref,
+) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 disabled:pointer-events-none disabled:opacity-50";
-  const sizes = size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2.5 text-sm";
+    "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--admin-canvas,#f2f5fa)] disabled:pointer-events-none disabled:opacity-50";
+  const sizes = size === "sm" ? "min-h-9 px-3 py-1.5 text-xs" : "min-h-10 px-4 py-2.5 text-sm";
   const variants = {
     primary: "bg-brand text-white shadow-sm hover:brightness-110",
     accent: "bg-accent text-ink shadow-sm hover:brightness-110",
     secondary:
       "border border-line bg-white text-ink shadow-sm hover:border-brand/30 hover:bg-surface",
-    ghost: "text-brand hover:bg-brand/5",
-    danger: "border border-accent/30 bg-accent-soft text-accent hover:bg-accent/10",
+    ghost: "text-brand hover:bg-brand/8",
+    danger: "border border-red-200 bg-red-50 text-red-800 hover:bg-red-100",
   };
 
   return (
     <button
-      type="button"
+      ref={ref}
+      type={type}
       className={cn(base, sizes, variants[variant], className)}
       {...props}
     >
       {children}
     </button>
   );
-}
+});
 
 export function AdminBadge({
   children,
   tone = "neutral",
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   tone?: "neutral" | "brand" | "accent" | "success" | "warning";
 }) {
   const tones = {
     neutral: "bg-ink/5 text-ink-muted",
     brand: "bg-brand/10 text-brand",
-    accent: "bg-accent/10 text-accent",
+    accent: "bg-accent/15 text-ink",
     success: "bg-emerald-500/10 text-emerald-700",
     warning: "bg-amber-500/10 text-amber-800",
   };
@@ -129,7 +266,7 @@ export function AdminAlert({
   tone = "warning",
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   tone?: "warning" | "info" | "error";
 }) {
   const styles =
@@ -140,7 +277,10 @@ export function AdminAlert({
         : "border-brand/20 bg-brand/5 text-ink";
 
   return (
-    <div className={cn("rounded-xl border px-4 py-3.5 text-sm", styles)}>
+    <div
+      className={cn("rounded-xl border px-4 py-3.5 text-sm", styles)}
+      role={tone === "error" ? "alert" : "status"}
+    >
       <p className="font-semibold">{title}</p>
       <div className="mt-1.5 leading-relaxed opacity-90">{children}</div>
     </div>
@@ -150,18 +290,19 @@ export function AdminAlert({
 export function AdminEmpty({
   title,
   description,
+  action,
 }: {
   title: string;
   description?: string;
+  action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-surface/50 px-6 py-12 text-center">
+    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-surface/60 px-6 py-14 text-center">
       <p className="font-display text-lg font-semibold text-ink">{title}</p>
-      {description && (
-        <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink-muted">
-          {description}
-        </p>
-      )}
+      {description ? (
+        <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink-muted">{description}</p>
+      ) : null}
+      {action ? <div className="mt-5">{action}</div> : null}
     </div>
   );
 }
@@ -204,6 +345,12 @@ export function NavIcon({ tab }: { tab: AdminTab }) {
       return (
         <svg className={common} viewBox="0 0 20 20" fill="currentColor" aria-hidden>
           <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+        </svg>
+      );
+    case "gallery_items":
+      return (
+        <svg className={common} viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+          <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm1 2h10v6.586l-2.293-2.293a1 1 0 00-1.414 0L7 13.586 5.707 12.293a1 1 0 00-1.414 0L4 12.586V5zm2.5 2.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
         </svg>
       );
     case "reports":

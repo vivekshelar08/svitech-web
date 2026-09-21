@@ -122,6 +122,10 @@ export function ImpactStats({
             <StatItem key={stat.label} stat={stat} active={active} index={index} />
           ))}
         </ul>
+        <div
+          className="mx-auto mt-10 h-px max-w-xs bg-gradient-to-r from-transparent via-brand-bright/40 to-transparent"
+          aria-hidden
+        />
       </div>
     </section>
   );

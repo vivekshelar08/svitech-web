@@ -15,6 +15,7 @@ export type AdminStats = {
   programs: number;
   impactStories: number;
   reports: number;
+  galleryItems: number;
   donationsInr: number;
   donationsPaid: number;
   upcomingEvents: number;
@@ -28,6 +29,7 @@ export type AdminStats = {
     programs: ContentCounts;
     impactStories: ContentCounts;
     reports: ContentCounts;
+    galleryItems: ContentCounts;
   };
 };
 

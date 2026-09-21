@@ -15,10 +15,17 @@ export function Footer({
     logoAlt: general.logoAlt,
     logoAriaLabel: general.logoAriaLabel,
   };
+  const legalLinks = footer.legalLinks?.length
+    ? footer.legalLinks
+    : [
+        { label: "Privacy", href: "/contact" },
+        { label: "Contact", href: "/contact" },
+      ];
 
   return (
     <footer className="relative overflow-hidden text-surface">
       <div className="absolute inset-0 mesh-deep" aria-hidden />
+      <div className="circuit-mesh absolute inset-0 opacity-20" aria-hidden />
       <div
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-bright/60 to-transparent"
         aria-hidden
@@ -28,7 +35,7 @@ export function Footer({
         aria-hidden
       />
 
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:gap-12 sm:px-5 sm:py-16 md:grid-cols-[1.4fr_1fr_1fr_1.25fr] md:gap-10 md:px-8 md:py-20">
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:gap-12 sm:px-5 sm:py-16 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1fr_1.2fr] lg:gap-8 md:px-8 md:py-20">
         <div>
           <SiteLogo size="md" {...logoProps} />
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-white/70">
@@ -44,7 +51,7 @@ export function Footer({
           </p>
           <ul className="mt-5 space-y-3 text-sm">
             {footer.exploreLinks.map((link) => (
-              <li key={link.href}>
+              <li key={link.href + link.label}>
                 <Link
                   href={link.href}
                   className="group inline-flex items-center gap-2 text-white/75 transition hover:text-white"
@@ -65,7 +72,7 @@ export function Footer({
           </p>
           <ul className="mt-5 space-y-3 text-sm">
             {footer.takePartLinks.map((link) => (
-              <li key={link.href}>
+              <li key={link.href + link.label}>
                 <Link
                   href={link.href}
                   className="group inline-flex items-center gap-2 text-white/75 transition hover:text-white"
@@ -86,6 +93,23 @@ export function Footer({
                 {general.contactEmail}
               </a>
             </li>
+          </ul>
+        </div>
+        <div>
+          <p className="site-eyebrow-bright text-[10px] font-bold uppercase tracking-[0.18em]">
+            {footer.legalHeading || "Legal"}
+          </p>
+          <ul className="mt-5 space-y-3 text-sm">
+            {legalLinks.map((link) => (
+              <li key={link.href + link.label}>
+                <Link
+                  href={link.href}
+                  className="text-white/75 transition hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div>

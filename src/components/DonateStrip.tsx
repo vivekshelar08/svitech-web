@@ -18,6 +18,7 @@ export function DonateStrip({
   return (
     <section className="relative overflow-hidden" aria-labelledby="donate-strip-heading">
       <div className="absolute inset-0 mesh-warm" aria-hidden />
+      <div className="circuit-mesh-soft absolute inset-0 opacity-50" aria-hidden />
       <div
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"
         aria-hidden

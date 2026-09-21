@@ -1,5 +1,5 @@
 /**
- * Sync programmes / impact / posts / events / reports + site settings to Supabase.
+ * Sync programmes / impact / posts / events / reports / gallery + site settings to Supabase.
  * Upserts current seeds, unpublishes stale slugs, dedupes reports.
  * Run: npx --yes tsx scripts/sync-activities.ts
  */
@@ -11,6 +11,7 @@ import { impactStories } from "../src/content/impact";
 import { posts } from "../src/content/posts";
 import { events } from "../src/content/events";
 import { reports } from "../src/content/governance";
+import { galleryItems } from "../src/content/gallery";
 import {
   defaultSiteSettings,
   mergeSiteSettings,
@@ -54,6 +55,7 @@ const KEEP_IMPACT_SLUGS = new Set(impactStories.map((s) => s.slug));
 const KEEP_POST_SLUGS = new Set(posts.map((p) => p.slug));
 const KEEP_EVENT_SLUGS = new Set(events.map((e) => e.slug));
 const KEEP_REPORT_YEARS = new Set(reports.map((r) => r.year));
+const KEEP_GALLERY_SLUGS = new Set(galleryItems.map((g) => g.slug));
 
 async function unpublishStale(
   table: string,
@@ -225,6 +227,41 @@ async function main() {
   }
   console.log(`Synced ${reports.length} reports`);
 
+  // Gallery: upsert if table exists
+  const { error: galleryProbe } = await admin
+    .from("gallery_items")
+    .select("id", { count: "exact", head: true });
+  if (galleryProbe) {
+    console.warn(
+      `Skipping gallery sync (table missing or inaccessible): ${galleryProbe.message}`,
+    );
+    console.warn(
+      "Apply supabase/migrations/20260921120000_gallery_items.sql, then re-run this script or use Admin → Import.",
+    );
+  } else {
+    for (const item of galleryItems) {
+      const { error } = await admin.from("gallery_items").upsert(
+        {
+          slug: item.slug,
+          title: item.title,
+          category: item.category,
+          summary: item.summary,
+          image: item.image,
+          sort_order: item.sortOrder,
+          published: true,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "slug" },
+      );
+      if (error) throw new Error(`gallery ${item.slug}: ${error.message}`);
+    }
+    console.log(`Upserted ${galleryItems.length} gallery items`);
+    const staleGallery = await unpublishStale("gallery_items", KEEP_GALLERY_SLUGS);
+    if (staleGallery.length) {
+      console.log(`Unpublished stale gallery: ${staleGallery.join(", ")}`);
+    }
+  }
+
   const { data: existing, error: settingsReadError } = await admin
     .from("site_settings")
     .select("value")
@@ -250,9 +287,11 @@ async function main() {
     events: defaultSiteSettings.events,
     news: defaultSiteSettings.news,
     impact: defaultSiteSettings.impact,
+    gallery: defaultSiteSettings.gallery,
     reports: defaultSiteSettings.reports,
     detailPages: defaultSiteSettings.detailPages,
     board: defaultSiteSettings.board,
+    footer: defaultSiteSettings.footer,
     navigation: {
       ...defaultSiteSettings.navigation,
       ...(existing?.value &&
@@ -260,6 +299,9 @@ async function main() {
       "navigation" in (existing.value as object)
         ? (existing.value as { navigation?: object }).navigation
         : {}),
+      primaryLinks: defaultSiteSettings.navigation.primaryLinks,
+      showTopBar: defaultSiteSettings.navigation.showTopBar,
+      trustBadge: defaultSiteSettings.navigation.trustBadge,
       stickyDonate: defaultSiteSettings.navigation.stickyDonate,
     },
   });
@@ -278,15 +320,23 @@ async function main() {
   console.log("Updated site_settings");
 
   const counts = await Promise.all(
-    (["programs", "impact_stories", "posts", "events", "reports"] as const).map(
-      async (table) => {
-        const { count } = await admin
-          .from(table)
-          .select("id", { count: "exact", head: true })
-          .eq("published", true);
-        return [table, count] as const;
-      },
-    ),
+    (
+      [
+        "programs",
+        "impact_stories",
+        "posts",
+        "events",
+        "reports",
+        "gallery_items",
+      ] as const
+    ).map(async (table) => {
+      const { count, error } = await admin
+        .from(table)
+        .select("id", { count: "exact", head: true })
+        .eq("published", true);
+      if (error) return [table, null] as const;
+      return [table, count] as const;
+    }),
   );
   console.log("Published counts:", Object.fromEntries(counts));
 }

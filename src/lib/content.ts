@@ -1,4 +1,9 @@
 import { events as seedEvents, type EventItem } from "@/content/events";
+import {
+  galleryItems as seedGallery,
+  type GalleryCategory,
+  type GalleryItem,
+} from "@/content/gallery";
 import { impactStories as seedImpact, type ImpactStory } from "@/content/impact";
 import { reports as seedReports, type Report } from "@/content/governance";
 import { posts as seedPosts, type Post } from "@/content/posts";
@@ -153,5 +158,28 @@ export async function getReports(): Promise<Report[]> {
     title: row.title,
     description: row.description,
     fileUrl: row.file_url,
+  }));
+}
+
+export async function getGalleryItems(): Promise<GalleryItem[]> {
+  await applyPublicDataCachePolicy();
+  const supabase = getAnonClient();
+  if (!supabase) return seedGallery;
+
+  const { data, error } = await supabase
+    .from("gallery_items")
+    .select("*")
+    .eq("published", true)
+    .order("sort_order", { ascending: true });
+
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    slug: row.slug,
+    title: row.title,
+    category: row.category as GalleryCategory,
+    summary: row.summary,
+    image: row.image,
+    sortOrder: row.sort_order,
   }));
 }

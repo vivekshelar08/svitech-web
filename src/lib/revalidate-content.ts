@@ -7,6 +7,7 @@ const pathsByType: Record<ContentType, string[]> = {
   programs: ["/programs"],
   impact_stories: ["/impact"],
   reports: ["/reports"],
+  gallery_items: ["/gallery", "/"],
 };
 
 export function revalidatePublicContent(type: ContentType, slug?: string) {
@@ -34,6 +35,7 @@ export function revalidateAllPublicContent() {
     "programs",
     "impact_stories",
     "reports",
+    "gallery_items",
   ];
   for (const type of types) {
     revalidatePublicContent(type);

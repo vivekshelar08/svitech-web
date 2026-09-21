@@ -1,11 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useAdminConfirm } from "@/components/admin/AdminDialog";
 import {
   AdminBadge,
   AdminButton,
   AdminCard,
+  AdminChip,
   AdminEmpty,
+  AdminFilterGroup,
+  AdminStatus,
   adminInputClass,
   cn,
 } from "@/components/admin/admin-ui";
@@ -55,6 +59,7 @@ export function InboxTab({
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
+  const { confirm, dialog: confirmDialog } = useAdminConfirm();
 
   const entries = useMemo(() => {
     const list: InboxEntry[] = [
@@ -140,13 +145,14 @@ export function InboxTab({
 
   async function deleteEntry(entry: InboxEntry) {
     const title = entryTitle(entry);
-    if (
-      !confirm(
-        `Delete this ${entry.kindLabel.toLowerCase()} record permanently?\n\n${title}`,
-      )
-    ) {
-      return;
-    }
+    const ok = await confirm({
+      title: `Delete ${entry.kindLabel.toLowerCase()}?`,
+      description: `This permanently removes “${title}” and cannot be undone.`,
+      confirmLabel: "Delete permanently",
+      cancelLabel: "Keep record",
+      tone: "danger",
+    });
+    if (!ok) return;
     setBusy(true);
     setStatus("Deleting…");
     try {
@@ -181,10 +187,11 @@ export function InboxTab({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
+      {confirmDialog}
       <AdminCard padding="sm">
         <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap gap-2">
+          <AdminFilterGroup label="Submission type">
             {(
               [
                 ["all", "All"],
@@ -195,36 +202,47 @@ export function InboxTab({
                 ["events", "Event signups"],
               ] as const
             ).map(([value, label]) => (
-              <button
+              <AdminChip
                 key={value}
-                type="button"
+                active={filter === value}
+                count={counts[value]}
                 onClick={() => {
                   setFilter(value);
                   setSelectedId(null);
                 }}
-                className={cn(
-                  "rounded-md px-3 py-1.5 text-xs font-semibold transition",
-                  filter === value
-                    ? "bg-brand text-white"
-                    : "border border-line/70 bg-surface/50 text-ink-muted hover:text-ink",
-                )}
               >
-                {label} ({counts[value]})
-              </button>
+                {label}
+              </AdminChip>
             ))}
+          </AdminFilterGroup>
+          <div>
+            <label className="sr-only" htmlFor="inbox-search">
+              Search submissions
+            </label>
+            <input
+              id="inbox-search"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search name, email, message, status…"
+              className={cn(adminInputClass, "mt-0")}
+            />
           </div>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search name, email, message, status…"
-            className={cn(adminInputClass, "mt-0")}
-          />
-          {status && <p className="text-sm text-ink-muted">{status}</p>}
+          <AdminStatus
+            tone={
+              status.includes("fail") || status.includes("Could not")
+                ? "error"
+                : status === "Deleted."
+                  ? "success"
+                  : "info"
+            }
+          >
+            {status}
+          </AdminStatus>
         </div>
       </AdminCard>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
         <AdminCard
           title="Submissions"
           description={`${filtered.length} shown`}
@@ -236,17 +254,21 @@ export function InboxTab({
               description="Try another type filter or clear the search."
             />
           ) : (
-            <ul className="max-h-[70vh] space-y-2 overflow-auto pr-1">
+            <ul
+              className="max-h-[70vh] space-y-2 overflow-auto pr-1"
+              role="listbox"
+              aria-label="Inbox submissions"
+            >
               {filtered.map((entry) => {
                 const active = selected?.id === entry.id;
                 const amount = formatAmount(entry.row);
                 return (
-                  <li key={entry.id}>
+                  <li key={entry.id} role="option" aria-selected={active}>
                     <button
                       type="button"
                       onClick={() => setSelectedId(entry.id)}
                       className={cn(
-                        "w-full rounded-xl border p-3.5 text-left transition",
+                        "w-full rounded-xl border p-3.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
                         active
                           ? "border-brand bg-brand/5 shadow-sm"
                           : "border-line/60 bg-surface/40 hover:border-brand/40",

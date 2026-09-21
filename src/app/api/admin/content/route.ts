@@ -5,6 +5,7 @@ import {
   listContent,
   togglePublished,
   upsertEvent,
+  upsertGalleryItem,
   upsertImpactStory,
   upsertPost,
   upsertProgram,
@@ -78,6 +79,23 @@ const reportSchema = z.object({
   published: z.boolean().optional(),
 });
 
+const gallerySchema = z.object({
+  slug: z.string().trim().min(2).max(120),
+  title: z.string().trim().min(2).max(200),
+  category: z.enum([
+    "Digital Literacy",
+    "Women Empowerment",
+    "Health",
+    "Education",
+    "Community",
+    "Road Safety",
+  ]),
+  summary: z.string().trim().min(2).max(500),
+  image: z.string().trim().min(2).max(500),
+  sortOrder: z.coerce.number().int().optional(),
+  published: z.boolean().optional(),
+});
+
 function slugFromPayload(type: ContentType, data: unknown) {
   if (!data || typeof data !== "object") return undefined;
   const row = data as Record<string, unknown>;
@@ -138,6 +156,10 @@ export async function POST(request: Request) {
     } else if (type === "reports") {
       const data = reportSchema.parse(body.data);
       await upsertReport(data);
+    } else if (type === "gallery_items") {
+      const data = gallerySchema.parse(body.data);
+      slug = data.slug;
+      await upsertGalleryItem(data);
     }
 
     revalidatePublicContent(type, slug ?? slugFromPayload(type, body.data));
