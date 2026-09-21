@@ -306,6 +306,22 @@ a {
     );
 }
 
+.circuit-mesh {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand-bright) 18%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-bright) 14%, transparent) 1px, transparent 1px),
+    radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 42%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+.circuit-mesh-soft {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--brand) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand) 8%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
 .panel-lift {
   transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
@@ -378,6 +394,44 @@ a {
   }
 }
 
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes gallery-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 42s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.way-pillar:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--brand) 28%, transparent);
+  box-shadow: 0 18px 36px -24px rgba(11, 20, 36, 0.35);
+}
+
+.gallery-fade {
+  animation: gallery-fade-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .animate-rise {
   animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -427,8 +481,14 @@ a {
   .animate-ken,
   .animate-draw,
   .animate-dropdown,
-  .animate-slide-up {
+  .animate-slide-up,
+  .marquee-track,
+  .gallery-fade {
     animation: none;
+  }
+
+  .way-pillar:hover {
+    transform: none;
   }
 
   .reveal-block,

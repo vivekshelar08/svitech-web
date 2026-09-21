@@ -115,7 +115,7 @@ export const tabHints: Record<AdminTab, string> = {
   theme: "Brand colors applied across the whole site",
   navigation: "Header/footer links and sticky donate — reorder with ↑↓",
   pages: "About, get involved, and contact page copy & images",
-  listings: "Donate, volunteer, programs, events, news, impact, reports intros",
+  listings: "Donate, volunteer, programs, events, news, impact, gallery, reports intros",
   board: "Board members with optional photos — add, reorder, remove",
   detail: "Back links and CTAs on detail pages",
   popup: "Homepage announcement popup — enable, copy, image, and CTA",

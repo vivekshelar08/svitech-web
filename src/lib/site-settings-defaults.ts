@@ -52,6 +52,7 @@ export type StickyDonateSettings = {
   ctaHref: string;
 };
 export type ValueItem = { title: string; copy: string };
+export type ReachState = { name: string; note: string };
 export type InvolveWay = {
   title: string;
   copy: string;
@@ -106,26 +107,40 @@ export type SiteSettings = {
     /** Dropdown under Programs — e.g. Projects, Activities, Upcoming Events */
     programsMenuLinks: NavLink[];
     stickyDonate: StickyDonateSettings;
+    showTopBar: boolean;
+    trustBadge: string;
   };
   footer: {
     exploreHeading: string;
     exploreLinks: NavLink[];
     takePartHeading: string;
     takePartLinks: NavLink[];
+    legalHeading: string;
+    legalLinks: NavLink[];
     newsletterHeading: string;
     donateLabel: string;
     donateHref: string;
     tagline: string;
   };
   home: {
+    heroEyebrow: string;
     heroHeadline: string;
     heroSubhead: string;
     heroImage: string;
     heroImageAlt: string;
+    heroSecondaryImage: string;
+    heroSecondaryImageAlt: string;
     heroCtaPrimary: string;
     heroCtaPrimaryHref: string;
     heroCtaSecondary: string;
     heroCtaSecondaryHref: string;
+    heroTrustChecks: string[];
+    heroImpactBadge: string;
+    marqueeItems: string[];
+    wayEyebrow: string;
+    wayHeadline: string;
+    wayIntro: string;
+    wayPillars: ValueItem[];
     focusEyebrow: string;
     focusHeadline: string;
     focusIntro: string;
@@ -137,6 +152,17 @@ export type SiteSettings = {
     approachImageAlt: string;
     approachLinkLabel: string;
     approachLinkHref: string;
+    reachEyebrow: string;
+    reachHeadline: string;
+    reachIntro: string;
+    reachStates: ReachState[];
+    reachCtaLabel: string;
+    reachCtaHref: string;
+    galleryEyebrow: string;
+    galleryHeadline: string;
+    galleryIntro: string;
+    galleryCtaLabel: string;
+    galleryCtaHref: string;
     ctaHeadline: string;
     ctaCopy: string;
     ctaButtons: NavLink[];
@@ -295,6 +321,13 @@ export type SiteSettings = {
     seoTitle: string;
     seoDescription: string;
   };
+  gallery: {
+    eyebrow: string;
+    headline: string;
+    intro: string;
+    seoTitle: string;
+    seoDescription: string;
+  };
   reports: {
     eyebrow: string;
     headline: string;
@@ -340,6 +373,7 @@ const defaultNav: NavLink[] = [
   { label: "About", href: "/about" },
   { label: "Programs", href: "/programs" },
   { label: "Impact", href: "/impact" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Reports", href: "/reports" },
   { label: "Get Involved", href: "/get-involved" },
 ];
@@ -393,22 +427,32 @@ export const defaultSiteSettings: SiteSettings = {
       ctaLabel: "Donate now",
       ctaHref: "/donate",
     },
+    showTopBar: true,
+    trustBadge: "80G · 12AA · Transparent reporting",
   },
   footer: {
     exploreHeading: "Our work",
     exploreLinks: [
       { label: "About", href: "/about" },
-      { label: "Projects", href: "/programs" },
+      { label: "Programs", href: "/programs" },
       { label: "Impact", href: "/impact" },
-      { label: "Upcoming Events", href: "/events" },
+      { label: "Gallery", href: "/gallery" },
       { label: "Activities", href: "/news" },
+      { label: "Upcoming Events", href: "/events" },
     ],
     takePartHeading: "Take part",
     takePartLinks: [
       { label: "Donate", href: "/donate" },
       { label: "Volunteer", href: "/volunteer" },
+      { label: "Get involved", href: "/get-involved" },
       { label: "Reports", href: "/reports" },
       { label: "Contact", href: "/contact" },
+    ],
+    legalHeading: "Legal",
+    legalLinks: [
+      { label: "Privacy", href: "/contact" },
+      { label: "Contact", href: "/contact" },
+      { label: "Reports & governance", href: "/reports" },
     ],
     newsletterHeading: "Newsletter",
     donateLabel: "Donate",
@@ -416,17 +460,71 @@ export const defaultSiteSettings: SiteSettings = {
     tagline: "Technology for social good",
   },
   home: {
+    heroEyebrow: "Section 8 · Digital inclusion across India",
     heroHeadline: "Digital skills. Dignity. Opportunity.",
     heroSubhead:
       "SVITECH Foundation empowers underprivileged youth, women, children, and seniors through digital training, welfare access, education, and community development.",
     heroImage:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=2400&q=80",
     heroImageAlt: "Community members gathered for an awareness programme",
+    heroSecondaryImage:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    heroSecondaryImageAlt: "Learners practising digital skills together",
     heroCtaPrimary: "Donate",
     heroCtaPrimaryHref: "/donate",
     heroCtaSecondary: "See our impact",
     heroCtaSecondaryHref: "/impact",
-    focusEyebrow: "What we do",
+    heroTrustChecks: [
+      "80G & 12AA registered",
+      "Five-state programme reach",
+      "Published annual reports",
+    ],
+    heroImpactBadge: "5 states · Digital inclusion",
+    marqueeItems: [
+      "Digital Literacy",
+      "डिजिटल साक्षरता",
+      "Financial Inclusion",
+      "वित्तीय समावेश",
+      "Women Empowerment",
+      "महिला सशक्तिकरण",
+      "Health & Welfare",
+      "स्वास्थ्य सेवा",
+      "Road Safety",
+      "सड़क सुरक्षा",
+      "Community Happiness",
+      "सामुदायिक खुशहाली",
+    ],
+    wayEyebrow: "The SVITECH Way",
+    wayHeadline: "Six pillars that guide every programme",
+    wayIntro:
+      "From digital skills to community mobilisation, our approach stays practical, ethical, and rooted in local need.",
+    wayPillars: [
+      {
+        title: "Inclusivity",
+        copy: "Opportunities for all—regardless of socio-economic background.",
+      },
+      {
+        title: "Integrity",
+        copy: "The highest ethical standards in programmes, partnerships, and stewardship.",
+      },
+      {
+        title: "Innovation",
+        copy: "Digital tools and practical methods to solve complex community challenges.",
+      },
+      {
+        title: "Collaboration",
+        copy: "Partnerships with schools, agencies, CSR teams, and communities to multiply impact.",
+      },
+      {
+        title: "Access",
+        copy: "Help families navigate e-governance, welfare schemes, and essential digital services.",
+      },
+      {
+        title: "Dignity",
+        copy: "Skills and support that protect agency—so people lead change in their own lives.",
+      },
+    ],
+    focusEyebrow: "Core programmes",
     focusHeadline: "Skills, access, and community empowerment.",
     focusIntro:
       "We break cycles of poverty with digital skills training, e-government facilitation, health and education outreach, and partnerships with schools, agencies, and CSR teams.",
@@ -462,6 +560,25 @@ export const defaultSiteSettings: SiteSettings = {
     approachImageAlt: "Workshop facilitator helping a learner at a shared table",
     approachLinkLabel: "Learn about SVITECH Foundation",
     approachLinkHref: "/about",
+    reachEyebrow: "Where we work",
+    reachHeadline: "Five-state reach with Maharashtra at the centre",
+    reachIntro:
+      "Maharashtra hosts the full activity suite. Pune adds dedicated Digital Literacy. Delhi, Gujarat, Haryana, and Uttar Pradesh focus on Financial Inclusion projects.",
+    reachStates: [
+      { name: "Maharashtra", note: "Full programme suite" },
+      { name: "Delhi", note: "Financial Inclusion" },
+      { name: "Gujarat", note: "Financial Inclusion" },
+      { name: "Haryana", note: "Financial Inclusion" },
+      { name: "Uttar Pradesh", note: "Financial Inclusion" },
+    ],
+    reachCtaLabel: "Explore the impact map",
+    reachCtaHref: "/impact",
+    galleryEyebrow: "In the field",
+    galleryHeadline: "Moments from programmes across states",
+    galleryIntro:
+      "A glimpse of digital labs, health camps, education outreach, and community days—filtered by theme on our full gallery.",
+    galleryCtaLabel: "View full gallery",
+    galleryCtaHref: "/gallery",
     ctaHeadline: "Join us in building a more self-reliant society",
     ctaCopy:
       "Volunteer, partner through CSR, or donate—help expand Financial and Digital Inclusion, health camps, and education outreach.",
@@ -757,6 +874,15 @@ export const defaultSiteSettings: SiteSettings = {
     seoTitle: "Impact",
     seoDescription:
       "SVITECH Foundation: all activities in Maharashtra, Digital Literacy in Pune, and Financial Inclusion projects in Delhi, Gujarat, Haryana, and Uttar Pradesh.",
+  },
+  gallery: {
+    eyebrow: "Gallery",
+    headline: "Field notes in photographs",
+    intro:
+      "Browse moments from Digital Literacy labs, women empowerment workshops, health camps, education outreach, community days, and road safety drives.",
+    seoTitle: "Gallery",
+    seoDescription:
+      "Photo gallery from SVITECH Foundation programmes across Maharashtra and partner states.",
   },
   reports: {
     eyebrow: "Transparency",

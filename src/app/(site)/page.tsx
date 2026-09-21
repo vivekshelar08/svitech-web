@@ -3,13 +3,17 @@ import Link from "next/link";
 import { AccreditationsStrip } from "@/components/AccreditationsStrip";
 import { CampaignCards } from "@/components/CampaignCards";
 import { DonateStrip } from "@/components/DonateStrip";
+import { HomeGallery } from "@/components/HomeGallery";
+import { HomeHero } from "@/components/HomeHero";
+import { HomeMarquee } from "@/components/HomeMarquee";
 import { HomePrograms } from "@/components/HomePrograms";
+import { HomeReach } from "@/components/HomeReach";
 import { HomeSpotlight } from "@/components/HomeSpotlight";
+import { HomeWayPillars } from "@/components/HomeWayPillars";
 import { ImpactStats } from "@/components/ImpactStats";
 import { Reveal } from "@/components/Reveal";
-import { SiteLogo } from "@/components/SiteLogo";
 import { TestimonialQuote } from "@/components/TestimonialQuote";
-import { getPosts, getPrograms } from "@/lib/content";
+import { getGalleryItems, getPosts, getPrograms } from "@/lib/content";
 import { getPublicSiteSettings } from "@/lib/public-site-gate";
 
 export const revalidate = 60;
@@ -19,54 +23,30 @@ export default async function HomePage() {
   if (settings.maintenance?.enabled) return null;
 
   const { home, general, navigation, about, cache } = settings;
-  const [programs, posts] = await Promise.all([getPrograms(), getPosts()]);
+  const [programs, posts, gallery] = await Promise.all([
+    getPrograms(),
+    getPosts(),
+    getGalleryItems(),
+  ]);
   const logoProps = {
     logoUrl: general.logoUrl,
     logoAlt: general.logoAlt,
     logoAriaLabel: general.logoAriaLabel,
   };
+  const wayPillars =
+    home.wayPillars?.length >= 4 ? home.wayPillars : about.values;
 
   return (
     <>
-      <section className="relative min-h-[calc(100svh-4.5rem)] overflow-hidden bg-bg-deep text-surface">
-        <Image
-          src={home.heroImage}
-          alt={home.heroImageAlt}
-          fill
-          priority
-          className="animate-ken object-cover opacity-55"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-deep via-bg-deep/78 to-bg-deep/25" />
-        <div
-          className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_20%_80%,rgba(27,110,245,0.22),transparent_55%)]"
-          aria-hidden
-        />
+      <HomeHero home={home} logoProps={logoProps} />
+      <HomeMarquee items={home.marqueeItems || []} />
 
-        <div className="relative mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-6xl flex-col justify-end px-4 pb-14 pt-24 sm:px-5 sm:pb-16 sm:pt-28 md:px-8 md:pb-20">
-          <div className="animate-rise">
-            <SiteLogo href="" size="lg" priority {...logoProps} />
-          </div>
-          <span
-            className="animate-draw mt-5 block h-1 w-20 bg-gradient-to-r from-brand-bright to-accent sm:w-28"
-            aria-hidden
-          />
-          <h1 className="animate-rise-delay-1 mt-5 max-w-2xl font-display text-[1.65rem] font-semibold leading-snug tracking-tight text-white sm:mt-6 sm:text-3xl md:text-4xl">
-            {home.heroHeadline}
-          </h1>
-          <p className="animate-rise-delay-1 mt-3 max-w-xl text-[0.95rem] leading-relaxed text-white/80 sm:mt-4 sm:text-lg">
-            {home.heroSubhead}
-          </p>
-          <div className="animate-rise-delay-2 btn-row mt-8 flex flex-wrap gap-3 sm:flex-row">
-            <Link href={home.heroCtaPrimaryHref} className="btn-primary sm:w-auto">
-              {home.heroCtaPrimary}
-            </Link>
-            <Link href={home.heroCtaSecondaryHref} className="btn-ghost sm:w-auto">
-              {home.heroCtaSecondary}
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HomeWayPillars
+        eyebrow={home.wayEyebrow}
+        headline={home.wayHeadline}
+        intro={home.wayIntro}
+        pillars={wayPillars}
+      />
 
       <ImpactStats
         eyebrow={home.impactStatsEyebrow}
@@ -147,6 +127,27 @@ export default async function HomePage() {
         </ul>
       </section>
 
+      <Reveal>
+        <HomePrograms
+          eyebrow={home.programsEyebrow}
+          headline={home.programsHeadline}
+          intro={home.programsIntro}
+          programs={programs}
+          ctaLabel={home.programsCtaLabel}
+          ctaHref={home.programsCtaHref}
+          itemCtaLabel={home.programsItemCtaLabel}
+        />
+      </Reveal>
+
+      <HomeReach
+        eyebrow={home.reachEyebrow}
+        headline={home.reachHeadline}
+        intro={home.reachIntro}
+        states={home.reachStates || []}
+        ctaLabel={home.reachCtaLabel}
+        ctaHref={home.reachCtaHref}
+      />
+
       {home.missionBandEnabled && (
         <section className="border-y border-line bg-surface">
           <div className="mx-auto grid max-w-6xl gap-0 md:grid-cols-2">
@@ -173,54 +174,12 @@ export default async function HomePage() {
       )}
 
       <Reveal>
-        <HomePrograms
-          eyebrow={home.programsEyebrow}
-          headline={home.programsHeadline}
-          intro={home.programsIntro}
-          programs={programs}
-          ctaLabel={home.programsCtaLabel}
-          ctaHref={home.programsCtaHref}
-          itemCtaLabel={home.programsItemCtaLabel}
-        />
-      </Reveal>
-
-      <Reveal>
         <CampaignCards
           eyebrow={home.campaignsEyebrow}
           headline={home.campaignsHeadline}
           campaigns={home.campaigns}
         />
       </Reveal>
-
-      <section className="relative overflow-hidden border-y border-line bg-surface">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 md:grid-cols-2 md:gap-16 md:px-8 md:py-28">
-          <Reveal>
-            <div className="relative aspect-[4/5] overflow-hidden md:aspect-[5/6]">
-              <Image
-                src={home.approachImage}
-                alt={home.approachImageAlt}
-                fill
-                className="object-cover transition duration-700 hover:scale-[1.03]"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 ring-1 ring-inset ring-black/5" />
-              <div className="absolute bottom-0 left-0 h-1 w-24 bg-gradient-to-r from-brand to-accent" />
-            </div>
-          </Reveal>
-          <Reveal delayMs={120}>
-            <p className="site-eyebrow">{home.approachEyebrow}</p>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
-              {home.approachHeadline}
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-ink-muted md:text-lg">
-              {home.approachCopy}
-            </p>
-            <Link href={home.approachLinkHref} className="link-underline mt-8">
-              {home.approachLinkLabel}
-            </Link>
-          </Reveal>
-        </div>
-      </section>
 
       <Reveal>
         <HomeSpotlight
@@ -231,6 +190,15 @@ export default async function HomePage() {
           viewAllHref={home.spotlightViewAllHref}
         />
       </Reveal>
+
+      <HomeGallery
+        eyebrow={home.galleryEyebrow}
+        headline={home.galleryHeadline}
+        intro={home.galleryIntro}
+        items={gallery}
+        ctaLabel={home.galleryCtaLabel}
+        ctaHref={home.galleryCtaHref}
+      />
 
       <Reveal>
         <TestimonialQuote eyebrow={home.quoteEyebrow} quote={home.quote} />

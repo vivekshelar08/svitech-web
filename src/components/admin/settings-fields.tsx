@@ -603,26 +603,116 @@ export function SettingsFormBody({
           Changes go live after you save.
         </div>
         <div className="space-y-4">
-          <SectionTitle title="Hero" copy="Full-bleed background image, headline, and primary actions." />
+          <SectionTitle title="Hero" copy="Split hero with eyebrow badge, trust checks, and impact image card." />
           <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Hero eyebrow / badge" value={settings.home.heroEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroEyebrow: v } })} />
+            <Field label="Hero impact badge" value={settings.home.heroImpactBadge} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImpactBadge: v } })} />
             <Field label="Hero headline" value={settings.home.heroHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroHeadline: v } })} />
             <Field label="Hero subhead" value={settings.home.heroSubhead} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroSubhead: v } })} multiline />
             <div className="md:col-span-2">
               <MediaField
-                label="Hero image"
+                label="Hero background image"
                 value={settings.home.heroImage}
                 onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImage: v } })}
                 folder="home"
               />
             </div>
             <Field label="Hero image alt" value={settings.home.heroImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroImageAlt: v } })} />
+            <div className="md:col-span-2">
+              <MediaField
+                label="Hero secondary / card image"
+                value={settings.home.heroSecondaryImage}
+                onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroSecondaryImage: v } })}
+                folder="home"
+              />
+            </div>
+            <Field label="Secondary image alt" value={settings.home.heroSecondaryImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroSecondaryImageAlt: v } })} />
             <Field label="Primary CTA label" value={settings.home.heroCtaPrimary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimary: v } })} />
             <Field label="Primary CTA link" value={settings.home.heroCtaPrimaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaPrimaryHref: v } })} />
             <Field label="Secondary CTA label" value={settings.home.heroCtaSecondary} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondary: v } })} />
             <Field label="Secondary CTA link" value={settings.home.heroCtaSecondaryHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, heroCtaSecondaryHref: v } })} />
+            <Field
+              label="Trust checks (one per line)"
+              value={(settings.home.heroTrustChecks || []).join("\n")}
+              onChange={(v) =>
+                setSettings({
+                  ...settings,
+                  home: {
+                    ...settings.home,
+                    heroTrustChecks: v
+                      .split("\n")
+                      .map((line) => line.trim())
+                      .filter(Boolean),
+                  },
+                })
+              }
+              multiline
+            />
+            <Field
+              label="Marquee items (one per line · bilingual OK)"
+              value={(settings.home.marqueeItems || []).join("\n")}
+              onChange={(v) =>
+                setSettings({
+                  ...settings,
+                  home: {
+                    ...settings.home,
+                    marqueeItems: v
+                      .split("\n")
+                      .map((line) => line.trim())
+                      .filter(Boolean),
+                  },
+                })
+              }
+              multiline
+            />
           </div>
 
-          <SectionTitle title="Focus areas" copy="Image cards under the hero — like an “areas of work” strip. Upload a photo per area." />
+          <SectionTitle title="The SVITECH Way" copy="Numbered value pillars under the marquee." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Way eyebrow" value={settings.home.wayEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, wayEyebrow: v } })} />
+            <Field label="Way headline" value={settings.home.wayHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, wayHeadline: v } })} />
+            <Field label="Way intro" value={settings.home.wayIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, wayIntro: v } })} multiline />
+          </div>
+          {(settings.home.wayPillars || []).map((pillar, index) => (
+            <div key={index} className="grid gap-3 rounded-lg border border-line/70 p-4 md:grid-cols-2">
+              <Field
+                label={`Pillar ${index + 1} title`}
+                value={pillar.title}
+                onChange={(v) => {
+                  const next = [...settings.home.wayPillars];
+                  next[index] = { ...next[index], title: v };
+                  setSettings({ ...settings, home: { ...settings.home, wayPillars: next } });
+                }}
+              />
+              <Field
+                label="Copy"
+                value={pillar.copy}
+                onChange={(v) => {
+                  const next = [...settings.home.wayPillars];
+                  next[index] = { ...next[index], copy: v };
+                  setSettings({ ...settings, home: { ...settings.home, wayPillars: next } });
+                }}
+                multiline
+              />
+            </div>
+          ))}
+          <AdminButton
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              setSettings({
+                ...settings,
+                home: {
+                  ...settings.home,
+                  wayPillars: [...(settings.home.wayPillars || []), { title: "New pillar", copy: "" }],
+                },
+              })
+            }
+          >
+            Add way pillar
+          </AdminButton>
+
+          <SectionTitle title="Focus areas" copy="Image cards under impact stats — like an “areas of work” strip." />
           <div className="grid gap-4 md:grid-cols-2">
             <Field label="Focus eyebrow" value={settings.home.focusEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusEyebrow: v } })} />
             <Field label="Focus headline" value={settings.home.focusHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, focusHeadline: v } })} />
@@ -780,6 +870,46 @@ export function SettingsFormBody({
             <Field label="Approach image alt" value={settings.home.approachImageAlt} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachImageAlt: v } })} />
             <Field label="Approach link label" value={settings.home.approachLinkLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkLabel: v } })} />
             <Field label="Approach link href" value={settings.home.approachLinkHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, approachLinkHref: v } })} />
+          </div>
+
+          <SectionTitle title="Reach" copy="Five-state strip linking to the impact map." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Reach eyebrow" value={settings.home.reachEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, reachEyebrow: v } })} />
+            <Field label="Reach headline" value={settings.home.reachHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, reachHeadline: v } })} />
+            <Field label="Reach intro" value={settings.home.reachIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, reachIntro: v } })} multiline />
+            <Field label="Reach CTA label" value={settings.home.reachCtaLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, reachCtaLabel: v } })} />
+            <Field label="Reach CTA link" value={settings.home.reachCtaHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, reachCtaHref: v } })} />
+          </div>
+          {(settings.home.reachStates || []).map((state, index) => (
+            <div key={index} className="grid gap-3 rounded-lg border border-line/70 p-4 md:grid-cols-2">
+              <Field
+                label={`State ${index + 1}`}
+                value={state.name}
+                onChange={(v) => {
+                  const next = [...settings.home.reachStates];
+                  next[index] = { ...next[index], name: v };
+                  setSettings({ ...settings, home: { ...settings.home, reachStates: next } });
+                }}
+              />
+              <Field
+                label="Note"
+                value={state.note}
+                onChange={(v) => {
+                  const next = [...settings.home.reachStates];
+                  next[index] = { ...next[index], note: v };
+                  setSettings({ ...settings, home: { ...settings.home, reachStates: next } });
+                }}
+              />
+            </div>
+          ))}
+
+          <SectionTitle title="Home gallery" copy="Preview strip — full gallery page uses CMS photos." />
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="Gallery eyebrow" value={settings.home.galleryEyebrow} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, galleryEyebrow: v } })} />
+            <Field label="Gallery headline" value={settings.home.galleryHeadline} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, galleryHeadline: v } })} />
+            <Field label="Gallery intro" value={settings.home.galleryIntro} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, galleryIntro: v } })} multiline />
+            <Field label="Gallery CTA label" value={settings.home.galleryCtaLabel} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, galleryCtaLabel: v } })} />
+            <Field label="Gallery CTA link" value={settings.home.galleryCtaHref} onChange={(v) => setSettings({ ...settings, home: { ...settings.home, galleryCtaHref: v } })} />
           </div>
         </div>
 
@@ -1066,6 +1196,34 @@ export function SettingsFormBody({
   if (section === "navigation") {
     return (
       <div className="space-y-10">
+        <SectionTitle title="Top utility bar" copy="Dark bar above the main nav — email, phone, trust badge, donate shortcut." />
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="flex items-center gap-3 text-sm font-medium text-ink">
+            <input
+              type="checkbox"
+              checked={settings.navigation.showTopBar !== false}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  navigation: { ...settings.navigation, showTopBar: e.target.checked },
+                })
+              }
+              className="h-4 w-4 rounded border-line"
+            />
+            Show top bar
+          </label>
+          <Field
+            label="Trust badge text"
+            value={settings.navigation.trustBadge || ""}
+            onChange={(v) =>
+              setSettings({
+                ...settings,
+                navigation: { ...settings.navigation, trustBadge: v },
+              })
+            }
+            hint="Phone & email come from Brand & SEO → contact fields"
+          />
+        </div>
         <SectionTitle title="Header navigation" />
         <div className="grid gap-4 md:grid-cols-2">
           <Field label="Donate button label" value={settings.navigation.donateLabel} onChange={(v) => setSettings({ ...settings, navigation: { ...settings.navigation, donateLabel: v } })} />
@@ -1126,6 +1284,7 @@ export function SettingsFormBody({
         <div className="grid gap-4 md:grid-cols-3">
           <Field label="Explore heading" value={settings.footer.exploreHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, exploreHeading: v } })} />
           <Field label="Take part heading" value={settings.footer.takePartHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, takePartHeading: v } })} />
+          <Field label="Legal heading" value={settings.footer.legalHeading || "Legal"} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, legalHeading: v } })} />
           <Field label="Newsletter heading" value={settings.footer.newsletterHeading} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, newsletterHeading: v } })} />
           <Field label="Footer donate button" value={settings.footer.donateLabel} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, donateLabel: v } })} />
           <Field label="Footer donate link" value={settings.footer.donateHref} onChange={(v) => setSettings({ ...settings, footer: { ...settings.footer, donateHref: v } })} />
@@ -1133,6 +1292,11 @@ export function SettingsFormBody({
         </div>
         <NavLinksEditor label="Explore links" links={settings.footer.exploreLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, exploreLinks: links } })} />
         <NavLinksEditor label="Take part links" links={settings.footer.takePartLinks} onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, takePartLinks: links } })} />
+        <NavLinksEditor
+          label="Legal links"
+          links={settings.footer.legalLinks || []}
+          onChange={(links) => setSettings({ ...settings, footer: { ...settings.footer, legalLinks: links } })}
+        />
       </div>
     );
   }
@@ -1382,6 +1546,7 @@ export function SettingsFormBody({
     { key: "events" as const, label: "Events list" },
     { key: "news" as const, label: "News list" },
     { key: "impact" as const, label: "Impact" },
+    { key: "gallery" as const, label: "Gallery" },
     { key: "reports" as const, label: "Reports" },
   ];
 

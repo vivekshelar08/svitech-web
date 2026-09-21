@@ -4,6 +4,7 @@ import { MaintenanceScreen } from "@/components/MaintenanceScreen";
 import { SitePopup } from "@/components/SitePopup";
 import { StickyDonateBar } from "@/components/StickyDonateBar";
 import { SiteTheme } from "@/components/SiteTheme";
+import { TopBar } from "@/components/TopBar";
 import { getPublicSiteSettings } from "@/lib/public-site-gate";
 
 export default async function SiteLayout({
@@ -25,6 +26,7 @@ export default async function SiteLayout({
   return (
     <>
       <SiteTheme theme={settings.theme} />
+      <TopBar general={settings.general} navigation={settings.navigation} />
       <Header
         key={`nav-${settings.navigation.primaryLinks.map((l) => l.href).join("|")}`}
         general={settings.general}
