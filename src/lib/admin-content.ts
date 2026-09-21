@@ -1,4 +1,5 @@
 import { events as seedEvents } from "@/content/events";
+import { galleryItems as seedGallery } from "@/content/gallery";
 import { impactStories as seedImpact } from "@/content/impact";
 import { reports as seedReports } from "@/content/governance";
 import { posts as seedPosts } from "@/content/posts";
@@ -11,6 +12,7 @@ export const contentTypes = [
   "programs",
   "impact_stories",
   "reports",
+  "gallery_items",
 ] as const;
 
 export type ContentType = (typeof contentTypes)[number];
@@ -34,7 +36,9 @@ export async function listContent(type: ContentType) {
         ? { column: "starts_at", ascending: true }
         : type === "reports"
           ? { column: "year", ascending: false }
-          : { column: "sort_order", ascending: true };
+          : type === "gallery_items"
+            ? { column: "sort_order", ascending: true }
+            : { column: "sort_order", ascending: true };
 
   const { data, error } = await admin
     .from(type)
@@ -193,6 +197,32 @@ export async function upsertReport(input: {
   if (error) throw new Error(error.message);
 }
 
+export async function upsertGalleryItem(input: {
+  slug: string;
+  title: string;
+  category: string;
+  summary: string;
+  image: string;
+  sortOrder?: number;
+  published?: boolean;
+}) {
+  const admin = requireAdminClient();
+  const { error } = await admin.from("gallery_items").upsert(
+    {
+      slug: input.slug,
+      title: input.title,
+      category: input.category,
+      summary: input.summary,
+      image: input.image,
+      sort_order: input.sortOrder ?? 0,
+      published: input.published ?? true,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "slug" },
+  );
+  if (error) throw new Error(error.message);
+}
+
 export async function deleteContent(type: ContentType, id: string) {
   const admin = requireAdminClient();
   const { error } = await admin.from(type).delete().eq("id", id);
@@ -206,7 +236,9 @@ export async function togglePublished(
 ) {
   const admin = requireAdminClient();
   const patch: Record<string, unknown> = { published };
-  if (type === "posts") patch.updated_at = new Date().toISOString();
+  if (type === "posts" || type === "gallery_items") {
+    patch.updated_at = new Date().toISOString();
+  }
   const { error } = await admin.from(type).update(patch).eq("id", id);
   if (error) throw new Error(error.message);
 }
@@ -226,7 +258,9 @@ async function unpublishSlugsNotIn(
     .from(type)
     .update({
       published: false,
-      ...(type === "posts" ? { updated_at: new Date().toISOString() } : {}),
+      ...(type === "posts" || type === "gallery_items"
+        ? { updated_at: new Date().toISOString() }
+        : {}),
     })
     .in("id", staleIds);
   if (updErr) throw new Error(updErr.message);
@@ -348,6 +382,18 @@ export async function seedAllContent() {
 
   await syncSeedReports();
 
+  for (const item of seedGallery) {
+    await upsertGalleryItem({
+      slug: item.slug,
+      title: item.title,
+      category: item.category,
+      summary: item.summary,
+      image: item.image,
+      sortOrder: item.sortOrder,
+      published: true,
+    });
+  }
+
   const unpublished = {
     posts: await unpublishSlugsNotIn(
       "posts",
@@ -365,6 +411,10 @@ export async function seedAllContent() {
       "impact_stories",
       new Set(seedImpact.map((s) => s.slug)),
     ),
+    gallery_items: await unpublishSlugsNotIn(
+      "gallery_items",
+      new Set(seedGallery.map((g) => g.slug)),
+    ),
   };
 
   return {
@@ -373,6 +423,7 @@ export async function seedAllContent() {
     programs: seedPrograms.length,
     impact_stories: seedImpact.length,
     reports: seedReports.length,
+    gallery_items: seedGallery.length,
     unpublished,
   };
 }

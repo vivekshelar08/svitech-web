@@ -6,6 +6,7 @@ export type AdminTab =
   | "programs"
   | "impact_stories"
   | "reports"
+  | "gallery_items"
   | "home"
   | "site"
   | "theme"
@@ -37,7 +38,7 @@ export const navGroups: NavGroup[] = [
   { label: "Overview", items: ["dashboard", "inbox"] },
   {
     label: "Publish content",
-    items: ["posts", "events", "programs", "impact_stories", "reports"],
+    items: ["posts", "events", "programs", "impact_stories", "reports", "gallery_items"],
   },
   {
     label: "Edit website pages",
@@ -63,6 +64,7 @@ export const websiteEditorMap: {
   { label: "Events", preview: "/events", tab: "events", hint: "Listings & registration" },
   { label: "News", preview: "/news", tab: "posts", hint: "Articles & covers" },
   { label: "Impact", preview: "/impact", tab: "impact_stories", hint: "Stories & metrics" },
+  { label: "Gallery", preview: "/gallery", tab: "gallery_items", hint: "Photos & categories" },
   { label: "Reports", preview: "/reports", tab: "reports", hint: "PDFs & board list" },
   { label: "Get involved", preview: "/get-involved", tab: "pages", hint: "Ways to help" },
   { label: "Volunteer", preview: "/volunteer", tab: "listings", hint: "Volunteer page copy" },
@@ -84,6 +86,7 @@ export const tabLabels: Record<AdminTab, string> = {
   programs: "Programs",
   impact_stories: "Impact",
   reports: "Reports",
+  gallery_items: "Gallery",
   home: "Home page",
   site: "Brand & SEO",
   theme: "Colors",
@@ -106,6 +109,7 @@ export const tabHints: Record<AdminTab, string> = {
   programs: "Programs with cover upload and sort order",
   impact_stories: "Impact stories with metrics, map coords, and covers",
   reports: "Annual reports — upload PDF or paste a URL",
+  gallery_items: "Photo gallery items with category filters for home and /gallery",
   home: "Hero image, focus areas (with photos), campaigns, and homepage blocks",
   site: "Brand, logo upload, SEO counters, and footer copy",
   theme: "Brand colors applied across the whole site",
@@ -126,6 +130,7 @@ export const contentTabs = [
   "programs",
   "impact_stories",
   "reports",
+  "gallery_items",
 ] as const;
 
 export type ContentTabType = (typeof contentTabs)[number];
