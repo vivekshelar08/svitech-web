@@ -1,11 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useAdminConfirm } from "@/components/admin/AdminDialog";
 import {
   SettingsFormBody,
   type SettingsSection,
 } from "@/components/admin/settings-fields";
-import { AdminAlert, AdminButton, AdminCard } from "@/components/admin/admin-ui";
+import {
+  AdminAlert,
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminStatus,
+} from "@/components/admin/admin-ui";
 import { adminJson } from "@/lib/admin-fetch";
 import { defaultSiteSettings, type SiteSettings } from "@/lib/site-settings-defaults";
 
@@ -24,6 +31,7 @@ const previewBySection: Partial<Record<SettingsSection, string>> = {
 };
 
 export function SettingsTab({ section }: { section: SettingsSection }) {
+  const { confirm, dialog: confirmDialog } = useAdminConfirm();
   const [settings, setSettings] = useState<SiteSettings>(defaultSiteSettings);
   const [baseline, setBaseline] = useState("");
   const [status, setStatus] = useState("");
@@ -93,9 +101,18 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
     setStatus("Saved — live site updated.");
   }
 
-  function discardChanges() {
+  async function discardChanges() {
     if (!baseline) return;
-    if (dirty && !confirm("Discard unsaved changes?")) return;
+    if (dirty) {
+      const ok = await confirm({
+        title: "Discard unsaved changes?",
+        description: "Your edits on this page will be lost. The last saved version will be restored.",
+        confirmLabel: "Discard changes",
+        cancelLabel: "Keep editing",
+        tone: "danger",
+      });
+      if (!ok) return;
+    }
     setSettings(JSON.parse(baseline) as SiteSettings);
     setError("");
     setStatus("Reverted to last saved version.");
@@ -104,7 +121,9 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
   if (loading) {
     return (
       <AdminCard>
-        <p className="text-sm text-ink-muted">Loading settings…</p>
+        <p className="text-sm text-ink-muted" role="status">
+          Loading settings…
+        </p>
       </AdminCard>
     );
   }
@@ -113,21 +132,18 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
 
   return (
     <form onSubmit={onSave} className="space-y-6">
+      {confirmDialog}
       <div className="flex flex-wrap items-center gap-2">
         {dirty ? (
-          <span className="rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-ink">
-            Unsaved changes
-          </span>
+          <AdminBadge tone="warning">Unsaved changes</AdminBadge>
         ) : (
-          <span className="rounded-full bg-brand/10 px-3 py-1 text-xs font-semibold text-brand">
-            In sync
-          </span>
+          <AdminBadge tone="brand">In sync</AdminBadge>
         )}
         <a
           href={previewHref}
           target="_blank"
           rel="noreferrer"
-          className="rounded-full border border-line bg-white px-3 py-1 text-xs font-semibold text-ink transition hover:border-brand/40 hover:text-brand"
+          className="inline-flex min-h-8 items-center rounded-full border border-line bg-white px-3 py-1 text-xs font-semibold text-ink transition hover:border-brand/40 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30"
         >
           Preview page ↗
         </a>
@@ -136,17 +152,17 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
         </span>
       </div>
 
-      {error && (
+      {error ? (
         <AdminAlert tone="error" title="Could not save">
           {error}
         </AdminAlert>
-      )}
+      ) : null}
 
       <AdminCard padding="lg">
         <SettingsFormBody section={section} settings={settings} setSettings={setSettings} />
       </AdminCard>
 
-      <div className="sticky bottom-4 z-10 mx-0 mb-[env(safe-area-inset-bottom)] flex flex-wrap items-center gap-3 rounded-2xl border border-line/80 bg-white/95 px-4 py-3 shadow-[0_8px_30px_rgba(12,46,47,0.08)] backdrop-blur sm:gap-4 sm:px-5 sm:py-4">
+      <div className="sticky bottom-4 z-10 mb-[env(safe-area-inset-bottom)] flex flex-wrap items-center gap-3 rounded-2xl border border-line/80 bg-white/95 px-4 py-3 shadow-[0_8px_30px_rgba(18,28,46,0.1)] backdrop-blur-md sm:gap-4 sm:px-5 sm:py-4">
         <AdminButton type="submit" variant="primary" disabled={saving || !dirty}>
           {saving ? "Saving…" : dirty ? "Save changes" : "Saved"}
         </AdminButton>
@@ -154,11 +170,11 @@ export function SettingsTab({ section }: { section: SettingsSection }) {
           type="button"
           variant="secondary"
           disabled={!dirty || saving}
-          onClick={discardChanges}
+          onClick={() => void discardChanges()}
         >
           Discard
         </AdminButton>
-        {status && !error && <p className="text-sm text-brand">{status}</p>}
+        {!error ? <AdminStatus tone="success">{status}</AdminStatus> : null}
       </div>
     </form>
   );

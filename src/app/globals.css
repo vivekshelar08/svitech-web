@@ -463,3 +463,73 @@ a {
 main {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+/* —— Admin console —— */
+body:has(.admin-app) {
+  background-image: none;
+  background: var(--bg);
+}
+
+body:has(.admin-app) .site-grain {
+  display: none;
+}
+
+.admin-app {
+  --admin-canvas: #f2f5fa;
+  --admin-sidebar: #0b1424;
+  background: var(--admin-canvas);
+  color: var(--ink);
+  isolation: isolate;
+}
+
+.admin-app .admin-topbar {
+  background: color-mix(in srgb, var(--admin-canvas) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  border-radius: 0.75rem;
+  background: var(--brand);
+  color: white;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.admin-skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.admin-dialog-panel {
+  animation: admin-dialog-in 160ms ease-out;
+}
+
+@keyframes admin-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-dialog-panel {
+    animation: none;
+  }
+
+  .admin-app aside {
+    transition: none !important;
+  }
+}
+

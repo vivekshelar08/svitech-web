@@ -106,8 +106,8 @@ export function AdminLogin({
         </ul>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-[#f2f5fa] px-5 py-12">
-        <div className="w-full max-w-md rounded-2xl border border-line/80 bg-white p-8 shadow-[0_20px_60px_rgba(12,46,47,0.08)]">
+      <div className="flex flex-1 items-center justify-center bg-[var(--admin-canvas,#f2f5fa)] px-5 py-12">
+        <div className="w-full max-w-md rounded-2xl border border-line/80 bg-white p-7 shadow-[0_20px_60px_rgba(18,28,46,0.08)] sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
             Staff access
           </p>
@@ -128,12 +128,13 @@ export function AdminLogin({
 
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
             {(mode === "login" || mode === "forgot") && (
-              <label className="block text-sm font-medium text-ink">
+              <label className="block text-sm font-semibold text-ink" htmlFor="admin-email">
                 Email
                 <input
                   id="admin-email"
                   type="email"
                   required
+                  autoComplete="username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="info@svitech.in"
@@ -143,12 +144,13 @@ export function AdminLogin({
             )}
 
             {mode === "login" && (
-              <label className="block text-sm font-medium text-ink">
+              <label className="block text-sm font-semibold text-ink" htmlFor="admin-password">
                 Password
                 <input
                   id="admin-password"
                   type="password"
                   required
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className={adminInputClass}
@@ -199,7 +201,7 @@ export function AdminLogin({
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-110 disabled:opacity-60"
+              className="mt-1 w-full min-h-11 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/35 focus-visible:ring-offset-2 disabled:opacity-60"
             >
               {loading
                 ? "Working…"
@@ -211,12 +213,12 @@ export function AdminLogin({
             </button>
 
             {error && (
-              <p className="rounded-lg bg-accent/10 px-3 py-2 text-sm text-accent" role="alert">
+              <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
                 {error}
               </p>
             )}
             {message && (
-              <p className="rounded-lg bg-brand/10 px-3 py-2 text-sm text-brand" role="status">
+              <p className="rounded-xl border border-brand/20 bg-brand/10 px-3 py-2 text-sm text-brand" role="status">
                 {message}
               </p>
             )}

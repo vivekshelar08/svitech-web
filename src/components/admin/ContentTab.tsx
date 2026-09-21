@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import { useAdminConfirm } from "@/components/admin/AdminDialog";
 import {
   AdminBadge,
   AdminButton,
   AdminCard,
+  AdminChip,
   AdminEmpty,
+  AdminFilterGroup,
+  AdminStatus,
   adminInputClass,
   adminTextareaClass,
   cn,
@@ -13,6 +17,7 @@ import {
 import { MediaField } from "@/components/admin/MediaField";
 import { slugify, type ContentTabType } from "@/components/admin/admin-types";
 import { adminJson } from "@/lib/admin-fetch";
+import { GALLERY_CATEGORIES } from "@/content/gallery";
 import { PROGRAM_CATEGORY_OPTIONS } from "@/lib/program-categories";
 
 type ContentType = ContentTabType;
@@ -74,9 +79,19 @@ const emptyForms: Record<ContentType, Record<string, string | boolean>> = {
     fileUrl: "",
     published: true,
   },
+  gallery_items: {
+    slug: "",
+    title: "",
+    category: "Digital Literacy",
+    summary: "",
+    image: "",
+    sortOrder: "0",
+    published: true,
+  },
 };
 
 export function ContentTab({ type }: { type: ContentType }) {
+  const { confirm, dialog: confirmDialog } = useAdminConfirm();
   const [items, setItems] = useState<ContentItem[]>([]);
   const [form, setForm] = useState(emptyForms[type]);
   const [status, setStatus] = useState("");
@@ -181,6 +196,16 @@ export function ContentTab({ type }: { type: ContentType }) {
         sortOrder: String(item.sort_order ?? 0),
         published: Boolean(item.published),
       });
+    } else if (type === "gallery_items") {
+      setForm({
+        slug: String(item.slug || ""),
+        title: String(item.title || ""),
+        category: String(item.category || "Digital Literacy"),
+        summary: String(item.summary || ""),
+        image: String(item.image || ""),
+        sortOrder: String(item.sort_order ?? 0),
+        published: Boolean(item.published),
+      });
     } else {
       setForm({
         id: String(item.id || ""),
@@ -235,7 +260,14 @@ export function ContentTab({ type }: { type: ContentType }) {
   }
 
   async function removeItem(id: string) {
-    if (!confirm("Delete this item permanently?")) return;
+    const ok = await confirm({
+      title: "Delete this item?",
+      description: "This permanently removes it from the live site and cannot be undone.",
+      confirmLabel: "Delete permanently",
+      cancelLabel: "Keep item",
+      tone: "danger",
+    });
+    if (!ok) return;
     const result = await adminJson(
       `/api/admin/content?type=${type}&id=${id}`,
       { method: "DELETE" },
@@ -275,7 +307,8 @@ export function ContentTab({ type }: { type: ContentType }) {
   const previewHref = previewPath(type, form);
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_1.15fr]">
+    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      {confirmDialog}
       <AdminCard
         title="Existing items"
         description={`${filtered.length} shown · ${liveCount} live · ${draftCount} draft`}
@@ -285,38 +318,48 @@ export function ContentTab({ type }: { type: ContentType }) {
           </AdminButton>
         }
       >
-        <div className="mb-4 flex flex-wrap gap-2">
-          {(
-            [
-              ["live", `Live (${liveCount})`],
-              ["draft", `Draft (${draftCount})`],
-              ["all", `All (${items.length})`],
-            ] as const
-          ).map(([value, label]) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => setVisibility(value)}
-              className={cn(
-                "rounded-md px-3 py-1.5 text-xs font-semibold transition",
-                visibility === value
-                  ? "bg-brand text-white"
-                  : "border border-line/70 bg-surface/50 text-ink-muted hover:text-ink",
-              )}
+        <div className="mb-4 space-y-3">
+          <AdminFilterGroup label="Visibility">
+            <AdminChip
+              active={visibility === "live"}
+              count={liveCount}
+              onClick={() => setVisibility("live")}
             >
-              {label}
-            </button>
-          ))}
+              Live
+            </AdminChip>
+            <AdminChip
+              active={visibility === "draft"}
+              count={draftCount}
+              onClick={() => setVisibility("draft")}
+            >
+              Draft
+            </AdminChip>
+            <AdminChip
+              active={visibility === "all"}
+              count={items.length}
+              onClick={() => setVisibility("all")}
+            >
+              All
+            </AdminChip>
+          </AdminFilterGroup>
+          <div>
+            <label className="sr-only" htmlFor="content-search">
+              Search content items
+            </label>
+            <input
+              id="content-search"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search title, slug, location, summary…"
+              className={cn(adminInputClass, "mt-0")}
+            />
+          </div>
         </div>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search title, slug, location, summary…"
-          className={cn(adminInputClass, "mt-0 mb-4")}
-        />
         {loading ? (
-          <p className="text-sm text-ink-muted">Loading…</p>
+          <p className="text-sm text-ink-muted" role="status">
+            Loading…
+          </p>
         ) : filtered.length === 0 ? (
           <AdminEmpty
             title={visibility === "live" ? "No live items" : "No items yet"}
@@ -416,18 +459,17 @@ export function ContentTab({ type }: { type: ContentType }) {
             <AdminButton type="submit" variant="primary">
               Save
             </AdminButton>
-            {status && (
-              <p
-                className={cn(
-                  "text-sm",
-                  status.includes("failed") || status.includes("Failed")
-                    ? "text-accent"
-                    : "text-ink-muted",
-                )}
-              >
-                {status}
-              </p>
-            )}
+            <AdminStatus
+              tone={
+                status.includes("failed") || status.includes("Failed")
+                  ? "error"
+                  : status.includes("Deleted") || status.includes("Saved") || status.includes("Published")
+                    ? "success"
+                    : "info"
+              }
+            >
+              {status}
+            </AdminStatus>
           </div>
         </form>
       </AdminCard>
@@ -603,6 +645,38 @@ function ContentFields({
     );
   }
 
+  if (type === "gallery_items") {
+    return (
+      <>
+        {field("title", "Title", { required: true, onBlur: () => autoSlugFromTitle("title") })}
+        {field("slug", "Slug", { required: true })}
+        <label className="block space-y-1.5">
+          <span className="text-sm font-medium text-ink">Category</span>
+          <select
+            className={adminInputClass}
+            value={String(form.category || "Digital Literacy")}
+            onChange={(e) => set("category", e.target.value)}
+          >
+            {GALLERY_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </label>
+        {field("summary", "Summary", { required: true, rows: 3 })}
+        <MediaField
+          label="Photo"
+          value={String(form.image || "")}
+          onChange={(v) => set("image", v)}
+          folder="gallery"
+        />
+        {field("sortOrder", "Sort order", { type: "number" })}
+        {published}
+      </>
+    );
+  }
+
   return (
     <>
       {field("year", "Year", { type: "number", required: true })}
@@ -626,11 +700,12 @@ function previewPath(
   form: Record<string, string | boolean>,
 ): string | null {
   const slug = String(form.slug || "").trim();
-  if (!slug && type !== "reports") return null;
+  if (!slug && type !== "reports" && type !== "gallery_items") return null;
   if (type === "posts") return `/news/${slug}`;
   if (type === "events") return `/events/${slug}`;
   if (type === "programs") return `/programs/${slug}`;
   if (type === "impact_stories") return `/impact`;
+  if (type === "gallery_items") return `/gallery`;
   if (type === "reports") return `/reports`;
   return null;
 }
@@ -642,10 +717,13 @@ function itemMeta(type: ContentType, item: ContentItem) {
   } else if (item.slug) {
     parts.push(String(item.slug));
   }
-  if (type === "programs" || type === "impact_stories") {
+  if (type === "programs" || type === "impact_stories" || type === "gallery_items") {
     parts.push(`Order ${item.sort_order ?? 0}`);
   }
   if (type === "programs" && item.category) {
+    parts.push(String(item.category));
+  }
+  if (type === "gallery_items" && item.category) {
     parts.push(String(item.category));
   }
   if (type === "impact_stories" && item.location) {
@@ -665,7 +743,12 @@ function itemMeta(type: ContentType, item: ContentItem) {
 
 function itemSnippet(type: ContentType, item: ContentItem) {
   if (type === "posts") return String(item.excerpt || "");
-  if (type === "events" || type === "programs" || type === "impact_stories") {
+  if (
+    type === "events" ||
+    type === "programs" ||
+    type === "impact_stories" ||
+    type === "gallery_items"
+  ) {
     return String(item.summary || item.detail || "");
   }
   if (type === "reports") return String(item.description || "");
@@ -725,6 +808,17 @@ function buildPayload(type: ContentType, form: Record<string, string | boolean>)
       summary: form.summary,
       body: form.body,
       coverImage: form.coverImage || undefined,
+      sortOrder: Number(form.sortOrder || 0),
+      published: form.published,
+    };
+  }
+  if (type === "gallery_items") {
+    return {
+      slug: form.slug,
+      title: form.title,
+      category: form.category || "Digital Literacy",
+      summary: form.summary,
+      image: form.image,
       sortOrder: Number(form.sortOrder || 0),
       published: form.published,
     };
