@@ -23,6 +23,9 @@ declare global {
   }
 }
 
+const fieldClass =
+  "mt-1.5 w-full border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-brand focus:ring-2 focus:ring-brand/15 sm:py-2.5 sm:text-sm";
+
 export function DonateForm({
   initialAmount,
   presetAmounts = defaultPresets,
@@ -103,10 +106,7 @@ export function DonateForm({
         amount: createJson.amount,
         currency: createJson.currency || "INR",
         name: organizationName,
-        description:
-          frequency === "monthly"
-            ? "Monthly donation"
-            : "One-time donation",
+        description: frequency === "monthly" ? "Monthly donation" : "One-time donation",
         prefill: {
           name: createJson.name,
           email: createJson.email,
@@ -129,9 +129,7 @@ export function DonateForm({
             const v = (await verifyRes.json()) as { error?: string };
             throw new Error(v.error || "Payment verification failed");
           }
-          router.push(
-            `/donate/thanks?amount=${amountInr}&frequency=${frequency}`,
-          );
+          router.push(`/donate/thanks?amount=${amountInr}&frequency=${frequency}`);
         },
       };
 
@@ -155,134 +153,166 @@ export function DonateForm({
       <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       <form
         onSubmit={onSubmit}
-        className="space-y-8 border border-line bg-surface p-4 sm:p-6 md:p-8"
+        className="relative overflow-hidden border border-line/80 bg-white shadow-[0_24px_60px_-28px_rgba(11,20,36,0.4)]"
+        aria-labelledby="donate-form-heading"
       >
-        <div>
-          <p className="text-sm font-medium text-ink">Give</p>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => setFrequency("one_time")}
-              className={`px-4 py-3 text-sm font-semibold transition ${
-                frequency === "one_time"
-                  ? "bg-brand text-white"
-                  : "border border-line bg-white text-ink hover:bg-white/80"
-              }`}
+        <div
+          className="h-1 w-full bg-gradient-to-r from-brand via-brand-bright to-accent"
+          aria-hidden
+        />
+        <div className="space-y-7 p-5 sm:p-7 md:p-8">
+          <div>
+            <p className="site-eyebrow !text-brand">Secure checkout</p>
+            <h2
+              id="donate-form-heading"
+              className="mt-2 font-display text-xl font-bold tracking-tight text-ink sm:text-2xl"
             >
-              One-time
-            </button>
-            <button
-              type="button"
-              onClick={() => setFrequency("monthly")}
-              className={`px-4 py-3 text-sm font-semibold transition ${
-                frequency === "monthly"
-                  ? "bg-brand text-white"
-                  : "border border-line bg-white text-ink hover:bg-white/80"
-              }`}
-            >
-              Monthly
-            </button>
+              Choose your gift
+            </h2>
           </div>
-        </div>
 
-        <div>
-          <p className="text-sm font-medium text-ink">Amount (INR)</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {presets.map((value) => (
+          <fieldset>
+            <legend className="text-sm font-semibold text-ink">Frequency</legend>
+            <div
+              className="mt-3 grid grid-cols-2 gap-1 border border-line bg-surface p-1"
+              role="group"
+              aria-label="Donation frequency"
+            >
               <button
-                key={value}
                 type="button"
-                onClick={() => {
-                  setAmount(value);
-                  setCustom("");
-                }}
-                className={`px-4 py-2.5 text-sm font-semibold transition ${
-                  !custom && amount === value
-                    ? "bg-accent text-ink"
-                    : "border border-line bg-white text-ink"
+                aria-pressed={frequency === "one_time"}
+                onClick={() => setFrequency("one_time")}
+                className={`min-h-11 px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 ${
+                  frequency === "one_time"
+                    ? "bg-brand text-white shadow-sm"
+                    : "text-ink-muted hover:bg-white hover:text-ink"
                 }`}
               >
-                ₹{value.toLocaleString("en-IN")}
+                One-time
               </button>
-            ))}
-          </div>
-          <label htmlFor="custom-amount" className="mt-4 block text-sm text-ink-muted">
-            Or enter a custom amount (min ₹100)
-          </label>
-          <input
-            id="custom-amount"
-            inputMode="numeric"
-            value={custom}
-            onChange={(e) => setCustom(e.target.value.replace(/[^\d]/g, ""))}
-            placeholder="e.g. 1500"
-            className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
-          />
-        </div>
+              <button
+                type="button"
+                aria-pressed={frequency === "monthly"}
+                onClick={() => setFrequency("monthly")}
+                className={`min-h-11 px-4 py-2.5 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 ${
+                  frequency === "monthly"
+                    ? "bg-brand text-white shadow-sm"
+                    : "text-ink-muted hover:bg-white hover:text-ink"
+                }`}
+              >
+                Monthly
+              </button>
+            </div>
+          </fieldset>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          <div>
-            <label htmlFor="d-name" className="block text-sm font-medium text-ink">
-              Name
+          <fieldset>
+            <legend className="text-sm font-semibold text-ink">Amount (INR)</legend>
+            <div
+              className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4"
+              role="group"
+              aria-label="Preset amounts"
+            >
+              {presets.map((value) => {
+                const active = !custom && amount === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => {
+                      setAmount(value);
+                      setCustom("");
+                    }}
+                    className={`min-h-12 border px-3 py-3 font-display text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 ${
+                      active
+                        ? "border-accent bg-accent text-ink shadow-sm"
+                        : "border-line bg-white text-ink hover:border-brand/40"
+                    }`}
+                  >
+                    ₹{value.toLocaleString("en-IN")}
+                  </button>
+                );
+              })}
+            </div>
+            <label htmlFor="custom-amount" className="mt-4 block text-sm text-ink-muted">
+              Or enter a custom amount (min ₹100)
             </label>
             <input
-              id="d-name"
-              name="name"
-              required
-              className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
+              id="custom-amount"
+              inputMode="numeric"
+              value={custom}
+              onChange={(e) => setCustom(e.target.value.replace(/[^\d]/g, ""))}
+              placeholder="e.g. 1500"
+              className={fieldClass}
             />
+          </fieldset>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="d-name" className="block text-sm font-semibold text-ink">
+                Name
+              </label>
+              <input id="d-name" name="name" required autoComplete="name" className={fieldClass} />
+            </div>
+            <div>
+              <label htmlFor="d-email" className="block text-sm font-semibold text-ink">
+                Email
+              </label>
+              <input
+                id="d-email"
+                name="email"
+                type="email"
+                required
+                autoComplete="email"
+                className={fieldClass}
+              />
+            </div>
           </div>
+
           <div>
-            <label htmlFor="d-email" className="block text-sm font-medium text-ink">
-              Email
+            <label htmlFor="d-phone" className="block text-sm font-semibold text-ink">
+              Phone <span className="font-normal text-ink-muted">(optional)</span>
             </label>
             <input
-              id="d-email"
-              name="email"
-              type="email"
-              required
-              className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
+              id="d-phone"
+              name="phone"
+              autoComplete="tel"
+              className={fieldClass}
             />
           </div>
+
+          <div className="border border-line/80 bg-surface/80 px-4 py-3 text-sm text-ink-muted">
+            You’re giving{" "}
+            <strong className="font-display text-base text-ink">
+              ₹{amountInr.toLocaleString("en-IN")}
+            </strong>
+            {frequency === "monthly" ? " every month" : " once"}. Card, UPI, and netbanking
+            are supported.
+          </div>
+
+          <button
+            type="submit"
+            disabled={status === "loading" || amountInr < 100}
+            className="btn-primary w-full disabled:opacity-60"
+          >
+            {status === "loading" ? "Opening checkout…" : "Continue to donate"}
+          </button>
+
+          {!configured ? (
+            <p className="text-sm text-ink-muted">
+              Prefer bank transfer or CSR giving?{" "}
+              <a href="/contact" className="font-semibold text-brand underline-offset-2 hover:underline">
+                Contact us
+              </a>
+              .
+            </p>
+          ) : null}
+          {status === "error" ? (
+            <p className="border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
+              {error}
+            </p>
+          ) : null}
         </div>
-        <div>
-          <label htmlFor="d-phone" className="block text-sm font-medium text-ink">
-            Phone (optional)
-          </label>
-          <input
-            id="d-phone"
-            name="phone"
-            className="mt-2 w-full border border-line bg-white px-3 py-3 text-base outline-none focus:border-brand sm:py-2.5 sm:text-sm"
-          />
-        </div>
-
-        <p className="text-sm text-ink-muted">
-          You’re giving <strong className="text-ink">₹{amountInr.toLocaleString("en-IN")}</strong>
-          {frequency === "monthly" ? " every month" : " once"}. Card, UPI, and netbanking
-          are supported—no cryptocurrency.
-        </p>
-
-        <button
-          type="submit"
-          disabled={status === "loading" || amountInr < 100}
-          className="w-full bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition hover:brightness-110 disabled:opacity-60"
-        >
-          {status === "loading" ? "Opening checkout…" : "Continue to donate"}
-        </button>
-
-        {!configured && (
-          <p className="text-sm text-ink-muted">
-            Prefer bank transfer or CSR giving?{" "}
-            <a href="/contact" className="font-semibold text-brand underline">
-              Contact us
-            </a>
-            .
-          </p>
-        )}
-        {status === "error" && (
-          <p className="text-sm text-accent" role="alert">
-            {error}
-          </p>
-        )}
       </form>
     </>
   );

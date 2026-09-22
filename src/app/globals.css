@@ -337,7 +337,7 @@ a {
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(1.25rem);
+    transform: translateY(1.15rem);
   }
   to {
     opacity: 1;
@@ -347,10 +347,10 @@ a {
 
 @keyframes ken-burns {
   from {
-    transform: scale(1.05);
+    transform: scale(1.04);
   }
   to {
-    transform: scale(1.12);
+    transform: scale(1.1);
   }
 }
 
@@ -371,6 +371,17 @@ a {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -415,10 +426,12 @@ a {
 }
 
 .marquee-track {
-  animation: marquee-scroll 42s linear infinite;
+  animation: marquee-scroll 36s linear infinite;
+  will-change: transform;
 }
 
-.marquee-track:hover {
+.home-marquee:hover .marquee-track,
+.home-marquee:focus-within .marquee-track {
   animation-play-state: paused;
 }
 
@@ -433,24 +446,28 @@ a {
 }
 
 .animate-rise {
-  animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-rise-delay-1 {
-  animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
 .animate-rise-delay-2 {
-  animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.26s both;
+}
+
+.animate-rise-delay-3 {
+  animation: rise-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
 }
 
 .animate-ken {
-  animation: ken-burns 18s ease-out forwards;
+  animation: ken-burns 22s ease-out forwards;
 }
 
 .animate-draw {
   transform-origin: left;
-  animation: draw-line 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+  animation: draw-line 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
 }
 
 .animate-dropdown {
@@ -459,6 +476,10 @@ a {
 
 .animate-slide-up {
   animation: slide-up-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-slide-in {
+  animation: slide-in-right 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
 }
 
 .reveal-block {
@@ -478,13 +499,29 @@ a {
   .animate-rise,
   .animate-rise-delay-1,
   .animate-rise-delay-2,
+  .animate-rise-delay-3,
   .animate-ken,
   .animate-draw,
   .animate-dropdown,
   .animate-slide-up,
+  .animate-slide-in,
   .marquee-track,
   .gallery-fade {
-    animation: none;
+    animation: none !important;
+  }
+
+  .marquee-track {
+    will-change: auto;
+    width: 100% !important;
+    max-width: 72rem;
+    margin-inline: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    transform: none;
+  }
+
+  .home-marquee .marquee-track > [aria-hidden] {
+    display: none;
   }
 
   .way-pillar:hover {

@@ -109,6 +109,9 @@ export type SiteSettings = {
     stickyDonate: StickyDonateSettings;
     showTopBar: boolean;
     trustBadge: string;
+    showMemberLogin: boolean;
+    memberLoginLabel: string;
+    memberLoginHref: string;
   };
   footer: {
     exploreHeading: string;
@@ -429,6 +432,9 @@ export const defaultSiteSettings: SiteSettings = {
     },
     showTopBar: true,
     trustBadge: "80G · 12AA · Transparent reporting",
+    showMemberLogin: true,
+    memberLoginLabel: "Member login",
+    memberLoginHref: "/member-login",
   },
   footer: {
     exploreHeading: "Our work",

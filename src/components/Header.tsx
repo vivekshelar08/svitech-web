@@ -277,7 +277,15 @@ export function Header({ general, navigation }: HeaderProps) {
           {links.map((link, index) => renderNavLink(link, index))}
         </nav>
 
-        <div className="ml-auto hidden shrink-0 items-center gap-2 md:flex">
+        <div className="ml-auto hidden shrink-0 items-center gap-2 lg:gap-3 md:flex">
+          {nav.showMemberLogin !== false ? (
+            <Link
+              href={nav.memberLoginHref || "/member-login"}
+              className="inline-flex min-h-10 items-center px-2 text-sm font-semibold text-ink-muted transition hover:text-ink"
+            >
+              {nav.memberLoginLabel || "Member login"}
+            </Link>
+          ) : null}
           <Link href={nav.donateHref} className="btn-primary !min-h-10 !px-4 !py-2 text-sm lg:!px-5 lg:!py-2.5">
             {nav.donateLabel}
           </Link>
@@ -383,13 +391,24 @@ export function Header({ general, navigation }: HeaderProps) {
                 );
               })}
             </ul>
-            <Link
-              href={nav.donateHref}
-              className="btn-primary mt-5 w-full"
-              onClick={() => setOpen(false)}
-            >
-              {nav.donateLabel}
-            </Link>
+            <div className="mt-5 space-y-2">
+              {nav.showMemberLogin !== false ? (
+                <Link
+                  href={nav.memberLoginHref || "/member-login"}
+                  className="flex min-h-12 w-full items-center justify-center border border-line bg-white text-sm font-semibold text-ink transition hover:border-brand/40"
+                  onClick={() => setOpen(false)}
+                >
+                  {nav.memberLoginLabel || "Member login"}
+                </Link>
+              ) : null}
+              <Link
+                href={nav.donateHref}
+                className="btn-primary w-full"
+                onClick={() => setOpen(false)}
+              >
+                {nav.donateLabel}
+              </Link>
+            </div>
           </nav>
         </>
       )}

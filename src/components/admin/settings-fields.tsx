@@ -1196,7 +1196,7 @@ export function SettingsFormBody({
   if (section === "navigation") {
     return (
       <div className="space-y-10">
-        <SectionTitle title="Top utility bar" copy="Dark bar above the main nav — email, phone, trust badge, donate shortcut." />
+        <SectionTitle title="Top utility bar" copy="Dark bar above the main nav — contact, trust badge, member login, and donate." />
         <div className="grid gap-4 md:grid-cols-2">
           <label className="flex items-center gap-3 text-sm font-medium text-ink">
             <input
@@ -1222,6 +1222,41 @@ export function SettingsFormBody({
               })
             }
             hint="Phone & email come from Brand & SEO → contact fields"
+          />
+          <label className="flex items-center gap-3 text-sm font-medium text-ink">
+            <input
+              type="checkbox"
+              checked={settings.navigation.showMemberLogin !== false}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  navigation: { ...settings.navigation, showMemberLogin: e.target.checked },
+                })
+              }
+              className="h-4 w-4 rounded border-line"
+            />
+            Show member login
+          </label>
+          <Field
+            label="Member login label"
+            value={settings.navigation.memberLoginLabel || ""}
+            onChange={(v) =>
+              setSettings({
+                ...settings,
+                navigation: { ...settings.navigation, memberLoginLabel: v },
+              })
+            }
+          />
+          <Field
+            label="Member login link"
+            value={settings.navigation.memberLoginHref || ""}
+            onChange={(v) =>
+              setSettings({
+                ...settings,
+                navigation: { ...settings.navigation, memberLoginHref: v },
+              })
+            }
+            hint="Default /member-login — signs into the admin console"
           />
         </div>
         <SectionTitle title="Header navigation" />

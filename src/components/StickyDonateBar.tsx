@@ -38,7 +38,13 @@ export function StickyDonateBar({
   }, [enabled, dismissed]);
 
   if (!enabled || dismissed) return null;
-  if (pathname.startsWith("/donate") || pathname.startsWith("/admin")) return null;
+  if (
+    pathname.startsWith("/donate") ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/member-login")
+  ) {
+    return null;
+  }
   if (!visible) return null;
 
   function dismiss() {
