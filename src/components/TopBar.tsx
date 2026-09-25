@@ -16,8 +16,6 @@ export function TopBar({
   const showMemberLogin = navigation.showMemberLogin !== false;
   const memberHref = navigation.memberLoginHref || "/member-login";
   const memberLabel = navigation.memberLoginLabel || "Member login";
-  const donateHref = navigation.donateHref || "/donate";
-  const donateLabel = navigation.donateLabel || "Donate";
 
   return (
     <div className="relative z-40 border-b border-white/10 bg-bg-deep text-white">
@@ -41,22 +39,14 @@ export function TopBar({
           ) : null}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          {showMemberLogin ? (
-            <Link
-              href={memberHref}
-              className="inline-flex min-h-8 items-center border border-white/20 bg-white/5 px-3 py-1.5 font-semibold tracking-wide text-white/85 transition hover:border-white/40 hover:bg-white/10 hover:text-white"
-            >
-              {memberLabel}
-            </Link>
-          ) : null}
+        {showMemberLogin ? (
           <Link
-            href={donateHref}
-            className="inline-flex min-h-8 items-center bg-accent px-3 py-1.5 font-semibold tracking-wide text-ink transition hover:brightness-110"
+            href={memberHref}
+            className="inline-flex min-h-8 shrink-0 items-center text-[11px] font-semibold tracking-wide text-white/80 underline-offset-4 transition hover:text-white hover:underline sm:text-xs"
           >
-            {donateLabel}
+            {memberLabel}
           </Link>
-        </div>
+        ) : null}
       </div>
     </div>
   );
