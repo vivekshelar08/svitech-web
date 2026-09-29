@@ -70,6 +70,27 @@ export default async function AboutPage() {
         </Link>
       </div>
 
+      <div className="mt-16 border-t border-line pt-12">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
+          From the record
+        </p>
+        <h2 className="mt-3 max-w-2xl font-display text-2xl font-bold text-ink">
+          The full profile: skills, camps, and the numbers behind them.
+        </h2>
+        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
+          The 2024 annual report, the 2024–25 foundation profile, and the Tata Power
+          partnership brief are written up as one public page — journey, curriculum,
+          Adhikar outcomes, learner pathways, and the global evidence those programmes
+          sit inside. Figures are kept with the year they belong to.
+        </p>
+        <Link
+          href="/foundation"
+          className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
+        >
+          Read the foundation profile
+        </Link>
+      </div>
+
       <Link
         href={about.programsLinkHref || "/programs"}
         className="mt-14 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"

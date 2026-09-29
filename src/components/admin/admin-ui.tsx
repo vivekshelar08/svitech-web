@@ -9,7 +9,7 @@ export const adminInputClass =
 export const adminTextareaClass = `${adminInputClass} min-h-[96px] resize-y`;
 
 export const adminSelectClass =
-  "rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-[0_1px_2px_rgba(18,28,46,0.04)] outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15";
+  "mt-1.5 w-full min-h-11 rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink shadow-[0_1px_2px_rgba(18,28,46,0.04)] outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:cursor-not-allowed disabled:bg-surface disabled:opacity-70";
 
 export function cn(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
@@ -112,7 +112,7 @@ export function AdminChip({
       aria-pressed={Boolean(active)}
       onClick={onClick}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
+        "inline-flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
         active
           ? "bg-brand text-white shadow-sm"
           : "border border-line bg-white text-ink-muted hover:border-brand/35 hover:text-ink",

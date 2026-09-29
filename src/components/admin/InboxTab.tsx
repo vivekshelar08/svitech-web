@@ -3,14 +3,12 @@
 import { useMemo, useState } from "react";
 import { useAdminConfirm } from "@/components/admin/AdminDialog";
 import {
-  AdminBadge,
   AdminButton,
-  AdminCard,
-  AdminChip,
   AdminEmpty,
-  AdminFilterGroup,
+  AdminField,
   AdminStatus,
   adminInputClass,
+  adminSelectClass,
   cn,
 } from "@/components/admin/admin-ui";
 import type { AdminInbox } from "@/components/admin/admin-types";
@@ -24,28 +22,22 @@ type InboxEntry = {
   row: Record<string, unknown>;
 };
 
-const KIND_META: Record<
-  InboxKind,
-  { label: string; table: string; accent: string }
-> = {
-  contact: { label: "Contact", table: "contact_messages", accent: "Contact" },
-  volunteers: {
-    label: "Volunteers",
-    table: "volunteer_applications",
-    accent: "Volunteer",
-  },
-  newsletter: {
-    label: "Newsletter",
-    table: "newsletter_subscribers",
-    accent: "Newsletter",
-  },
-  donations: { label: "Donations", table: "donations", accent: "Donation" },
-  events: {
-    label: "Event signups",
-    table: "event_registrations",
-    accent: "Event",
-  },
+const KIND_META: Record<InboxKind, { label: string }> = {
+  contact: { label: "Contact" },
+  volunteers: { label: "Volunteers" },
+  newsletter: { label: "Newsletter" },
+  donations: { label: "Donations" },
+  events: { label: "Event signups" },
 };
+
+const TYPE_OPTIONS = [
+  ["all", "All types"],
+  ["contact", "Contact"],
+  ["volunteers", "Volunteers"],
+  ["newsletter", "Newsletter"],
+  ["donations", "Donations"],
+  ["events", "Event signups"],
+] as const;
 
 export function InboxTab({
   inbox,
@@ -128,11 +120,7 @@ export function InboxTab({
     });
   }, [entries, filter, query]);
 
-  const selected =
-    filtered.find((e) => e.id === selectedId) ||
-    entries.find((e) => e.id === selectedId) ||
-    filtered[0] ||
-    null;
+  const selected = filtered.find((entry) => entry.id === selectedId) || null;
 
   async function copyText(text: string, label: string) {
     try {
@@ -175,89 +163,109 @@ export function InboxTab({
     }
   }
 
+  function moveSelection(delta: number) {
+    if (filtered.length === 0) return;
+    const index = selected ? filtered.findIndex((entry) => entry.id === selected.id) : -1;
+    const nextIndex =
+      index < 0
+        ? delta > 0
+          ? 0
+          : filtered.length - 1
+        : Math.min(filtered.length - 1, Math.max(0, index + delta));
+    setSelectedId(filtered[nextIndex].id);
+  }
+
   if (!inbox) {
     return (
-      <AdminCard title="Inbox">
+      <div className="rounded-2xl border border-line/80 bg-white p-6">
         <AdminEmpty
           title="Loading inbox…"
           description="Refresh if this stays empty."
         />
-      </AdminCard>
+      </div>
     );
   }
 
   return (
     <div className="space-y-5">
       {confirmDialog}
-      <AdminCard padding="sm">
-        <div className="flex flex-col gap-3">
-          <AdminFilterGroup label="Submission type">
-            {(
-              [
-                ["all", "All"],
-                ["contact", "Contact"],
-                ["volunteers", "Volunteers"],
-                ["newsletter", "Newsletter"],
-                ["donations", "Donations"],
-                ["events", "Event signups"],
-              ] as const
-            ).map(([value, label]) => (
-              <AdminChip
-                key={value}
-                active={filter === value}
-                count={counts[value]}
-                onClick={() => {
-                  setFilter(value);
-                  setSelectedId(null);
-                }}
-              >
-                {label}
-              </AdminChip>
-            ))}
-          </AdminFilterGroup>
-          <div>
-            <label className="sr-only" htmlFor="inbox-search">
-              Search submissions
-            </label>
-            <input
-              id="inbox-search"
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search name, email, message, status…"
-              className={cn(adminInputClass, "mt-0")}
-            />
-          </div>
-          <AdminStatus
-            tone={
-              status.includes("fail") || status.includes("Could not")
-                ? "error"
-                : status === "Deleted."
-                  ? "success"
-                  : "info"
-            }
-          >
-            {status}
-          </AdminStatus>
-        </div>
-      </AdminCard>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
-        <AdminCard
-          title="Submissions"
-          description={`${filtered.length} shown`}
-          padding="sm"
+      <div className="grid gap-4 sm:grid-cols-[14rem_minmax(0,1fr)] sm:items-end">
+        <AdminField label="Type" htmlFor="inbox-type">
+          <select
+            id="inbox-type"
+            className={cn(adminSelectClass, "mt-1.5")}
+            value={filter}
+            onChange={(event) => {
+              setFilter(event.target.value as "all" | InboxKind);
+              setSelectedId(null);
+            }}
+          >
+            {TYPE_OPTIONS.map(([value, label]) => (
+              <option key={value} value={value}>
+                {label} ({counts[value]})
+              </option>
+            ))}
+          </select>
+        </AdminField>
+        <AdminField label="Search" htmlFor="inbox-search">
+          <input
+            id="inbox-search"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Name, email, or message"
+            className={cn(adminInputClass, "mt-1.5")}
+          />
+        </AdminField>
+      </div>
+
+      <AdminStatus
+        tone={
+          status.includes("fail") || status.includes("Could not")
+            ? "error"
+            : status === "Deleted."
+              ? "success"
+              : "info"
+        }
+      >
+        {status}
+      </AdminStatus>
+
+      <div className="overflow-hidden rounded-2xl border border-line/80 bg-white shadow-[0_1px_2px_rgba(18,28,46,0.04),0_10px_28px_rgba(18,28,46,0.05)] lg:grid lg:min-h-[36rem] lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)]">
+        <div
+          className={cn(
+            "flex min-h-0 flex-col border-line/70 lg:border-r",
+            selected ? "hidden lg:flex" : "flex",
+          )}
         >
+          <p className="border-b border-line/70 px-4 py-3 text-sm text-ink-muted">
+            {filtered.length === 0
+              ? "No messages"
+              : `${filtered.length} ${filtered.length === 1 ? "message" : "messages"}`}
+          </p>
           {filtered.length === 0 ? (
-            <AdminEmpty
-              title="No matching submissions"
-              description="Try another type filter or clear the search."
-            />
+            <div className="p-4">
+              <AdminEmpty
+                title="Nothing here"
+                description="Try another type or clear the search."
+              />
+            </div>
           ) : (
             <ul
-              className="max-h-[70vh] space-y-2 overflow-auto pr-1"
+              className="max-h-[70vh] flex-1 overflow-auto"
               role="listbox"
-              aria-label="Inbox submissions"
+              aria-label="Inbox messages"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowDown") {
+                  event.preventDefault();
+                  moveSelection(1);
+                } else if (event.key === "ArrowUp") {
+                  event.preventDefault();
+                  moveSelection(-1);
+                }
+              }}
             >
               {filtered.map((entry) => {
                 const active = selected?.id === entry.id;
@@ -268,146 +276,97 @@ export function InboxTab({
                       type="button"
                       onClick={() => setSelectedId(entry.id)}
                       className={cn(
-                        "w-full rounded-xl border p-3.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
-                        active
-                          ? "border-brand bg-brand/5 shadow-sm"
-                          : "border-line/60 bg-surface/40 hover:border-brand/40",
+                        "flex min-h-16 w-full flex-col justify-center border-b border-line/50 px-4 py-3.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand/30",
+                        active ? "bg-brand/8" : "hover:bg-surface/80",
                       )}
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="truncate font-semibold text-ink">
-                            {entryTitle(entry)}
-                          </p>
-                          <p className="mt-0.5 truncate text-xs text-ink-muted">
-                            {entrySubtitle(entry)}
-                          </p>
-                        </div>
-                        <div className="flex shrink-0 flex-col items-end gap-1">
-                          <AdminBadge tone="neutral">{entry.kindLabel}</AdminBadge>
-                          {amount && <AdminBadge tone="brand">{amount}</AdminBadge>}
-                        </div>
-                      </div>
-                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-muted">
-                        {entryPreview(entry)}
-                      </p>
-                      <p className="mt-2 text-[11px] text-ink-muted/70">
-                        {formatWhen(entry.row.created_at)}
-                      </p>
+                      <span className="flex items-baseline justify-between gap-3">
+                        <span className="truncate font-semibold text-ink">
+                          {entryTitle(entry)}
+                        </span>
+                        <span className="shrink-0 text-xs text-ink-muted">
+                          {formatWhenShort(entry.row.created_at)}
+                        </span>
+                      </span>
+                      <span className="mt-1 truncate text-sm text-ink-muted">
+                        {entry.kindLabel}
+                        {amount ? ` · ${amount}` : ""}
+                      </span>
                     </button>
                   </li>
                 );
               })}
             </ul>
           )}
-        </AdminCard>
+        </div>
 
-        <AdminCard
-          title="Details"
-          description={
-            selected
-              ? `${selected.kindLabel} · ${formatWhen(selected.row.created_at)}`
-              : "Select a submission to review"
-          }
-          action={
-            selected ? (
-              <AdminBadge
-                tone={
-                  selected.kind === "donations" && selected.row.status === "paid"
-                    ? "success"
-                    : "neutral"
-                }
-              >
-                {detailStatus(selected)}
-              </AdminBadge>
-            ) : undefined
-          }
-        >
+        <div className={cn("min-w-0", selected ? "block" : "hidden lg:block")}>
           {!selected ? (
-            <AdminEmpty
-              title="Nothing selected"
-              description="Choose a row on the left to read the full message and take action."
-            />
+            <div className="flex h-full min-h-[20rem] items-center p-6">
+              <AdminEmpty
+                title="Select a message"
+                description="Choose a row on the left to read it and reply."
+              />
+            </div>
           ) : (
-            <div className="space-y-5">
-              <div>
-                <h2 className="font-display text-xl font-bold text-ink">
+            <article className="flex h-full min-h-0 flex-col">
+              <div className="border-b border-line/70 px-5 py-4 sm:px-6">
+                <button
+                  type="button"
+                  className="mb-3 inline-flex min-h-10 items-center text-sm font-semibold text-brand lg:hidden"
+                  onClick={() => setSelectedId(null)}
+                >
+                  ← All messages
+                </button>
+                <h2 className="font-display text-xl font-bold tracking-tight text-ink">
                   {entryTitle(selected)}
                 </h2>
-                {selected.row.email != null && (
-                  <p className="mt-1 text-sm text-ink-muted">
-                    {String(selected.row.email)}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {selected.row.email != null && (
-                  <>
+                <p className="mt-1 text-sm text-ink-muted">
+                  {selected.kindLabel}
+                  {selected.row.email != null ? ` · ${String(selected.row.email)}` : ""}
+                  {` · ${formatWhen(selected.row.created_at)}`}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {selected.row.email != null ? (
                     <AdminButton
                       variant="primary"
-                      size="sm"
-                      onClick={() =>
-                        window.open(
-                          mailtoHref(selected),
-                          "_blank",
-                          "noopener,noreferrer",
-                        )
-                      }
+                      onClick={() => {
+                        window.location.href = mailtoHref(selected);
+                      }}
                     >
-                      Reply by email
+                      Reply
                     </AdminButton>
-                    <AdminButton
-                      variant="secondary"
-                      size="sm"
-                      onClick={() =>
-                        void copyText(String(selected.row.email), "Email")
-                      }
-                    >
-                      Copy email
-                    </AdminButton>
-                  </>
-                )}
-                <AdminButton
-                  variant="secondary"
-                  size="sm"
-                  onClick={() =>
-                    void copyText(formatEntryPlain(selected), "Details")
-                  }
-                >
-                  Copy details
-                </AdminButton>
-                <AdminButton
-                  variant="danger"
-                  size="sm"
-                  disabled={busy}
-                  onClick={() => void deleteEntry(selected)}
-                >
-                  Delete
-                </AdminButton>
-              </div>
-
-              <dl className="grid gap-3 sm:grid-cols-2">
-                {detailFields(selected).map((field) => (
-                  <div
-                    key={field.label}
-                    className={cn(
-                      "rounded-xl border border-line/60 bg-surface/40 p-3",
-                      field.wide && "sm:col-span-2",
-                    )}
+                  ) : null}
+                  <AdminButton
+                    variant="secondary"
+                    onClick={() => void copyText(formatEntryPlain(selected), "Details")}
                   >
-                    <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                    Copy
+                  </AdminButton>
+                  <AdminButton
+                    variant="danger"
+                    disabled={busy}
+                    onClick={() => void deleteEntry(selected)}
+                  >
+                    Delete
+                  </AdminButton>
+                </div>
+              </div>
+              <dl className="min-h-0 flex-1 overflow-auto px-5 py-2 sm:px-6">
+                {detailFields(selected).map((field) => (
+                  <div key={field.label} className="border-b border-line/50 py-4 last:border-b-0">
+                    <dt className="text-xs font-semibold uppercase tracking-[0.08em] text-ink-muted">
                       {field.label}
                     </dt>
-                    <dd className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-ink">
+                    <dd className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed text-ink">
                       {field.value}
                     </dd>
                   </div>
                 ))}
               </dl>
-            </div>
+            </article>
           )}
-        </AdminCard>
+        </div>
       </div>
     </div>
   );
@@ -415,32 +374,6 @@ export function InboxTab({
 
 function entryTitle(entry: InboxEntry) {
   return String(entry.row.name || entry.row.email || entry.row.title || "Record");
-}
-
-function entrySubtitle(entry: InboxEntry) {
-  if (entry.kind === "contact") return String(entry.row.topic || entry.row.email || "");
-  if (entry.kind === "volunteers")
-    return String(entry.row.skills || entry.row.email || "").slice(0, 80);
-  if (entry.kind === "newsletter") return String(entry.row.source || "website");
-  if (entry.kind === "donations") {
-    const amount = formatAmount(entry.row);
-    return [amount, entry.row.status, entry.row.frequency]
-      .filter(Boolean)
-      .map(String)
-      .join(" · ");
-  }
-  if (entry.kind === "events") return String(entry.row.event_slug || entry.row.email || "");
-  return String(entry.row.email || "");
-}
-
-function entryPreview(entry: InboxEntry) {
-  if (entry.kind === "contact") return String(entry.row.message || "");
-  if (entry.kind === "volunteers") return String(entry.row.motivation || "");
-  if (entry.kind === "newsletter") return "Newsletter subscription";
-  if (entry.kind === "donations")
-    return String(entry.row.notes || entry.row.status || "Donation record");
-  if (entry.kind === "events") return String(entry.row.notes || "Event registration");
-  return "";
 }
 
 function formatAmount(row: Record<string, unknown>) {
@@ -453,11 +386,12 @@ function formatWhen(value: unknown) {
   return new Date(String(value)).toLocaleString("en-IN");
 }
 
-function detailStatus(entry: InboxEntry) {
-  if (entry.kind === "donations") return String(entry.row.status || "created");
-  if (entry.kind === "contact") return String(entry.row.topic || "Message");
-  if (entry.kind === "events") return String(entry.row.event_slug || "Signup");
-  return entry.kindLabel;
+function formatWhenShort(value: unknown) {
+  if (!value) return "";
+  return new Date(String(value)).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+  });
 }
 
 function mailtoHref(entry: InboxEntry) {
@@ -474,21 +408,21 @@ function mailtoHref(entry: InboxEntry) {
   return `mailto:${email}?subject=${subject}`;
 }
 
-function detailFields(entry: InboxEntry): Array<{ label: string; value: string; wide?: boolean }> {
+function detailFields(entry: InboxEntry): Array<{ label: string; value: string }> {
   const row = entry.row;
-  const fields: Array<{ label: string; value: string; wide?: boolean }> = [];
+  const fields: Array<{ label: string; value: string }> = [];
 
-  const push = (label: string, key: string, wide?: boolean) => {
+  const push = (label: string, key: string) => {
     const value = row[key];
     if (value == null || String(value).trim() === "") return;
-    fields.push({ label, value: String(value), wide });
+    fields.push({ label, value: String(value) });
   };
 
   push("Name", "name");
   push("Email", "email");
   push("Phone", "phone");
   push("Topic", "topic");
-  push("Skills", "skills", true);
+  push("Skills", "skills");
   push("Availability", "availability");
   push("Source", "source");
   push("Event", "event_slug");
@@ -499,9 +433,9 @@ function detailFields(entry: InboxEntry): Array<{ label: string; value: string; 
   }
   push("Payment ID", "razorpay_payment_id");
   push("Order ID", "razorpay_order_id");
-  push("Message", "message", true);
-  push("Motivation", "motivation", true);
-  push("Notes", "notes", true);
+  push("Message", "message");
+  push("Motivation", "motivation");
+  push("Notes", "notes");
   fields.push({
     label: "Received",
     value: formatWhen(row.created_at) || "—",
@@ -512,6 +446,6 @@ function detailFields(entry: InboxEntry): Array<{ label: string; value: string; 
 
 function formatEntryPlain(entry: InboxEntry) {
   return detailFields(entry)
-    .map((f) => `${f.label}: ${f.value}`)
+    .map((field) => `${field.label}: ${field.value}`)
     .join("\n");
 }

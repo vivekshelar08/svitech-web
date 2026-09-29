@@ -374,6 +374,7 @@ export type SiteSettings = {
 
 const defaultNav: NavLink[] = [
   { label: "About", href: "/about" },
+  { label: "Our story", href: "/foundation" },
   { label: "Programs", href: "/programs" },
   { label: "Impact", href: "/impact" },
   { label: "Gallery", href: "/gallery" },
@@ -383,6 +384,7 @@ const defaultNav: NavLink[] = [
 
 const defaultProgramsMenu: NavLink[] = [
   { label: "Projects", href: "/programs" },
+  { label: "Foundation profile", href: "/foundation" },
   { label: "Activities", href: "/news" },
   { label: "Upcoming Events", href: "/events" },
 ];
@@ -440,6 +442,7 @@ export const defaultSiteSettings: SiteSettings = {
     exploreHeading: "Our work",
     exploreLinks: [
       { label: "About", href: "/about" },
+      { label: "Our story", href: "/foundation" },
       { label: "Programs", href: "/programs" },
       { label: "Impact", href: "/impact" },
       { label: "Gallery", href: "/gallery" },

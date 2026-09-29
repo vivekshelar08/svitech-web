@@ -3,14 +3,13 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useAdminConfirm } from "@/components/admin/AdminDialog";
 import {
-  AdminBadge,
   AdminButton,
   AdminCard,
-  AdminChip,
   AdminEmpty,
-  AdminFilterGroup,
+  AdminField,
   AdminStatus,
   adminInputClass,
+  adminSelectClass,
   adminTextareaClass,
   cn,
 } from "@/components/admin/admin-ui";
@@ -98,11 +97,13 @@ export function ContentTab({ type }: { type: ContentType }) {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [visibility, setVisibility] = useState<"live" | "draft" | "all">("live");
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
     setForm(emptyForms[type]);
     setQuery("");
     setVisibility("live");
+    setEditingId(null);
     void loadItems();
   }, [type]);
 
@@ -124,6 +125,7 @@ export function ContentTab({ type }: { type: ContentType }) {
 
   function resetForm() {
     setForm(emptyForms[type]);
+    setEditingId(null);
   }
 
   function duplicateItem(item: ContentItem) {
@@ -133,6 +135,7 @@ export function ContentTab({ type }: { type: ContentType }) {
         ? String(item.name || item.slug || "item")
         : String(item.title || item.slug || "item");
     const nextSlug = `${slugify(base)}-copy`;
+    setEditingId(null);
     setForm((prev) => ({
       ...prev,
       id: "",
@@ -141,11 +144,12 @@ export function ContentTab({ type }: { type: ContentType }) {
       title: type === "programs" ? prev.title : `${String(prev.title || base)} (copy)`,
       name: type === "programs" ? `${String(prev.name || base)} (copy)` : prev.name,
     }));
-    setStatus("Duplicated into the editor as a draft — change the slug and save.");
+    setStatus("Duplicated as a draft — change the slug and save.");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function editItem(item: ContentItem) {
+    setEditingId(String(item.id));
     if (type === "posts") {
       setForm({
         slug: String(item.slug || ""),
@@ -241,24 +245,6 @@ export function ContentTab({ type }: { type: ContentType }) {
     await loadItems();
   }
 
-  async function toggleItem(id: string, published: boolean, slug?: string) {
-    setStatus("");
-    const result = await adminJson(
-      "/api/admin/content",
-      {
-        method: "PATCH",
-        body: JSON.stringify({ type, id, published, slug }),
-      },
-      { retries: 1 },
-    );
-    if (!result.ok) {
-      setStatus(result.error);
-      return;
-    }
-    setStatus(published ? "Published on live site." : "Unpublished.");
-    await loadItems();
-  }
-
   async function removeItem(id: string) {
     const ok = await confirm({
       title: "Delete this item?",
@@ -278,6 +264,7 @@ export function ContentTab({ type }: { type: ContentType }) {
       return;
     }
     setStatus("Deleted.");
+    if (editingId === id) resetForm();
     await loadItems();
   }
 
@@ -306,55 +293,46 @@ export function ContentTab({ type }: { type: ContentType }) {
 
   const previewHref = previewPath(type, form);
 
+  const editingItem = items.find((item) => String(item.id) === editingId) || null;
+  const editorTitle = editingId ? "Edit item" : "New item";
+
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+    <div className="grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)]">
       {confirmDialog}
       <AdminCard
-        title="Existing items"
-        description={`${filtered.length} shown · ${liveCount} live · ${draftCount} draft`}
+        title="Items"
+        description={`${filtered.length} shown`}
         action={
           <AdminButton variant="ghost" size="sm" onClick={() => void loadItems()}>
             Refresh
           </AdminButton>
         }
       >
-        <div className="mb-4 space-y-3">
-          <AdminFilterGroup label="Visibility">
-            <AdminChip
-              active={visibility === "live"}
-              count={liveCount}
-              onClick={() => setVisibility("live")}
+        <div className="mb-4 grid gap-3 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-end">
+          <AdminField label="Show" htmlFor="content-visibility">
+            <select
+              id="content-visibility"
+              className={adminSelectClass}
+              value={visibility}
+              onChange={(event) =>
+                setVisibility(event.target.value as "live" | "draft" | "all")
+              }
             >
-              Live
-            </AdminChip>
-            <AdminChip
-              active={visibility === "draft"}
-              count={draftCount}
-              onClick={() => setVisibility("draft")}
-            >
-              Draft
-            </AdminChip>
-            <AdminChip
-              active={visibility === "all"}
-              count={items.length}
-              onClick={() => setVisibility("all")}
-            >
-              All
-            </AdminChip>
-          </AdminFilterGroup>
-          <div>
-            <label className="sr-only" htmlFor="content-search">
-              Search content items
-            </label>
+              <option value="live">Live ({liveCount})</option>
+              <option value="draft">Drafts ({draftCount})</option>
+              <option value="all">All ({items.length})</option>
+            </select>
+          </AdminField>
+          <AdminField label="Search" htmlFor="content-search">
             <input
               id="content-search"
               type="search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search title, slug, location, summary…"
-              className={cn(adminInputClass, "mt-0")}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Title or slug"
+              className={cn(adminInputClass, "mt-1.5")}
             />
-          </div>
+          </AdminField>
         </div>
         {loading ? (
           <p className="text-sm text-ink-muted" role="status">
@@ -365,80 +343,56 @@ export function ContentTab({ type }: { type: ContentType }) {
             title={visibility === "live" ? "No live items" : "No items yet"}
             description={
               visibility === "live"
-                ? "Switch to Draft or All, or create a new entry on the right."
-                : "Use the form on the right to create your first entry."
+                ? "Switch to Drafts, or create a new entry on the right."
+                : "Use the form on the right to create the first entry."
             }
           />
         ) : (
-          <ul className="divide-y divide-line/70">
-            {filtered.map((item) => (
-              <li key={String(item.id)} className="py-4 first:pt-0 last:pb-0">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="font-semibold text-ink">
-                        {String(item.title || item.name || item.slug)}
-                      </p>
-                      {item.published === false ? (
-                        <AdminBadge tone="warning">Draft</AdminBadge>
-                      ) : (
-                        <AdminBadge tone="success">Live</AdminBadge>
-                      )}
-                    </div>
-                    <p className="mt-1 text-xs text-ink-muted">
-                      {itemMeta(type, item)}
-                    </p>
-                    {itemSnippet(type, item) && (
-                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-muted">
-                        {itemSnippet(type, item)}
-                      </p>
+          <ul className="divide-y divide-line/70" aria-label="Content items">
+            {filtered.map((item) => {
+              const active = editingId === String(item.id);
+              const draft = item.published === false;
+              return (
+                <li key={String(item.id)}>
+                  <button
+                    type="button"
+                    onClick={() => editItem(item)}
+                    aria-pressed={active}
+                    className={cn(
+                      "flex min-h-16 w-full flex-col justify-center px-1 py-3.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
+                      active ? "bg-brand/6" : "hover:bg-surface/70",
                     )}
-                  </div>
-                  <div className="flex w-full shrink-0 flex-wrap justify-end gap-1.5 sm:w-auto">
-                    <AdminButton variant="secondary" size="sm" onClick={() => editItem(item)}>
-                      Edit
-                    </AdminButton>
-                    <AdminButton
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => duplicateItem(item)}
-                    >
-                      Duplicate
-                    </AdminButton>
-                    <AdminButton
-                      variant="secondary"
-                      size="sm"
-                      onClick={() =>
-                        void toggleItem(
-                          String(item.id),
-                          item.published !== true,
-                          String(item.slug || ""),
-                        )
-                      }
-                    >
-                      {item.published ? "Unpublish" : "Publish"}
-                    </AdminButton>
-                    <AdminButton
-                      variant="danger"
-                      size="sm"
-                      onClick={() => void removeItem(String(item.id))}
-                    >
-                      Delete
-                    </AdminButton>
-                  </div>
-                </div>
-              </li>
-            ))}
+                  >
+                    <span className="flex items-baseline justify-between gap-3">
+                      <span className="truncate font-semibold text-ink">
+                        {String(item.title || item.name || item.slug)}
+                      </span>
+                      <span
+                        className={cn(
+                          "shrink-0 text-xs font-semibold",
+                          draft ? "text-amber-800" : "text-ink-muted",
+                        )}
+                      >
+                        {draft ? "Draft" : "Live"}
+                      </span>
+                    </span>
+                    <span className="mt-1 truncate text-sm text-ink-muted">
+                      {itemMeta(type, item)}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </AdminCard>
 
       <AdminCard
-        title={form.slug || form.id ? "Edit item" : "Create item"}
-        description="Upload a cover image or paste a URL. Drafts stay off the public site."
+        title={editorTitle}
+        description="Uncheck Published to keep a draft off the public site."
         action={
           <div className="flex items-center gap-2">
-            {previewHref && (
+            {previewHref ? (
               <AdminButton
                 variant="ghost"
                 size="sm"
@@ -446,7 +400,7 @@ export function ContentTab({ type }: { type: ContentType }) {
               >
                 Preview
               </AdminButton>
-            )}
+            ) : null}
             <AdminButton variant="ghost" size="sm" onClick={resetForm}>
               New
             </AdminButton>
@@ -459,6 +413,24 @@ export function ContentTab({ type }: { type: ContentType }) {
             <AdminButton type="submit" variant="primary">
               Save
             </AdminButton>
+            {editingItem ? (
+              <>
+                <AdminButton
+                  type="button"
+                  variant="secondary"
+                  onClick={() => duplicateItem(editingItem)}
+                >
+                  Duplicate
+                </AdminButton>
+                <AdminButton
+                  type="button"
+                  variant="danger"
+                  onClick={() => void removeItem(String(editingItem.id))}
+                >
+                  Delete
+                </AdminButton>
+              </>
+            ) : null}
             <AdminStatus
               tone={
                 status.includes("failed") || status.includes("Failed")
@@ -739,20 +711,6 @@ function itemMeta(type: ContentType, item: ContentItem) {
     parts.push(`${item.metric_label || "Metric"}: ${item.metric_value}`);
   }
   return parts.filter(Boolean).join(" · ");
-}
-
-function itemSnippet(type: ContentType, item: ContentItem) {
-  if (type === "posts") return String(item.excerpt || "");
-  if (
-    type === "events" ||
-    type === "programs" ||
-    type === "impact_stories" ||
-    type === "gallery_items"
-  ) {
-    return String(item.summary || item.detail || "");
-  }
-  if (type === "reports") return String(item.description || "");
-  return "";
 }
 
 function buildPayload(type: ContentType, form: Record<string, string | boolean>) {

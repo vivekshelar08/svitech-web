@@ -17,7 +17,7 @@ export const reports: Report[] = [
     year: 2024,
     title: "Annual report 2024",
     description:
-      "Founding-year summary of community outreach, digital skills work, and partnerships.",
+      "Founding year: access-to-services camps across 30 locations, basic computer training with 30 placements from 100 trainees, and a cricket camp in Ratnagiri. Published 14 June 2024.",
     fileUrl: "/reports/annual-report-2024.pdf",
   },
 ];
@@ -32,11 +32,11 @@ export const board: BoardMember[] = [
   {
     name: "Vivek G. Shelar",
     role: "Founder & President",
-    bio: "Experienced in accounts and inventory management, and actively engaged in community development using digital technologies. Recognised for contributions to Digital India and the e-Shram Yojana.",
+    bio: "Founded Svitech Computer Training Institute in 2016 and incorporated SVITECH Foundation on 5 September 2023. Bachelor of Computer Applications (IT), Tilak Maharashtra Vidyapeeth, and Master of Social Work, IGNOU. Recognised under Digital India and for implementing e-Shram.",
   },
   {
     name: "Rajani G. Kulaye",
-    role: "Secretary",
-    bio: "Over a decade imparting IT skills to students and communities. Holds a Bachelor of Social Work and leads community outreach programmes.",
+    role: "Secretary & Director — Operations",
+    bio: "More than a decade teaching IT. Bachelor of Social Work, Yashwantrao Chavan Maharashtra Open University. Runs the Ghatkopar West skill centre and oversees operations and finances.",
   },
 ];

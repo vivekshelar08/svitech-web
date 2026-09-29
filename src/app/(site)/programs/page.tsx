@@ -64,6 +64,12 @@ export default async function ProgramsPage() {
           <p className="mt-5 text-base leading-relaxed text-ink-muted md:text-lg">
             {programs.intro}
           </p>
+          <Link
+            href="/foundation"
+            className="mt-5 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
+          >
+            Read the full foundation profile
+          </Link>
         </div>
 
         <ProgramsExplorer

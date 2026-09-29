@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   AdminAlert,
   AdminBadge,
@@ -158,143 +158,105 @@ export function DashboardTab({
         </div>
       </div>
 
-      <AdminCard
-        title="Site controls"
-        description="Take the site offline, enable the announcement popup, switch cache policy, or jump to homepage images."
-      >
-        <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
-          <div
-            className={`rounded-xl border p-4 ${
-              maintenanceEnabled
-                ? "border-accent/50 bg-accent/10"
-                : "border-line/70 bg-surface/50"
-            }`}
-          >
-            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">
-              Maintenance
-            </p>
-            <p className="mt-1 text-sm text-ink-muted">
-              Public site offline · admin still works
-            </p>
-            <label className="mt-4 flex items-center gap-3 text-sm font-semibold text-ink">
-              <input
-                type="checkbox"
-                checked={maintenanceEnabled}
+      <AdminCard title="Site controls" description="These switches affect the public website immediately.">
+        <div className="divide-y divide-line/70">
+          <SiteControl
+            label="Maintenance"
+            hint="Take the public site offline. Admin still works."
+            action={
+              <label className="flex min-h-11 items-center gap-3 text-sm font-semibold text-ink">
+                <input
+                  type="checkbox"
+                  checked={maintenanceEnabled}
+                  disabled={siteBusy}
+                  onChange={(e) => void toggleMaintenance(e.target.checked)}
+                  className="h-4 w-4 rounded border-line"
+                />
+                {maintenanceEnabled ? "On — site offline" : "Off"}
+              </label>
+            }
+            linkLabel="Edit message"
+            onLink={() => onNavigate("maintenance")}
+            alert={maintenanceEnabled}
+          />
+          <SiteControl
+            label="Popup"
+            hint="Homepage announcement with image and button."
+            action={
+              <label className="flex min-h-11 items-center gap-3 text-sm font-semibold text-ink">
+                <input
+                  type="checkbox"
+                  checked={popupEnabled}
+                  disabled={siteBusy}
+                  onChange={(e) => void togglePopup(e.target.checked)}
+                  className="h-4 w-4 rounded border-line"
+                />
+                {popupEnabled ? "On" : "Off"}
+              </label>
+            }
+            linkLabel="Edit popup"
+            onLink={() => onNavigate("popup")}
+          />
+          <SiteControl
+            label="Cache"
+            hint="Live pages stay fresh while you edit."
+            action={
+              <select
+                aria-label="Cache mode"
+                className="min-h-11 w-full max-w-xs rounded-xl border border-line bg-white px-3 py-2 text-sm"
+                value={cacheMode}
                 disabled={siteBusy}
-                onChange={(e) => void toggleMaintenance(e.target.checked)}
-                className="h-4 w-4 rounded border-line"
-              />
-              {maintenanceEnabled ? "ON — site offline" : "Off"}
-            </label>
-            <AdminButton
-              variant="ghost"
-              size="sm"
-              className="mt-3"
-              onClick={() => onNavigate("maintenance")}
-            >
-              Edit message →
-            </AdminButton>
-          </div>
-
-          <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Popup</p>
-            <p className="mt-1 text-sm text-ink-muted">
-              Post-style announcement with image + CTA
-            </p>
-            <label className="mt-4 flex items-center gap-3 text-sm font-semibold text-ink">
-              <input
-                type="checkbox"
-                checked={popupEnabled}
-                disabled={siteBusy}
-                onChange={(e) => void togglePopup(e.target.checked)}
-                className="h-4 w-4 rounded border-line"
-              />
-              {popupEnabled ? "Enabled" : "Disabled"}
-            </label>
-            <AdminButton
-              variant="ghost"
-              size="sm"
-              className="mt-3"
-              onClick={() => onNavigate("popup")}
-            >
-              Edit popup content →
-            </AdminButton>
-          </div>
-
-          <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Cache</p>
-            <p className="mt-1 text-sm text-ink-muted">Live while editing · cached for speed</p>
-            <select
-              className="mt-4 w-full rounded-lg border border-line bg-white px-3 py-2 text-sm"
-              value={cacheMode}
-              disabled={siteBusy}
-              onChange={(e) => void toggleCacheMode(e.target.value as "live" | "cached")}
-            >
-              <option value="live">Live — always fresh</option>
-              <option value="cached">Cached — allow ISR</option>
-            </select>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <AdminButton
-                variant="secondary"
-                size="sm"
-                disabled={siteBusy}
-                onClick={() => void purgeCache()}
+                onChange={(e) => void toggleCacheMode(e.target.value as "live" | "cached")}
               >
-                Purge cache
+                <option value="live">Live — always fresh</option>
+                <option value="cached">Cached — allow ISR</option>
+              </select>
+            }
+            extra={
+              <div className="flex flex-wrap gap-2">
+                <AdminButton
+                  variant="secondary"
+                  size="sm"
+                  disabled={siteBusy}
+                  onClick={() => void purgeCache()}
+                >
+                  Purge cache
+                </AdminButton>
+                <AdminButton variant="ghost" size="sm" onClick={() => onNavigate("cache")}>
+                  Policy
+                </AdminButton>
+              </div>
+            }
+          />
+          <SiteControl
+            label="Home page"
+            hint="Hero, focus areas, approach, and campaigns."
+            action={
+              <AdminButton variant="primary" onClick={() => onNavigate("home")}>
+                Edit homepage
               </AdminButton>
-              <AdminButton variant="ghost" size="sm" onClick={() => onNavigate("cache")}>
-                Policy →
-              </AdminButton>
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-line/70 bg-surface/50 p-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-ink-muted">Home images</p>
-            <p className="mt-1 text-sm text-ink-muted">
-              Hero, focus areas, approach, and campaigns
-            </p>
-            <AdminButton
-              variant="primary"
-              size="sm"
-              className="mt-4"
-              onClick={() => onNavigate("home")}
-            >
-              Customize homepage
-            </AdminButton>
-          </div>
+            }
+          />
         </div>
-        {siteMsg && (
-          <p className="mt-4 text-sm text-brand">{siteMsg}</p>
-        )}
+        {siteMsg ? (
+          <p className="mt-4 text-sm font-medium text-brand" role="status" aria-live="polite">
+            {siteMsg}
+          </p>
+        ) : null}
       </AdminCard>
 
-      <AdminCard
-        title="Edit any website section"
-        description="Jump straight to the editor for every public page — then preview on the live site."
-      >
-        <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+      <AdminCard title="Edit a page" description="Open the editor for a public page.">
+        <ul className="grid gap-1 sm:grid-cols-2">
           {websiteEditorMap.map((item) => (
-            <li
-              key={`${item.label}-${item.tab}`}
-              className="flex items-center gap-2 rounded-xl border border-line/70 bg-white px-3 py-2.5"
-            >
+            <li key={`${item.label}-${item.tab}`}>
               <button
                 type="button"
                 onClick={() => onNavigate(item.tab)}
-                className="min-w-0 flex-1 text-left"
+                className="flex min-h-12 w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left transition hover:bg-surface/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30"
               >
-                <span className="block text-sm font-semibold text-ink">{item.label}</span>
-                <span className="block truncate text-xs text-ink-muted">{item.hint}</span>
+                <span className="text-sm font-semibold text-ink">{item.label}</span>
+                <span className="truncate text-xs text-ink-muted">{item.hint}</span>
               </button>
-              <a
-                href={item.preview}
-                target="_blank"
-                rel="noreferrer"
-                className="shrink-0 rounded-lg border border-line px-2 py-1 text-[11px] font-semibold text-ink-muted transition hover:border-brand/40 hover:text-brand"
-                title={`Preview ${item.preview}`}
-              >
-                ↗
-              </a>
             </li>
           ))}
         </ul>
@@ -315,19 +277,17 @@ export function DashboardTab({
 
       {stats ? (
         <>
-          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <MetricCard
               label="Inbox"
               value={String(stats.inboxTotal)}
               sub={`${stats.weekContact + stats.weekVolunteers} new this week`}
-              icon="📥"
               onClick={() => onNavigate("inbox")}
             />
             <MetricCard
               label="Donations"
               value={`₹${stats.donationsInr.toLocaleString("en-IN")}`}
               sub={`${stats.donationsPaid} paid`}
-              icon="💚"
               accent
               onClick={() => onNavigate("inbox")}
             />
@@ -339,38 +299,23 @@ export function DashboardTab({
                   stats.content.programs.published,
               )}
               sub={`${totalDrafts(stats)} drafts`}
-              icon="✦"
               onClick={() => onNavigate("posts")}
             />
             <MetricCard
               label="Upcoming events"
               value={String(stats.upcomingEvents)}
               sub={`${stats.events} in CMS`}
-              icon="📅"
               onClick={() => onNavigate("events")}
             />
           </section>
 
-          <AdminCard title="Quick actions" padding="sm">
-            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              <QuickAction label="Home page" onClick={() => onNavigate("home")} />
-              <QuickAction label="Inbox" onClick={() => onNavigate("inbox")} />
-              <QuickAction label="New article" onClick={() => onNavigate("posts")} />
-              <QuickAction label="Gallery" onClick={() => onNavigate("gallery_items")} />
-              <QuickAction label="Popup" onClick={() => onNavigate("popup")} />
-              <QuickAction label="Maintenance" onClick={() => onNavigate("maintenance")} />
-              <QuickAction label="Cache" onClick={() => onNavigate("cache")} />
-              <QuickAction label="Colors" onClick={() => onNavigate("theme")} />
-            </div>
-          </AdminCard>
-
           <div className="grid gap-6 xl:grid-cols-[1.45fr_1fr]">
             <AdminCard
-              title="Recent activity"
-              description="Latest submissions and signups across the site"
+              title="Recent messages"
+              description="Latest contact, volunteer, donation, and event signups"
               action={
                 <AdminButton variant="ghost" size="sm" onClick={() => onNavigate("inbox")}>
-                  View all
+                  Open inbox
                 </AdminButton>
               }
             >
@@ -378,7 +323,7 @@ export function DashboardTab({
             </AdminCard>
 
             <div className="space-y-6">
-              <AdminCard title="Content health" description="Live vs draft across CMS">
+              <AdminCard title="Content" description="Live vs draft">
                 <div className="space-y-4">
                   <ContentBar label="News" counts={stats.content.posts} onClick={() => onNavigate("posts")} />
                   <ContentBar label="Events" counts={stats.content.events} onClick={() => onNavigate("events")} />
@@ -387,16 +332,6 @@ export function DashboardTab({
                   <ContentBar label="Gallery" counts={stats.content.galleryItems} onClick={() => onNavigate("gallery_items")} />
                   <ContentBar label="Reports" counts={stats.content.reports} onClick={() => onNavigate("reports")} />
                 </div>
-              </AdminCard>
-
-              <AdminCard title="Submissions" padding="sm">
-                <ul className="divide-y divide-line/70">
-                  <SubmissionRow label="Contact" count={stats.contact} week={stats.weekContact} onClick={() => onNavigate("inbox")} />
-                  <SubmissionRow label="Volunteers" count={stats.volunteers} week={stats.weekVolunteers} onClick={() => onNavigate("inbox")} />
-                  <SubmissionRow label="Newsletter" count={stats.newsletter} onClick={() => onNavigate("inbox")} />
-                  <SubmissionRow label="Donations" count={stats.donations} week={stats.weekDonations} onClick={() => onNavigate("inbox")} />
-                  <SubmissionRow label="Event signups" count={stats.eventRegistrations} onClick={() => onNavigate("inbox")} />
-                </ul>
               </AdminCard>
 
               <SystemStatus backend={backend} mode={inbox?.mode} />
@@ -451,18 +386,56 @@ function totalDrafts(stats: AdminStats) {
   );
 }
 
+function SiteControl({
+  label,
+  hint,
+  action,
+  extra,
+  linkLabel,
+  onLink,
+  alert,
+}: {
+  label: string;
+  hint: string;
+  action: ReactNode;
+  extra?: ReactNode;
+  linkLabel?: string;
+  onLink?: () => void;
+  alert?: boolean;
+}) {
+  return (
+    <div className={cn("py-4 first:pt-0 last:pb-0", alert && "rounded-xl bg-accent/10 px-3")}>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <p className="font-semibold text-ink">{label}</p>
+          <p className="mt-0.5 text-sm text-ink-muted">{hint}</p>
+        </div>
+        <div className="shrink-0">{action}</div>
+      </div>
+      {extra ? <div className="mt-3">{extra}</div> : null}
+      {linkLabel && onLink ? (
+        <button
+          type="button"
+          onClick={onLink}
+          className="mt-2 text-sm font-semibold text-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30"
+        >
+          {linkLabel}
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 function MetricCard({
   label,
   value,
   sub,
-  icon,
   accent,
   onClick,
 }: {
   label: string;
   value: string;
   sub: string;
-  icon: string;
   accent?: boolean;
   onClick?: () => void;
 }) {
@@ -471,32 +444,15 @@ function MetricCard({
       type="button"
       onClick={onClick}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md",
+        "rounded-2xl border p-5 text-left shadow-sm transition hover:border-brand/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
         accent
-          ? "border-accent/20 bg-gradient-to-br from-accent/8 to-white"
-          : "border-line/80 bg-white hover:border-brand/20",
+          ? "border-accent/20 bg-accent/8"
+          : "border-line/80 bg-white",
       )}
     >
-      <span className="text-xl" aria-hidden>
-        {icon}
-      </span>
-      <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-        {label}
-      </p>
-      <p className="mt-1 font-display text-3xl font-bold tracking-tight text-ink">{value}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{label}</p>
+      <p className="mt-2 font-display text-3xl font-bold tracking-tight text-ink">{value}</p>
       <p className="mt-2 text-xs text-ink-muted">{sub}</p>
-    </button>
-  );
-}
-
-function QuickAction({ label, onClick }: { label: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="rounded-xl border border-line/80 bg-surface/80 px-4 py-3 text-left text-sm font-semibold text-ink transition hover:border-brand/30 hover:bg-white hover:text-brand"
-    >
-      {label}
     </button>
   );
 }
@@ -569,38 +525,6 @@ function ContentBar({
         />
       </div>
     </button>
-  );
-}
-
-function SubmissionRow({
-  label,
-  count,
-  week,
-  onClick,
-}: {
-  label: string;
-  count: number;
-  week?: number;
-  onClick: () => void;
-}) {
-  return (
-    <li>
-      <button
-        type="button"
-        onClick={onClick}
-        className="flex w-full items-center justify-between px-1 py-3 text-left text-sm transition hover:text-brand"
-      >
-        <span className="font-medium text-ink">{label}</span>
-        <span className="text-ink-muted">
-          {count}
-          {week !== undefined && week > 0 && (
-            <span className="ml-2 rounded-full bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">
-              +{week}
-            </span>
-          )}
-        </span>
-      </button>
-    </li>
   );
 }
 

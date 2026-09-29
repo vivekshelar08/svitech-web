@@ -15,6 +15,7 @@ const PROGRAMS_HREF = "/programs";
 
 const fallbackProgramsMenu: NavLink[] = [
   { label: "Projects", href: "/programs" },
+  { label: "Foundation profile", href: "/foundation" },
   { label: "Activities", href: "/news" },
   { label: "Upcoming Events", href: "/events" },
 ];

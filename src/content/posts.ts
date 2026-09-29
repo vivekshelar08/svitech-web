@@ -9,6 +9,38 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "shubham-vidhate-digital-skills",
+    title: "How Shubham Vidhate reached AU Small Finance Bank",
+    excerpt:
+      "An office boy earning ₹2,000 a month in Ghatkopar learned advanced Excel at SVITECH, joined HDB Finance, finished his graduation, and now works at a bank.",
+    body: `Shubham Vidhate grew up in the slums of Ghatkopar. He became the earner in his family while still young, after his father’s alcoholism. He failed Class 12 three times. The job he could get was office boy, at about ₹2,000 a month.
+
+He heard about SVITECH’s Digital Skills programme at a community camp and enrolled. The skill he stayed with was advanced Excel. That led to a placement as a back-office executive at HDB Finance — a wage that stabilised the household and let him complete the graduation he had missed.
+
+He now holds a role at AU Small Finance Bank. He has said there were times he wanted to stop, and that the thought of his family, plus the skills from the programme, is what carried him.
+
+The Foundation publishes this as one completed pathway: a named skill, a first formal job, then a second employer. It is not a promise that every trainee will follow the same route. In September 2023–March 2024, 30 of 100 basic-computer trainees were placed.`,
+    coverImage:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1600&q=80",
+    publishedAt: "2026-09-20",
+  },
+  {
+    slug: "sakshi-shelar-mis-and-masters",
+    title: "Sakshi Shelar: a junior MIS role, then a master’s paid from her salary",
+    excerpt:
+      "From Asalpha, Ghatkopar West — Class 12, a ₹5,000 computer-operator job, then junior MIS at HDB Finance and a commerce master’s earned on her own.",
+    body: `Sakshi Shelar had just finished Class 12 in commerce at Asalpha, Ghatkopar West. The family could not fund the next course.
+
+At a SVITECH community camp she joined digital literacy, then took a part-time job as a computer operator at about ₹5,000 a month. During the pandemic that income kept the household going. The Foundation then enrolled her in the deeper Digital Skills track — data management and MIS. She was hired as a junior MIS executive at HDB Finance.
+
+On that salary she completed a master’s in commerce, specialising in banking. She has said she is proud the degree was paid with her own money, and that the programme gave her the base to do it.
+
+Her path is the one the centre describes when girls ask whether a short course can lead to both a job and further study.`,
+    coverImage:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80",
+    publishedAt: "2026-09-18",
+  },
+  {
     slug: "note-on-activities",
     title: "Note on Activities of SVITECH Foundation",
     excerpt:

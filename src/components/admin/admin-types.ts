@@ -102,14 +102,14 @@ export const tabLabels: Record<AdminTab, string> = {
 };
 
 export const tabHints: Record<AdminTab, string> = {
-  dashboard: "Quick toggles for popup, cache & maintenance, plus activity and content health",
-  inbox: "Form submissions and registrations",
-  posts: "News — upload covers, duplicate drafts, publish/unpublish",
-  events: "Events with covers, registration toggle, and live preview",
-  programs: "Programs with cover upload and sort order",
-  impact_stories: "Impact stories with metrics, map coords, and covers",
-  reports: "Annual reports — upload PDF or paste a URL",
-  gallery_items: "Photo gallery items with category filters for home and /gallery",
+  dashboard: "Site controls, recent messages, and shortcuts to edit pages",
+  inbox: "Read and reply to website messages",
+  posts: "Write and publish news articles",
+  events: "Create events and open registration",
+  programs: "Edit programme pages and order",
+  impact_stories: "Publish impact stories and metrics",
+  reports: "Upload annual reports or paste a file URL",
+  gallery_items: "Add gallery photos shown on home and /gallery",
   home: "Hero image, focus areas (with photos), campaigns, and homepage blocks",
   site: "Brand, logo upload, SEO counters, and footer copy",
   theme: "Brand colors applied across the whole site",
