@@ -53,10 +53,12 @@ Repo: [github.com/vivekshelar08/svitech-web](https://github.com/vivekshelar08/sv
 
 | Setting | Value |
 |---------|--------|
-| Install command | `npm ci` |
+| Install command | `npm ci --omit=dev` |
 | Build command | `npm run build` |
 | Start command | `next start -H 0.0.0.0 -p $PORT` |
 | Node.js version | **20** |
+
+Use `--omit=dev` on Hostinger. ESLint was removed from this repo so Hostinger’s scanner no longer flags the unfixed `braces` advisory pulled in only by `eslint-config-next`. `npm audit` should report **0** vulnerabilities. If Hostinger Auto-fix returns **409**, close or merge any open Hostinger patch PR first (only one can be open per site), then redeploy from `main`.
 
 ### Environment variables
 
