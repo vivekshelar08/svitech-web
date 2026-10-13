@@ -1,3 +1,5 @@
+import { media } from "@/lib/svitech/media";
+
 export const GALLERY_CATEGORIES = [
   "Digital Literacy",
   "Women Empowerment",
@@ -20,83 +22,75 @@ export type GalleryItem = {
 
 export const galleryItems: GalleryItem[] = [
   {
-    slug: "digital-literacy-pune-lab",
-    title: "Digital literacy lab, Pune",
-    category: "Digital Literacy",
+    slug: "eseva-welfare-camp",
+    title: "Multi-desk welfare enrollment camp",
+    category: "Community",
     summary:
-      "Learners practise online banking safety and citizen service portals in a guided lab session.",
-    image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+      "Samriddhi field camp linking households to PMJAY, E-Shram, and civil certificates.",
+    image: media.welfareCamp,
     sortOrder: 1,
   },
   {
-    slug: "women-livelihood-workshop",
-    title: "Women livelihood workshop",
-    category: "Women Empowerment",
+    slug: "techshala-digital-lab",
+    title: "TechShala community digital lab",
+    category: "Digital Literacy",
     summary:
-      "Vocational and digital skills sessions that support women’s financial independence.",
-    image:
-      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1200&q=80",
+      "CSC Academy / PMGDISHA practical sessions for youth and women learners.",
+    image: media.heroDigital,
     sortOrder: 2,
   },
   {
-    slug: "community-health-camp",
-    title: "Community health camp",
-    category: "Health",
+    slug: "women-learning-center",
+    title: "Women Learning Center batch",
+    category: "Women Empowerment",
     summary:
-      "Health screening and scheme enrolment support for families navigating public benefits.",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
+      "Neighbourhood WLC sessions on mobile literacy, UPI safety, and workplace English.",
+    image: media.womenLearning,
     sortOrder: 3,
   },
   {
-    slug: "school-education-outreach",
-    title: "School education outreach",
-    category: "Education",
+    slug: "swasthya-diagnostic-drive",
+    title: "Swasthya-Setu diagnostic drive",
+    category: "Health",
     summary:
-      "Classroom support and learning resources for children in underserved neighbourhoods.",
-    image:
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80",
+      "Community screening for hypertension, glucose, hemoglobin, and eye care.",
+    image: media.healthCamp,
     sortOrder: 4,
   },
   {
-    slug: "community-mobilisation-day",
-    title: "Community mobilisation day",
+    slug: "lok-adhikar-civic-meeting",
+    title: "Community Vigilance Group meeting",
     category: "Community",
     summary:
-      "Local volunteers and partners gather to expand awareness of digital and welfare services.",
-    image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80",
+      "Grassroots leaders coordinating PDS audits and municipal infrastructure petitions.",
+    image: media.civicMeeting,
     sortOrder: 5,
   },
   {
-    slug: "road-safety-awareness",
-    title: "Road safety awareness drive",
-    category: "Road Safety",
+    slug: "urja-stem-school",
+    title: "Urja-Prayas STEM school session",
+    category: "Education",
     summary:
-      "Street-level awareness sessions promoting safer habits for students and daily commuters.",
-    image:
-      "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80",
+      "Energy champions and hands-on sustainability workshops across partner schools.",
+    image: media.schoolStem,
     sortOrder: 6,
   },
   {
-    slug: "senior-digital-inclusion",
-    title: "Senior digital inclusion circle",
-    category: "Digital Literacy",
+    slug: "bhivgad-inclusion-trek",
+    title: "Bhivgad Fort inclusive trek",
+    category: "Community",
     summary:
-      "Seniors learn UPI basics, scam awareness, and how to access essential online services.",
-    image:
-      "https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&w=1200&q=80",
+      "Adaptive mountain ascent for visually challenged youth with corporate volunteers.",
+    image: media.inclusionTrek,
     sortOrder: 7,
   },
   {
-    slug: "youth-financial-inclusion",
-    title: "Youth financial inclusion session",
+    slug: "industrial-corridor-outreach",
+    title: "Industrial corridor labour outreach",
     category: "Community",
     summary:
-      "Young adults explore digital banking tools and responsible financial planning together.",
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
+      "Multi-state migrant worker enrollments for UAN, Jan Dhan, and accident insurance.",
+    image: media.factoryCorridor,
     sortOrder: 8,
   },
 ];

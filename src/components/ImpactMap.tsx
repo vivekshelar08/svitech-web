@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useState } from "react";
 import type { ImpactStory } from "@/content/impact";
 import { INDIA_MAP } from "@/components/india-map-data";
@@ -46,13 +47,14 @@ export function ImpactMap({
           {mapHeadline}
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
-          Pins mark where we work: full activities in Maharashtra, Digital Literacy in Pune, and
-          Financial Inclusion projects in other states. Select a pin to read the outcome.
+          Pins mark E-Seva Kendras across Mumbai and multi-state migrant labour
+          corridors in Maharashtra, Gujarat, Delhi NCR, and Haryana. Select a pin
+          to read the achievement.
         </p>
       </div>
 
       <div className="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-        <div className="relative bg-[linear-gradient(165deg,#e4ebf5_0%,#f7f9fc_48%,#e9eef6_100%)] px-2 py-5 sm:px-5 md:py-8">
+        <div className="relative bg-[linear-gradient(165deg,#ebe4d8_0%,#f7f3eb_48%,#e7efe9_100%)] px-2 py-5 sm:px-5 md:py-8">
           <svg
             role="img"
             aria-labelledby={titleId}
@@ -65,23 +67,23 @@ export function ImpactMap({
                   dx="0"
                   dy="1"
                   stdDeviation="1.4"
-                  floodColor="#121c2e"
-                  floodOpacity="0.2"
+                  floodColor="#12263A"
+                  floodOpacity="0.22"
                 />
               </filter>
             </defs>
 
             <path
               d={indiaPath}
-              fill="#c9d8ec"
-              stroke="#1b6ef5"
+              fill="#d7e5df"
+              stroke="#1B6B56"
               strokeWidth="1.75"
               strokeLinejoin="round"
             />
             <path
               d={indiaPath}
               fill="none"
-              stroke="#121c2e"
+              stroke="#12263A"
               strokeWidth="0.6"
               strokeOpacity="0.12"
               strokeLinejoin="round"
@@ -91,7 +93,7 @@ export function ImpactMap({
               x={W - 20}
               y={H - 18}
               textAnchor="end"
-              fill="#5c6b82"
+              fill="#5A6B7A"
               style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em" }}
             >
               INDIA
@@ -120,7 +122,7 @@ export function ImpactMap({
                 >
                   <circle
                     r={isActive ? 11 : 7}
-                    fill={isActive ? "#f0a202" : "#1b6ef5"}
+                    fill={isActive ? "#C65A2E" : "#1B6B56"}
                     stroke="#ffffff"
                     strokeWidth="2.5"
                   />
@@ -142,8 +144,8 @@ export function ImpactMap({
                   width="176"
                   height="44"
                   rx="2"
-                  fill="#0b1424"
-                  opacity="0.92"
+                  fill="#12263A"
+                  opacity="0.94"
                 />
                 <text
                   x="12"
@@ -168,25 +170,38 @@ export function ImpactMap({
 
         <div className="border-t border-line lg:border-l lg:border-t-0">
           {active ? (
-            <div className="border-b border-line bg-white/80 px-5 py-5 sm:px-6 md:px-8 md:py-6">
-              <p className="text-xs font-semibold uppercase tracking-wide text-brand">
-                Selected achievement
-              </p>
-              <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-                {active.location}
-              </p>
-              <h3 className="mt-1 font-display text-xl font-bold text-ink md:text-2xl">
-                {active.title}
-              </h3>
-              <p className="mt-3 text-2xl font-semibold text-accent">
-                {active.metricValue}{" "}
-                <span className="text-sm font-medium text-ink-muted">
-                  {active.metricLabel}
-                </span>
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                {active.summary}
-              </p>
+            <div className="border-b border-line bg-white/80">
+              {active.coverImage ? (
+                <div className="relative aspect-[16/8] overflow-hidden">
+                  <Image
+                    src={active.coverImage}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              ) : null}
+              <div className="px-5 py-5 sm:px-6 md:px-8 md:py-6">
+                <p className="text-xs font-semibold uppercase tracking-wide text-brand">
+                  Selected achievement
+                </p>
+                <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                  {active.location}
+                </p>
+                <h3 className="mt-1 font-display text-xl font-bold text-ink md:text-2xl">
+                  {active.title}
+                </h3>
+                <p className="mt-3 text-2xl font-semibold text-accent">
+                  {active.metricValue}{" "}
+                  <span className="text-sm font-medium text-ink-muted">
+                    {active.metricLabel}
+                  </span>
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                  {active.summary}
+                </p>
+              </div>
             </div>
           ) : null}
 

@@ -467,14 +467,16 @@ export const defaultSiteSettings: SiteSettings = {
     heroHeadline: "Institutionalize self-reliance at the last mile.",
     heroSubhead:
       "A process-driven implementation agency connecting vulnerable families to public entitlements, digital skills, preventive health, and civic voice across Mumbai and industrial corridors.",
-    heroImage: "",
-    heroImageAlt: "",
-    heroSecondaryImage: "",
-    heroSecondaryImageAlt: "",
-    heroCtaPrimary: "Partner with us",
-    heroCtaPrimaryHref: "/partner",
-    heroCtaSecondary: "Donate",
-    heroCtaSecondaryHref: "/donate",
+    heroImage:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=2400&q=80",
+    heroImageAlt: "Community members gathered for a SVITECH outreach programme",
+    heroSecondaryImage:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80",
+    heroSecondaryImageAlt: "Learners practising digital skills together",
+    heroCtaPrimary: "Donate now",
+    heroCtaPrimaryHref: "/donate",
+    heroCtaSecondary: "Partner with us",
+    heroCtaSecondaryHref: "/partner",
     heroTrustChecks: [
       "12A · 80G · CSR-1",
       "ISO 9001:2015 certified",

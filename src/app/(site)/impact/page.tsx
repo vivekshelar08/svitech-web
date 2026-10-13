@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ImpactMap } from "@/components/ImpactMap";
 import { Reveal } from "@/components/Reveal";
+import { getImpactStories } from "@/lib/content";
 import {
   economicProtection,
   eSevaCenters,
@@ -17,7 +19,9 @@ export const metadata: Metadata = {
     "SVITECH Foundation master impact dashboard and year-on-year growth matrix from multi-year programme cycles.",
 };
 
-export default function ImpactPage() {
+export default async function ImpactPage() {
+  const stories = await getImpactStories();
+
   return (
     <div>
       <section className="border-b border-line bg-bg-deep text-white">
@@ -49,6 +53,16 @@ export default function ImpactPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-surface/70">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-16">
+          <ImpactMap
+            stories={stories}
+            mapEyebrow="Achievement map"
+            mapHeadline="E-Seva hubs & corridor footprint"
+          />
         </div>
       </section>
 
