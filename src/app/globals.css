@@ -1,16 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f2f5fa;
-  --bg-deep: #0b1424;
-  --ink: #121c2e;
-  --ink-muted: #5c6b82;
-  --brand: #1b6ef5;
-  --brand-bright: #4a8ff7;
-  --accent: #f0a202;
-  --accent-soft: #fff4d6;
-  --surface: #f8fafc;
-  --line: rgba(18, 28, 46, 0.12);
+  --bg: #f4efe6;
+  --bg-deep: #12263a;
+  --ink: #12263a;
+  --ink-muted: #5a6b7a;
+  --brand: #c65a2e;
+  --brand-bright: #d9784a;
+  --accent: #1b6b56;
+  --accent-soft: #dcece6;
+  --surface: #fbf8f2;
+  --grove: #1b6b56;
+  --line: rgba(18, 38, 58, 0.14);
   --background: var(--bg);
   --foreground: var(--ink);
 }
@@ -45,13 +46,8 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-body), "Segoe UI", sans-serif;
   overflow-x: clip;
-  background-image:
-    radial-gradient(ellipse 70% 45% at 8% -8%, color-mix(in srgb, var(--brand-bright) 16%, transparent), transparent 55%),
-    radial-gradient(ellipse 50% 35% at 96% 4%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 48%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, color-mix(in srgb, var(--brand) 7%, transparent), transparent 60%),
-    linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 88%, var(--ink)) 100%);
   background-attachment: scroll;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -113,7 +109,59 @@ a {
 }
 
 .font-display {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), "Times New Roman", serif;
+  font-optical-sizing: auto;
+}
+
+.stat-value {
+  color: var(--grove);
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ink-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.motion-rise {
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.motion-rise-delay-1 {
+  animation-delay: 0.12s;
+}
+
+.motion-rise-delay-2 {
+  animation-delay: 0.24s;
+}
+
+.motion-rise-delay-3 {
+  animation-delay: 0.36s;
+}
+
+.ink-rule {
+  display: block;
+  height: 2px;
+  width: 4.5rem;
+  origin: left center;
+  transform-origin: left center;
+  background: var(--brand);
+  animation: ink-draw 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 
 .site-grain {
@@ -143,23 +191,24 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--accent);
-  color: #121c2e;
+  background: var(--brand);
+  color: #fffaf5;
   padding: 0.85rem 1.6rem;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.01em;
+  border-radius: 2px;
   transition:
     transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.25s ease,
     box-shadow 0.25s ease;
-  box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--accent) 65%, transparent);
+  box-shadow: 0 10px 28px -14px color-mix(in srgb, var(--brand) 70%, transparent);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.05);
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--accent) 75%, transparent);
+  box-shadow: 0 14px 32px -14px color-mix(in srgb, var(--brand) 80%, transparent);
 }
 
 .btn-ghost {
