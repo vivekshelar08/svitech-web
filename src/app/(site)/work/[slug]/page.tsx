@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
-import { getProgram, programs } from "@/lib/svitech";
+import { getProgram, media, programImages, programs } from "@/lib/svitech";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -33,15 +34,26 @@ export default async function WorkDetailPage({ params }: PageProps) {
   const prev = programs[(index - 1 + programs.length) % programs.length];
   const next = programs[(index + 1) % programs.length];
 
+  const cover = programImages[program.slug] || media.heroCommunity;
+
   return (
     <div>
-      <section className="border-b border-line bg-bg-deep text-white">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
+      <section className="relative overflow-hidden border-b border-line text-white">
+        <Image
+          src={cover}
+          alt=""
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-bg-deep/80" aria-hidden />
+        <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
           <Link
             href="/work"
             className="text-xs font-bold uppercase tracking-[0.16em] text-brand-bright hover:text-white"
           >
-            ← Our Work
+            ← Our Intervention
           </Link>
           <h1 className="mt-5 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">
             {program.name}

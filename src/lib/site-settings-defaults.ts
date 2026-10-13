@@ -373,20 +373,20 @@ export type SiteSettings = {
 };
 
 const defaultNav: NavLink[] = [
-  { label: "Our Work", href: "/work" },
+  { label: "About Us", href: "/about" },
+  { label: "Our Intervention", href: "/work" },
   { label: "Impact", href: "/impact" },
-  { label: "About", href: "/about" },
-  { label: "Partner", href: "/partner" },
-  { label: "Contact", href: "/contact" },
+  { label: "Partners", href: "/partner" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const defaultProgramsMenu: NavLink[] = [
-  { label: "All practices", href: "/work" },
-  { label: "Samriddhi", href: "/work/samriddhi" },
-  { label: "TechShala", href: "/work/techshala" },
-  { label: "Swasthya-Setu", href: "/work/swasthya-setu" },
-  { label: "Lok-Adhikar", href: "/work/lok-adhikar" },
-  { label: "Urja-Prayas", href: "/work/urja-prayas" },
+  { label: "Our Intervention", href: "/work" },
+  { label: "Project Samriddhi", href: "/work/samriddhi" },
+  { label: "Project TechShala", href: "/work/techshala" },
+  { label: "Project Swasthya-Setu", href: "/work/swasthya-setu" },
+  { label: "Project Lok-Adhikar", href: "/work/lok-adhikar" },
+  { label: "Project Urja-Prayas", href: "/work/urja-prayas" },
 ];
 
 export const defaultSiteSettings: SiteSettings = {
@@ -422,14 +422,14 @@ export const defaultSiteSettings: SiteSettings = {
   },
   navigation: {
     primaryLinks: defaultNav,
-    donateLabel: "Donate",
+    donateLabel: "DONATE NOW",
     donateHref: "/donate",
-    donateShortLabel: "Give",
+    donateShortLabel: "DONATE",
     programsMenuLinks: defaultProgramsMenu,
     stickyDonate: {
       enabled: false,
       message: "Support verified field programmes across Mumbai and industrial corridors.",
-      ctaLabel: "Donate now",
+      ctaLabel: "DONATE NOW",
       ctaHref: "/donate",
     },
     showTopBar: false,
@@ -439,26 +439,32 @@ export const defaultSiteSettings: SiteSettings = {
     memberLoginHref: "/member-login",
   },
   footer: {
-    exploreHeading: "Our work",
+    exploreHeading: "Quick Links",
     exploreLinks: [
-      { label: "Our Work", href: "/work" },
+      { label: "Home", href: "/" },
+      { label: "About Us", href: "/about" },
+      { label: "Vision / Mission", href: "/about#vision" },
+      { label: "Leadership", href: "/about#leadership" },
+      { label: "Our Intervention", href: "/work" },
       { label: "Impact", href: "/impact" },
-      { label: "About", href: "/about" },
-      { label: "Partner", href: "/partner" },
+      { label: "Partners", href: "/partner" },
+      { label: "Contact Us", href: "/contact" },
     ],
-    takePartHeading: "Take part",
+    takePartHeading: "Resources & More",
     takePartLinks: [
-      { label: "Partner with us", href: "/partner" },
+      { label: "CSR Partnership", href: "/partner" },
       { label: "Donate", href: "/donate" },
-      { label: "Contact", href: "/contact" },
+      { label: "Gallery", href: "/gallery" },
+      { label: "Reports", href: "/reports" },
+      { label: "Admin login", href: "/admin" },
     ],
     legalHeading: "Legal",
     legalLinks: [
       { label: "Contact", href: "/contact" },
-      { label: "About governance", href: "/about" },
+      { label: "Governance", href: "/about#governance" },
     ],
-    newsletterHeading: "Newsletter",
-    donateLabel: "Donate",
+    newsletterHeading: "Keep helping. Stay updated.",
+    donateLabel: "DONATE NOW",
     donateHref: "/donate",
     tagline: "Verified grassroots implementation",
   },
@@ -467,14 +473,16 @@ export const defaultSiteSettings: SiteSettings = {
     heroHeadline: "Institutionalize self-reliance at the last mile.",
     heroSubhead:
       "A process-driven implementation agency connecting vulnerable families to public entitlements, digital skills, preventive health, and civic voice across Mumbai and industrial corridors.",
-    heroImage: "",
-    heroImageAlt: "",
-    heroSecondaryImage: "",
-    heroSecondaryImageAlt: "",
-    heroCtaPrimary: "Partner with us",
-    heroCtaPrimaryHref: "/partner",
-    heroCtaSecondary: "Donate",
-    heroCtaSecondaryHref: "/donate",
+    heroImage:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=2400&q=80",
+    heroImageAlt: "Community members gathered for a SVITECH outreach programme",
+    heroSecondaryImage:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80",
+    heroSecondaryImageAlt: "Learners practising digital skills together",
+    heroCtaPrimary: "Donate now",
+    heroCtaPrimaryHref: "/donate",
+    heroCtaSecondary: "Partner with us",
+    heroCtaSecondaryHref: "/partner",
     heroTrustChecks: [
       "12A · 80G · CSR-1",
       "ISO 9001:2015 certified",
@@ -760,7 +768,7 @@ export const defaultSiteSettings: SiteSettings = {
       "Volunteer, partner, or donate to support SVITECH Foundation’s community programmes.",
   },
   contact: {
-    eyebrow: "Contact",
+    eyebrow: "Contact Us",
     headline: "Reach the foundation office.",
     intro:
       "Partnerships, donations, media, and field visit requests—write to us at the Ghatkopar West head office.",

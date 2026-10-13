@@ -2,6 +2,7 @@ export * from "./identity";
 export * from "./impact";
 export * from "./programs";
 export * from "./partners";
+export * from "./media";
 
 export const navPrimary = [
   { label: "Our Work", href: "/work" },

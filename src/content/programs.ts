@@ -1,4 +1,5 @@
 import type { ProgramCategoryId } from "@/lib/program-categories";
+import { programImages } from "@/lib/svitech/media";
 import { programs as practicePrograms } from "@/lib/svitech/programs";
 
 export type Program = {
@@ -33,6 +34,7 @@ export const programs: Program[] = practicePrograms.map((program, index) => ({
     "",
     ...program.metrics.map((metric) => `${metric.value} — ${metric.label}`),
   ].join("\n"),
+  coverImage: programImages[program.slug],
   category: categoryBySlug[program.slug] ?? "community",
   sortOrder: index + 1,
 }));

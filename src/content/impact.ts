@@ -1,3 +1,5 @@
+import { media } from "@/lib/svitech/media";
+
 export type ImpactStory = {
   slug: string;
   title: string;
@@ -13,131 +15,134 @@ export type ImpactStory = {
 };
 
 /**
- * Geographic programme map:
- * - Maharashtra: full suite of activities
- * - Pune (Maharashtra): Digital Literacy (in addition to state-wide work)
- * - Other states: Financial Inclusion project only
+ * Achievement map pins from the foundation profile:
+ * MMR E-Seva hubs + multi-state migrant labor corridors.
  */
 export const impactStories: ImpactStory[] = [
   {
-    slug: "maharashtra-all-activities",
-    title: "Full programme suite across Maharashtra",
-    location: "Mumbai, Maharashtra",
-    lat: 19.076,
-    lng: 72.8777,
-    metricLabel: "Maharashtra",
-    metricValue: "All activities",
+    slug: "asalpha-eseva",
+    title: "Asalpha E-Seva Kendra",
+    location: "Ghatkopar West, Mumbai",
+    lat: 19.098,
+    lng: 72.896,
+    metricLabel: "E-Seva hub",
+    metricValue: "Full-time",
     summary:
-      "Home base for SVITECH Foundation’s complete work—Financial and Digital Inclusion, skills training, health and welfare facilitation, education, women empowerment, road safety, CSR, and community outreach.",
-    body: `Maharashtra is where SVITECH Foundation delivers its full range of activities.
-
-From Ghatkopar West and Mumbai suburbs such as Mankhurd, Govandi, and Malad, programmes include Financial and Digital Inclusion, digital skills training, health awareness and PM-JAY facilitation, school education support, women empowerment, road safety campaigns, corporate CSR engagement, digital service camps, and community outreach.
-
-This is the Foundation’s deepest footprint—need-based awareness, capacity building, and beneficiary support with schools, agencies, CSR partners, and local communities.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1600&q=80",
+      "Permanent Common Service Center for chawl settlements, transit workers, and domestic labour—PAN, DBT, certificates, and scheme enrollments.",
+    body: `Asalpha Kendra is SVITECH’s head-office catchment hub. Dual-screen workstations, STQC biometric devices, and trained women facilitators keep welfare desks open beyond camp days for Ghatkopar West communities.`,
+    coverImage: media.welfareCamp,
     sortOrder: 1,
   },
   {
-    slug: "pune-digital-literacy",
-    title: "Digital Literacy in Pune",
-    location: "Pune, Maharashtra",
-    lat: 18.5204,
-    lng: 73.8567,
-    metricLabel: "Pune focus",
-    metricValue: "Digital Literacy",
+    slug: "vashinaka-hub",
+    title: "Vashinaka Hub & TechShala lab",
+    location: "Chembur M-Ward, Mumbai",
+    lat: 19.045,
+    lng: 72.915,
+    metricLabel: "Digital lab",
+    metricValue: "CBO handover",
     summary:
-      "Alongside Maharashtra’s full programme suite, Pune hosts dedicated digital literacy sessions on safe technology use, UPI basics, and cyber awareness.",
-    body: `In Pune, SVITECH Foundation runs focused Digital Literacy programmes in schools, colleges, and community centres.
-
-Participants learn responsible internet use, cyber safety, online fraud prevention, and practical digital tools—complementing the Foundation’s wider Maharashtra activities and the flagship Financial and Digital Inclusion work.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80",
+      "High-density resettlement belt with E-Seva services and the Vashinaka computing lab handed to Adhikaar Mahila Bachat Gat.",
+    body: `Vashinaka combines walk-in welfare facilitation with a permanent digital training lab. Ten Dell setups and classroom amenities were transitioned to a registered women’s SHG under formal handover deeds.`,
+    coverImage: media.heroDigital,
     sortOrder: 2,
   },
   {
-    slug: "mumbai-financial-digital-inclusion",
-    title: "Financial and Digital Inclusion",
-    location: "Mumbai suburbs, Maharashtra",
-    lat: 19.05,
-    lng: 72.93,
-    metricLabel: "Flagship",
-    metricValue: "Inclusion",
+    slug: "vishnu-nagar",
+    title: "Vishnu Nagar Kendra",
+    location: "Chembur Central, Mumbai",
+    lat: 19.052,
+    lng: 72.901,
+    metricLabel: "Food security",
+    metricValue: "PDS audits",
     summary:
-      "Flagship programme in Maharashtra: digital banking, UPI safety, financial planning, and access to citizen digital services.",
-    body: `Financial and Digital Inclusion is the Foundation’s flagship programme in Maharashtra—helping underserved families use digital banking and UPI safely, plan everyday finances, and complete citizen-centric digital services.
-
-Sessions and facilitation run through community centres and neighbourhood support points across Mumbai, as part of the state’s full activity suite.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      "Dense informal settlements focusing on ration rights, senior welfare, and civic infrastructure follow-ups with BMC wards.",
+    body: `Vishnu Nagar anchors food-security audits, drinking-water pipeline escalations, and Community Vigilance Group monitoring across Chembur’s central slum cluster.`,
+    coverImage: media.civicMeeting,
     sortOrder: 3,
   },
   {
-    slug: "delhi-financial-inclusion",
-    title: "Financial Inclusion",
-    location: "New Delhi, Delhi",
-    lat: 28.6139,
-    lng: 77.209,
-    metricLabel: "Project",
-    metricValue: "Financial Inclusion",
+    slug: "backbay-center",
+    title: "Backbay Center",
+    location: "South Mumbai coastal belt",
+    lat: 18.925,
+    lng: 72.823,
+    metricLabel: "Coastal hub",
+    metricValue: "Full-time",
     summary:
-      "Outside Maharashtra, SVITECH Foundation’s work in Delhi focuses on the Financial Inclusion project—digital banking awareness, UPI safety, and financial planning.",
-    body: `In Delhi, SVITECH Foundation implements the Financial Inclusion project for underserved communities.
-
-Sessions cover digital banking, UPI transactions, cyber safety, budgeting, and savings—so participants can manage money and digital payments with greater confidence. Broader programme suites remain centred in Maharashtra.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      "Walk-in support for informal coastal communities, port labourers, and migrant families along the South Mumbai belt.",
+    body: `Backbay Center extends Samriddhi and TechShala access to port and coastal settlements, pairing documentation desks with Women Learning Center batches.`,
+    coverImage: media.mumbaiSkyline,
     sortOrder: 4,
   },
   {
-    slug: "gujarat-financial-inclusion",
-    title: "Financial Inclusion",
-    location: "Ahmedabad, Gujarat",
-    lat: 23.0225,
-    lng: 72.5714,
-    metricLabel: "Project",
-    metricValue: "Financial Inclusion",
+    slug: "maharashtra-corridor",
+    title: "Maharashtra industrial corridor",
+    location: "MMR · Thane · ports",
+    lat: 19.2183,
+    lng: 72.9781,
+    metricLabel: "Workforce",
+    metricValue: "445+ camps",
     summary:
-      "Financial Inclusion project sessions in Gujarat on digital payments, fraud prevention, budgeting, and safer everyday banking.",
-    body: `In Gujarat, SVITECH Foundation’s presence is through the Financial Inclusion project.
-
-Awareness sessions in community venues help participants understand digital banking, UPI, online fraud risks, and basic financial planning. Full multi-programme delivery is focused in Maharashtra.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      "Port logistics, construction, and municipal utility workers linked to E-Shram, PMSBY, Jan Dhan, and One Nation One Ration Card.",
+    body: `Across Mumbai Metropolitan Region and Thane industrial belts, multi-desk welfare camps and door-to-door enumeration close documentation gaps for unorganized labour.`,
+    coverImage: media.factoryCorridor,
     sortOrder: 5,
   },
   {
-    slug: "haryana-financial-inclusion",
-    title: "Financial Inclusion",
-    location: "Gurugram, Haryana",
-    lat: 28.4595,
-    lng: 77.0266,
-    metricLabel: "Project",
-    metricValue: "Financial Inclusion",
+    slug: "gujarat-corridor",
+    title: "Gujarat migrant corridor",
+    location: "Chemical & manufacturing belts",
+    lat: 23.0225,
+    lng: 72.5714,
+    metricLabel: "Inter-state",
+    metricValue: "Social security",
     summary:
-      "Financial Inclusion project outreach in Haryana—practical sessions on UPI, cyber safety, and household financial planning.",
-    body: `In Haryana, SVITECH Foundation delivers the Financial Inclusion project.
-
-Community sessions introduce digital payments, fraud prevention, budgeting, and savings habits for economically weaker and underserved groups. Other activity areas are delivered primarily in Maharashtra.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      "Migrant factory and plant labour enrolled into portable UAN/E-Shram benefits and workplace accident insurance.",
+    body: `SVITECH’s Gujarat corridor supports SEBI BRSR workforce welfare for contractor staff in chemical, manufacturing, and power-generation zones.`,
+    coverImage: media.factoryCorridor,
     sortOrder: 6,
   },
   {
-    slug: "uttar-pradesh-financial-inclusion",
-    title: "Financial Inclusion",
-    location: "Lucknow, Uttar Pradesh",
-    lat: 26.8467,
-    lng: 80.9462,
-    metricLabel: "Project",
-    metricValue: "Financial Inclusion",
+    slug: "delhi-ncr-corridor",
+    title: "Delhi NCR corridor",
+    location: "Construction & urban works",
+    lat: 28.6139,
+    lng: 77.209,
+    metricLabel: "Inter-state",
+    metricValue: "Financial inclusion",
     summary:
-      "Financial Inclusion project in Uttar Pradesh—digital banking literacy, UPI safety, and financial awareness for underserved communities.",
-    body: `In Uttar Pradesh, SVITECH Foundation implements the Financial Inclusion project.
-
-Participants learn digital banking basics, safe UPI use, cyber awareness, and everyday financial planning. The Foundation’s complete activity suite—health, education, women empowerment, road safety, and more—is concentrated in Maharashtra.`,
-    coverImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      "Daily-wage construction and transit labourers guided into bank accounts, accident cover, and ration portability.",
+    body: `In Delhi NCR infrastructure and industrial areas, facilitators open zero-balance accounts and register workers on national unorganized databases.`,
+    coverImage: media.welfareCamp,
     sortOrder: 7,
+  },
+  {
+    slug: "haryana-corridor",
+    title: "Haryana logistics corridor",
+    location: "Warehousing & industrial estates",
+    lat: 28.4595,
+    lng: 77.0266,
+    metricLabel: "Inter-state",
+    metricValue: "Labour welfare",
+    summary:
+      "Warehouse loaders and logistics contract staff linked to statutory entitlements and remittance-ready banking.",
+    body: `Haryana warehousing hubs receive the same Samriddhi pipeline—identification, verification, biometric registration, and DBT confirmation.`,
+    coverImage: media.factoryCorridor,
+    sortOrder: 8,
+  },
+  {
+    slug: "konkan-youth",
+    title: "Konkan youth sports & inclusion",
+    location: "Coastal Konkan · Karjat",
+    lat: 18.9102,
+    lng: 73.3233,
+    metricLabel: "Inclusion",
+    metricValue: "38 trekkers",
+    summary:
+      "Adaptive Bhivgad Fort trek for visually challenged youth and weekly cricket coaching clinics across Konkan.",
+    body: `Urja-Prayas affirmative inclusion pairs corporate volunteers with visually challenged trekkers and equips low-income cricket cohorts with kits and mentorship.`,
+    coverImage: media.inclusionTrek,
+    sortOrder: 9,
   },
 ];
