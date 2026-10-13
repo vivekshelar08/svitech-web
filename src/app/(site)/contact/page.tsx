@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { identity } from "@/lib/svitech";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -11,53 +13,68 @@ export default async function ContactPage() {
   const { contact, general } = await getSiteSettings();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
-      <div className="grid gap-14 md:grid-cols-[1fr_1.1fr] md:gap-20">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
+    <div>
+      <section className="border-b border-line bg-bg-deep text-white">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-16 md:px-8">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-bright">
             {contact.eyebrow}
           </p>
-          <h1 className="mt-3 font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">
             {contact.headline}
           </h1>
-          <p className="mt-6 leading-relaxed text-ink-muted">{contact.intro}</p>
-          <dl className="mt-10 space-y-5 text-sm">
-            <div>
-              <dt className="font-semibold text-ink">{contact.emailLabel}</dt>
-              <dd className="mt-1 text-ink-muted">
-                <a
-                  href={`mailto:${general.contactEmail}`}
-                  className="border-b border-brand/40 text-brand hover:border-brand"
-                >
-                  {general.contactEmail}
-                </a>
-              </dd>
-            </div>
-            {general.contactPhone ? (
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/72">
+            {contact.intro}
+          </p>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-20">
+        <div className="grid gap-14 md:grid-cols-[1fr_1.1fr] md:gap-20">
+          <div>
+            <dl className="space-y-5 text-sm">
+              <div>
+                <dt className="font-semibold text-ink">{contact.emailLabel}</dt>
+                <dd className="mt-1 space-y-1 text-ink-muted">
+                  {identity.emails.map((email) => (
+                    <a
+                      key={email}
+                      href={`mailto:${email}`}
+                      className="block border-b border-brand/40 text-brand hover:border-brand"
+                    >
+                      {email}
+                    </a>
+                  ))}
+                </dd>
+              </div>
               <div>
                 <dt className="font-semibold text-ink">{contact.phoneLabel}</dt>
                 <dd className="mt-1 text-ink-muted">
                   <a
-                    href={`tel:${general.contactPhone.replace(/\s/g, "")}`}
+                    href={identity.phoneHref}
                     className="border-b border-brand/40 text-brand hover:border-brand"
                   >
-                    {general.contactPhone}
+                    {identity.phone}
                   </a>
                 </dd>
               </div>
-            ) : null}
-            {general.officeAddress ? (
               <div>
                 <dt className="font-semibold text-ink">{contact.addressLabel}</dt>
-                <dd className="mt-1 text-ink-muted">{general.officeAddress}</dd>
+                <dd className="mt-1 text-ink-muted">{identity.address}</dd>
               </div>
-            ) : null}
-            <div>
-              <dt className="font-semibold text-ink">{contact.responseTimeLabel}</dt>
-              <dd className="mt-1 text-ink-muted">{general.responseTime}</dd>
+              <div>
+                <dt className="font-semibold text-ink">{contact.responseTimeLabel}</dt>
+                <dd className="mt-1 text-ink-muted">{general.responseTime}</dd>
+              </div>
+            </dl>
+            <div className="btn-row mt-8 flex flex-wrap gap-3">
+              <Link href="/partner" className="btn-primary">
+                CSR partnership
+              </Link>
+              <Link href="/donate" className="btn-secondary">
+                Donate
+              </Link>
             </div>
-          </dl>
-        </div>
+          </div>
 
           <ContactForm
             nameLabel={contact.formNameLabel}
@@ -68,6 +85,7 @@ export default async function ContactPage() {
             successMessage={contact.formSuccessMessage}
             topics={contact.formTopics}
           />
+        </div>
       </div>
     </div>
   );

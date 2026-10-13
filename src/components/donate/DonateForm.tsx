@@ -112,7 +112,7 @@ export function DonateForm({
           email: createJson.email,
           contact: createJson.phone,
         },
-        theme: { color: "#1b6ef5" },
+        theme: { color: "#C65A2E" },
         handler: async (response: RazorpaySuccess) => {
           const verifyRes = await fetch("/api/donate/verify", {
             method: "POST",
@@ -300,9 +300,20 @@ export function DonateForm({
 
           {!configured ? (
             <p className="text-sm text-ink-muted">
-              Prefer bank transfer or CSR giving?{" "}
-              <a href="/contact" className="font-semibold text-brand underline-offset-2 hover:underline">
-                Contact us
+              Online checkout is waiting on Razorpay keys. For bank transfer or
+              CSR giving,{" "}
+              <a
+                href="/partner"
+                className="font-semibold text-brand underline-offset-2 hover:underline"
+              >
+                partner with us
+              </a>{" "}
+              or{" "}
+              <a
+                href="mailto:info@svitech.in"
+                className="font-semibold text-brand underline-offset-2 hover:underline"
+              >
+                email info@svitech.in
               </a>
               .
             </p>

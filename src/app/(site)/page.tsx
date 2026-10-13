@@ -1,261 +1,206 @@
-import Image from "next/image";
 import Link from "next/link";
-import { AccreditationsStrip } from "@/components/AccreditationsStrip";
-import { CampaignCards } from "@/components/CampaignCards";
-import { DonateStrip } from "@/components/DonateStrip";
-import { HomeGallery } from "@/components/HomeGallery";
-import { HomeHero } from "@/components/HomeHero";
-import { HomeMarquee } from "@/components/HomeMarquee";
-import { HomePrograms } from "@/components/HomePrograms";
-import { HomeReach } from "@/components/HomeReach";
-import { HomeSpotlight } from "@/components/HomeSpotlight";
-import { HomeWayPillars } from "@/components/HomeWayPillars";
-import { ImpactStats } from "@/components/ImpactStats";
 import { Reveal } from "@/components/Reveal";
-import { TestimonialQuote } from "@/components/TestimonialQuote";
-import { getGalleryItems, getPosts, getPrograms } from "@/lib/content";
-import { getPublicSiteSettings } from "@/lib/public-site-gate";
+import {
+  eSevaCenters,
+  headlineMetrics,
+  identity,
+  programs,
+} from "@/lib/svitech";
 
 export const revalidate = 60;
 
-export default async function HomePage() {
-  const settings = await getPublicSiteSettings();
-  if (settings.maintenance?.enabled) return null;
-
-  const { home, general, navigation, about, cache } = settings;
-  const [programs, posts, gallery] = await Promise.all([
-    getPrograms(),
-    getPosts(),
-    getGalleryItems(),
-  ]);
-  const logoProps = {
-    logoUrl: general.logoUrl,
-    logoAlt: general.logoAlt,
-    logoAriaLabel: general.logoAriaLabel,
-  };
-  const wayPillars =
-    home.wayPillars?.length >= 4 ? home.wayPillars : about.values;
-
+export default function HomePage() {
   return (
     <>
-      <HomeHero home={home} logoProps={logoProps} />
-      <HomeMarquee items={home.marqueeItems || []} />
-
-      <HomeWayPillars
-        eyebrow={home.wayEyebrow}
-        headline={home.wayHeadline}
-        intro={home.wayIntro}
-        pillars={wayPillars}
-      />
-
-      <ImpactStats
-        eyebrow={home.impactStatsEyebrow}
-        headline={home.impactStatsHeadline}
-        stats={home.impactStats}
-      />
-
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
-        <Reveal>
-          <p className="site-eyebrow">{home.focusEyebrow}</p>
-          <h2 className="mt-3 max-w-2xl font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl md:text-4xl">
-            {home.focusHeadline}
-          </h2>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted md:text-lg">
-            {home.focusIntro}
+      <section className="relative overflow-hidden border-b border-line">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-70"
+          aria-hidden
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 55% at 85% 20%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 60%), radial-gradient(ellipse 50% 40% at 10% 80%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 55%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-6xl px-4 pb-16 pt-14 sm:px-5 sm:pb-20 sm:pt-20 md:px-8 md:pb-28 md:pt-24">
+          <p className="site-eyebrow motion-rise">{identity.legalName}</p>
+          <span className="ink-rule mt-4" aria-hidden />
+          <h1 className="motion-rise motion-rise-delay-1 mt-6 max-w-4xl font-display text-[2.35rem] font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
+            {identity.legalName}
+          </h1>
+          <p className="motion-rise motion-rise-delay-2 mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted sm:text-xl">
+            {identity.designation}. Connecting unorganized workers to public
+            welfare, bringing young women into the digital economy, and building
+            civic leadership that lasts.
           </p>
-        </Reveal>
-
-        <ul className="mt-12 grid gap-5 sm:mt-14 md:grid-cols-3 md:gap-6">
-          {home.focusAreas.map((item, index) => {
-            const inner = (
-              <>
-                {item.image ? (
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={item.image}
-                      alt=""
-                      fill
-                      className="object-cover transition duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-deep/55 via-transparent to-transparent" />
-                    <span className="absolute bottom-3 left-3 font-display text-xs font-bold tracking-wider text-white/90">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="px-6 pt-6">
-                    <span className="font-display text-xs font-bold tracking-wider text-brand/40">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                )}
-                <div className={item.image ? "p-5 sm:p-6" : "px-6 pb-6"}>
-                  <h3 className="font-display text-xl font-bold text-ink group-hover:text-brand">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">
-                    {item.copy}
-                  </p>
-                  <span
-                    className="mt-5 block h-0.5 w-8 bg-brand/30 transition-all duration-300 group-hover:w-14 group-hover:bg-brand"
-                    aria-hidden
-                  />
-                </div>
-              </>
-            );
-
-            return (
-              <li key={item.title}>
-                <Reveal delayMs={index * 80}>
-                  {item.href ? (
-                    <Link
-                      href={item.href}
-                      className="group block h-full overflow-hidden border border-line/60 bg-white/70 transition hover:border-brand/25 hover:bg-white hover:shadow-[0_18px_40px_-24px_rgba(11,20,36,0.35)]"
-                    >
-                      {inner}
-                    </Link>
-                  ) : (
-                    <div className="group h-full overflow-hidden border border-line/60 bg-white/70 transition hover:border-brand/25 hover:bg-white">
-                      {inner}
-                    </div>
-                  )}
-                </Reveal>
-              </li>
-            );
-          })}
-        </ul>
+          <div className="btn-row motion-rise motion-rise-delay-3 mt-9 flex flex-wrap gap-3">
+            <Link href="/partner" className="btn-primary">
+              Partner with us
+            </Link>
+            <Link href="/donate" className="btn-secondary">
+              Donate
+            </Link>
+            <Link href="/work" className="btn-secondary">
+              See our work
+            </Link>
+          </div>
+          <p className="mt-8 max-w-xl text-sm text-ink-muted">
+            {identity.registrations.join(" · ")} · {identity.accreditation}
+          </p>
+        </div>
       </section>
 
-      <Reveal>
-        <HomePrograms
-          eyebrow={home.programsEyebrow}
-          headline={home.programsHeadline}
-          intro={home.programsIntro}
-          programs={programs}
-          ctaLabel={home.programsCtaLabel}
-          ctaHref={home.programsCtaHref}
-          itemCtaLabel={home.programsItemCtaLabel}
-        />
-      </Reveal>
-
-      <HomeReach
-        eyebrow={home.reachEyebrow}
-        headline={home.reachHeadline}
-        intro={home.reachIntro}
-        states={home.reachStates || []}
-        ctaLabel={home.reachCtaLabel}
-        ctaHref={home.reachCtaHref}
-      />
-
-      {home.missionBandEnabled && (
-        <section className="border-y border-line bg-surface">
-          <div className="mx-auto grid max-w-6xl gap-0 md:grid-cols-2">
-            <Reveal className="border-b border-line px-4 py-12 sm:px-5 sm:py-16 md:border-b-0 md:border-r md:px-8 md:py-20">
-              <p className="site-eyebrow">{home.missionEyebrow}</p>
-              <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
-                {about.missionTitle}
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-ink-muted md:text-lg">
-                {about.missionCopy}
+      <section className="border-b border-line bg-surface/70">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-5 md:grid-cols-[1.1fr_0.9fr] md:gap-12 md:px-8 md:py-16">
+          <Reveal>
+            <p className="site-eyebrow">Director’s perspective</p>
+            <blockquote className="mt-5 font-display text-2xl font-medium leading-snug text-ink sm:text-3xl">
+              “{identity.directorQuote}”
+            </blockquote>
+            <footer className="mt-6 text-sm font-semibold text-ink">
+              — {identity.director}, {identity.directorTitle}
+            </footer>
+          </Reveal>
+          <Reveal>
+            <div className="border border-line bg-background/80 p-6 sm:p-8">
+              <p className="site-eyebrow">Executive summary</p>
+              <p className="mt-4 text-base leading-relaxed text-ink-muted">
+                {identity.executiveSummary}
               </p>
-            </Reveal>
-            <Reveal delayMs={100} className="px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-20">
-              <p className="site-eyebrow">{home.visionEyebrow}</p>
-              <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-ink md:text-3xl">
-                {about.howTitle}
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-ink-muted md:text-lg">
-                {about.howCopy}
+              <p className="mt-4 text-base leading-relaxed text-ink-muted">
+                {identity.coverage}
               </p>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
-      <Reveal>
-        <CampaignCards
-          eyebrow={home.campaignsEyebrow}
-          headline={home.campaignsHeadline}
-          campaigns={home.campaigns}
-        />
-      </Reveal>
-
-      <Reveal>
-        <HomeSpotlight
-          eyebrow={home.spotlightEyebrow}
-          headline={home.spotlightHeadline}
-          posts={posts}
-          viewAllLabel={home.spotlightViewAllLabel}
-          viewAllHref={home.spotlightViewAllHref}
-        />
-      </Reveal>
-
-      <HomeGallery
-        eyebrow={home.galleryEyebrow}
-        headline={home.galleryHeadline}
-        intro={home.galleryIntro}
-        items={gallery}
-        ctaLabel={home.galleryCtaLabel}
-        ctaHref={home.galleryCtaHref}
-      />
-
-      <Reveal>
-        <TestimonialQuote eyebrow={home.quoteEyebrow} quote={home.quote} />
-      </Reveal>
-
-      <Reveal>
-        <AccreditationsStrip
-          accreditationsEyebrow={home.accreditationsEyebrow}
-          accreditationsHeadline={home.accreditationsHeadline}
-          accreditations={home.accreditations}
-          partnersEyebrow={home.partnersEyebrow}
-          partners={home.partners}
-        />
-      </Reveal>
-
-      <Reveal>
-        <DonateStrip
-          eyebrow={home.donateStripEyebrow}
-          headline={home.donateStripHeadline}
-          copy={home.donateStripCopy}
-          amounts={home.donateStripAmounts}
-          donateHref={navigation.donateHref}
-          donateLabel={home.donateStripLabel}
-        />
-      </Reveal>
-
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8 md:py-28">
-        <Reveal>
-          <div className="relative max-w-2xl overflow-hidden border border-line/70 bg-white/60 p-8 md:p-10">
-            <div
-              className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-brand to-accent"
-              aria-hidden
-            />
-            <h2 className="font-display text-3xl font-bold tracking-tight text-ink md:text-4xl">
-              {home.ctaHeadline}
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-ink-muted md:text-lg">
-              {home.ctaCopy}
-            </p>
-            <div className="mt-8 btn-row flex flex-wrap gap-3 sm:flex-row">
-              {home.ctaButtons.map((btn, i) => (
-                <Link
-                  key={btn.href}
-                  href={btn.href}
-                  className={`${i === 0 ? "btn-primary" : "btn-secondary"} sm:w-auto`}
-                >
-                  {btn.label}
-                </Link>
-              ))}
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </section>
 
-      {cache.mode === "cached" ? (
-        <span className="sr-only" data-cache-mode="cached" data-revalidate={cache.revalidateSeconds} />
-      ) : null}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
+          <Reveal>
+            <p className="site-eyebrow">Verified cumulative impact</p>
+            <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Field numbers, not slogans
+            </h2>
+          </Reveal>
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {headlineMetrics.map((metric, index) => (
+              <li
+                key={metric.label}
+                className={`motion-rise border border-line bg-surface/90 p-5 sm:p-6 motion-rise-delay-${Math.min(index, 3)}`}
+              >
+                <p className="stat-value font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                  {metric.value}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-ink">{metric.label}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+                  {metric.note}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8">
+            <Link href="/impact" className="link-underline">
+              Open the impact dashboard →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
+          <Reveal>
+            <p className="site-eyebrow">Practice portfolios</p>
+            <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Five practices. One last-mile system.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted">
+              Each vertical is designed for Schedule VII alignment, audited
+              delivery, and permanent community assets.
+            </p>
+          </Reveal>
+          <ul className="mt-12 grid gap-6 md:grid-cols-2">
+            {programs.map((program) => (
+              <li key={program.slug}>
+                <Link
+                  href={`/work/${program.slug}`}
+                  className="group flex h-full flex-col border border-line bg-surface/80 p-6 transition hover:border-brand/40 hover:bg-surface"
+                >
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">
+                    {program.shortName}
+                  </p>
+                  <h3 className="mt-3 font-display text-2xl font-semibold text-ink group-hover:text-brand">
+                    {program.name}
+                  </h3>
+                  <p className="mt-2 text-sm font-medium text-ink">{program.focus}</p>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-muted">
+                    {program.highlight}
+                  </p>
+                  <span className="mt-5 text-sm font-semibold text-brand">
+                    Explore practice →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-bg-deep text-white">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
+          <Reveal>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-bright">
+              Permanent infrastructure
+            </p>
+            <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              Four E-Seva Kendras across Mumbai
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/70">
+              Walk-in Common Service Centers keep welfare access available beyond
+              camp days—in Asalpha, Backbay, Vashinaka, and Vishnu Nagar.
+            </p>
+          </Reveal>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {eSevaCenters.map((center) => (
+              <li
+                key={center.name}
+                className="border border-white/15 bg-white/5 p-5 backdrop-blur-sm"
+              >
+                <h3 className="font-display text-xl font-semibold">{center.name}</h3>
+                <p className="mt-2 text-sm text-white/75">{center.catchment}</p>
+                <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-brand-bright">
+                  {center.status}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-5 sm:py-24 md:px-8">
+          <Reveal>
+            <p className="site-eyebrow">Take part</p>
+            <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              Pair capital with verifiable field systems
+            </h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted">
+              Corporate partners fund turnkey Schedule VII packages. Individuals
+              can give under 80G. Both paths keep last-mile delivery auditable.
+            </p>
+            <div className="btn-row mt-8 flex flex-wrap gap-3">
+              <Link href="/partner" className="btn-primary">
+                CSR partnership menu
+              </Link>
+              <Link href="/donate" className="btn-secondary">
+                Individual donate
+              </Link>
+              <Link href="/contact" className="btn-secondary">
+                Contact the foundation
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

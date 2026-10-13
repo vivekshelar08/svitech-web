@@ -11,18 +11,24 @@ type HeaderProps = {
   navigation: SiteSettings["navigation"];
 };
 
-const PROGRAMS_HREF = "/programs";
+const PROGRAMS_HREF = "/work";
 
 const fallbackProgramsMenu: NavLink[] = [
-  { label: "Projects", href: "/programs" },
-  { label: "Foundation profile", href: "/foundation" },
-  { label: "Activities", href: "/news" },
-  { label: "Upcoming Events", href: "/events" },
+  { label: "All practices", href: "/work" },
+  { label: "Samriddhi", href: "/work/samriddhi" },
+  { label: "TechShala", href: "/work/techshala" },
+  { label: "Swasthya-Setu", href: "/work/swasthya-setu" },
+  { label: "Lok-Adhikar", href: "/work/lok-adhikar" },
+  { label: "Urja-Prayas", href: "/work/urja-prayas" },
 ];
 
 function isProgramsLink(href: string) {
   const path = href.split("?")[0]?.replace(/\/$/, "") || "";
-  return path === PROGRAMS_HREF || path === "/programmes";
+  return (
+    path === PROGRAMS_HREF ||
+    path === "/programmes" ||
+    path === "/programs"
+  );
 }
 
 function pathMatches(pathname: string, href: string) {

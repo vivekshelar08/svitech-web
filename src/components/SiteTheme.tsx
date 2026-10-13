@@ -14,19 +14,26 @@ export function SiteTheme({ theme }: { theme: SiteSettings["theme"] }) {
   --accent: ${theme.accent};
   --accent-soft: ${theme.accentSoft};
   --surface: ${theme.surface};
-  --line: color-mix(in srgb, ${theme.ink} 12%, transparent);
+  --grove: ${theme.accent};
+  --line: color-mix(in srgb, ${theme.ink} 14%, transparent);
   --background: var(--bg);
   --foreground: var(--ink);
 }
 body {
+  background-color: ${theme.bg};
   background-image:
-    radial-gradient(ellipse 70% 45% at 8% -8%, color-mix(in srgb, ${theme.brandBright} 16%, transparent), transparent 55%),
-    radial-gradient(ellipse 50% 35% at 96% 4%, color-mix(in srgb, ${theme.accent} 12%, transparent), transparent 48%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, color-mix(in srgb, ${theme.brand} 7%, transparent), transparent 60%),
-    linear-gradient(180deg, ${theme.bg} 0%, color-mix(in srgb, ${theme.bg} 88%, ${theme.ink}) 100%);
+    radial-gradient(ellipse 80% 50% at 0% 0%, color-mix(in srgb, ${theme.accent} 10%, transparent), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 8%, color-mix(in srgb, ${theme.brand} 12%, transparent), transparent 50%),
+    linear-gradient(180deg, ${theme.bg} 0%, color-mix(in srgb, ${theme.bg} 92%, ${theme.ink}) 100%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      color-mix(in srgb, ${theme.ink} 2.5%, transparent) 24px
+    );
 }
 ::selection {
-  background: color-mix(in srgb, ${theme.brand} 22%, transparent);
+  background: color-mix(in srgb, ${theme.brand} 28%, transparent);
   color: var(--ink);
 }`,
       }}

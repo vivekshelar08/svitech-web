@@ -1,102 +1,243 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { getSiteSettings } from "@/lib/site-settings";
+import { Reveal } from "@/components/Reveal";
+import {
+  governanceStandards,
+  growthTimeline,
+  identity,
+  leadership,
+  policyAlignments,
+  theoryOfChange,
+  values,
+} from "@/lib/svitech";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { about } = await getSiteSettings();
-  return { title: about.seoTitle, description: about.seoDescription };
-}
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Vision, mission, leadership, theory of change, and governance of SVITECH Foundation — ISO 9001:2015, 12A, 80G, CSR-1.",
+};
 
-export default async function AboutPage() {
-  const { about } = await getSiteSettings();
-
+export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5 sm:py-16 md:px-8 md:py-24">
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-        {about.eyebrow}
-      </p>
-      <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink md:text-5xl">
-        {about.headline}
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">
-        {about.intro}
-      </p>
-
-      <div className="relative mt-14 aspect-[21/9] overflow-hidden">
-        <Image
-          src={about.heroImage}
-          alt={about.heroImageAlt}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
-      </div>
-
-      <div className="mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
-        <div>
-          <h2 className="font-display text-2xl font-bold text-ink">{about.missionTitle}</h2>
-          <p className="mt-4 leading-relaxed text-ink-muted">{about.missionCopy}</p>
+    <div>
+      <section className="border-b border-line bg-bg-deep text-white">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-bright">
+            About
+          </p>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+            {identity.legalName}
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg text-white/78">{identity.fullForm}</p>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/65">
+            {identity.designation}. Led by {identity.director}, {identity.directorTitle}.
+          </p>
         </div>
-        <div>
-          <h2 className="font-display text-2xl font-bold text-ink">{about.howTitle}</h2>
-          <p className="mt-4 leading-relaxed text-ink-muted">{about.howCopy}</p>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-5 md:grid-cols-2 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Vision</p>
+            <p className="mt-4 font-display text-2xl font-medium leading-snug text-ink">
+              {identity.vision}
+            </p>
+          </Reveal>
+          <Reveal>
+            <p className="site-eyebrow">Mission</p>
+            <p className="mt-4 font-display text-2xl font-medium leading-snug text-ink">
+              {identity.mission}
+            </p>
+          </Reveal>
         </div>
-      </div>
+      </section>
 
-      <div className="mt-16 border-t border-line pt-12">
-        <h2 className="font-display text-2xl font-bold text-ink">{about.valuesTitle}</h2>
-        <ul className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {about.values.map((value) => (
-            <li key={value.title}>
-              <h3 className="font-display text-lg font-bold text-ink">{value.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-muted">{value.copy}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <section className="border-b border-line bg-surface/70">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Governing board & executive leadership</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Multidisciplinary board. Grassroots ties.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base text-ink-muted">
+              SVITECH Foundation operates under a governing board combining
+              technical proficiency, operational rigor, and deep community trust.
+            </p>
+          </Reveal>
+          <ul className="mt-10 grid gap-5 md:grid-cols-2">
+            {leadership.map((person) => (
+              <li key={person.name} className="border border-line bg-background p-6">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">
+                  {person.role}
+                </p>
+                <h3 className="mt-2 font-display text-xl font-semibold text-ink">
+                  {person.name}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                  {person.background}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-ink">
+                  {person.responsibilities}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-      <div className="mt-16 border-t border-line pt-12">
-        <h2 className="font-display text-2xl font-bold text-ink">{about.governanceTitle}</h2>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          {about.governanceCopy}
-        </p>
-        <Link
-          href={about.governanceLinkHref || "/reports"}
-          className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
-        >
-          {about.governanceLinkLabel}
-        </Link>
-      </div>
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Strategic growth timeline</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              A decade of grassroots delivery
+            </h2>
+          </Reveal>
+          <ol className="mt-10 space-y-4">
+            {growthTimeline.map((item) => (
+              <li
+                key={item.year}
+                className="grid gap-2 border border-line bg-surface/80 p-5 sm:grid-cols-[7rem_1fr] sm:gap-6 sm:p-6"
+              >
+                <p className="text-sm font-bold uppercase tracking-wider text-accent">
+                  {item.year}
+                </p>
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-ink">
+                    {item.phase}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                    {item.milestone}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-      <div className="mt-16 border-t border-line pt-12">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand">
-          From the record
-        </p>
-        <h2 className="mt-3 max-w-2xl font-display text-2xl font-bold text-ink">
-          The full profile: skills, camps, and the numbers behind them.
-        </h2>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          The 2024 annual report, the 2024–25 foundation profile, and the Tata Power
-          partnership brief are written up as one public page — journey, curriculum,
-          Adhikar outcomes, learner pathways, and the global evidence those programmes
-          sit inside. Figures are kept with the year they belong to.
-        </p>
-        <Link
-          href="/foundation"
-          className="mt-6 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
-        >
-          Read the foundation profile
-        </Link>
-      </div>
+      <section className="border-b border-line bg-surface/70">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Institutional values</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              What every delivery system is held to
+            </h2>
+          </Reveal>
+          <ul className="mt-10 grid gap-5 md:grid-cols-2">
+            {values.map((value) => (
+              <li key={value.title} className="border border-line bg-background p-6">
+                <h3 className="font-display text-xl font-semibold text-ink">
+                  {value.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">{value.copy}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-      <Link
-        href={about.programsLinkHref || "/programs"}
-        className="mt-14 inline-block border-b-2 border-brand pb-1 text-sm font-semibold text-brand"
-      >
-        {about.programsLinkLabel}
-      </Link>
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Theory of change</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Three-stage implementation framework
+            </h2>
+          </Reveal>
+          <ol className="mt-10 space-y-6">
+            {theoryOfChange.map((stage) => (
+              <li key={stage.stage} className="border border-line bg-surface/80 p-6 sm:p-8">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand">
+                  {stage.stage}
+                </p>
+                <h3 className="mt-2 font-display text-2xl font-semibold text-ink">
+                  {stage.title}
+                </h3>
+                <ul className="mt-4 space-y-2">
+                  {stage.points.map((point) => (
+                    <li key={point} className="flex gap-3 text-sm leading-relaxed text-ink-muted">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-accent" aria-hidden />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-surface/60">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Governance</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Auditability & financial due diligence
+            </h2>
+            <p className="mt-4 max-w-2xl text-base text-ink-muted">
+              Standard operating procedures designed for corporate board reviews
+              and statutory audits under the Indian Companies Act, 2013.
+            </p>
+          </Reveal>
+          <ul className="mt-8 grid gap-4 md:grid-cols-2">
+            {governanceStandards.map((item) => (
+              <li key={item.title} className="border border-line bg-background p-5">
+                <h3 className="font-semibold text-ink">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{item.copy}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 border border-line bg-background p-5">
+            <p className="text-sm font-semibold text-ink">Statutory registrations</p>
+            <p className="mt-2 text-sm text-ink-muted">
+              {identity.registrations.join(" · ")} · {identity.accreditation}
+            </p>
+            <p className="mt-4 text-sm text-ink-muted">
+              Leadership: {identity.director}, {identity.directorTitle}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Policy alignment</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Schedule VII & Sustainable Development Goals
+            </h2>
+          </Reveal>
+          <div className="mt-8 overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-line text-xs uppercase tracking-wider text-ink-muted">
+                  <th className="py-3 pr-4 font-semibold">Framework</th>
+                  <th className="py-3 pr-4 font-semibold">Domain</th>
+                  <th className="py-3 font-semibold">SDGs</th>
+                </tr>
+              </thead>
+              <tbody>
+                {policyAlignments.map((row) => (
+                  <tr key={row.framework} className="border-b border-line/70 align-top">
+                    <td className="py-4 pr-4 font-medium text-ink">{row.framework}</td>
+                    <td className="py-4 pr-4 text-ink-muted">{row.domain}</td>
+                    <td className="py-4 text-accent">{row.sdgs.join(" · ")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="btn-row mt-10 flex flex-wrap gap-3">
+            <Link href="/partner" className="btn-primary">
+              Partner with us
+            </Link>
+            <Link href="/contact" className="btn-secondary">
+              Contact
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
