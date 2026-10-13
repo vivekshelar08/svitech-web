@@ -53,7 +53,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
             href="/work"
             className="text-xs font-bold uppercase tracking-[0.16em] text-brand-bright hover:text-white"
           >
-            ← Our Work
+            ← Our Intervention
           </Link>
           <h1 className="mt-5 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">
             {program.name}

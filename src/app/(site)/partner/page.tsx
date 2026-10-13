@@ -16,10 +16,10 @@ export default function PartnerPage() {
       <section className="border-b border-line bg-bg-deep text-white">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-bright">
-            Partner
+            Partners
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-            Connect CSR capital to audited implementation
+            Partnership opportunities
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/72 sm:text-lg">
             Ready-to-fund Schedule VII packages with measurable outputs—from

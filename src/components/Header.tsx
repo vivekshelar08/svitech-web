@@ -285,7 +285,10 @@ export function Header({ general, navigation }: HeaderProps) {
         </nav>
 
         <div className="ml-auto hidden shrink-0 items-center md:flex">
-          <Link href={nav.donateHref} className="btn-primary !min-h-10 !px-4 !py-2 text-sm lg:!px-5 lg:!py-2.5">
+          <Link
+            href={nav.donateHref}
+            className="btn-primary !min-h-10 !px-4 !py-2 text-xs font-bold uppercase tracking-[0.12em] lg:!px-5 lg:!py-2.5"
+          >
             {nav.donateLabel}
           </Link>
         </div>

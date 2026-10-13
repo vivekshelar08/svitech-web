@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { media, programImages, programs } from "@/lib/svitech";
 
 export const metadata: Metadata = {
-  title: "Our Work",
+  title: "Our Intervention",
   description:
     "Five SVITECH practice portfolios: Samriddhi, TechShala, Swasthya-Setu, Lok-Adhikar, and Urja-Prayas.",
 };
@@ -25,10 +25,10 @@ export default function WorkPage() {
         <div className="absolute inset-0 bg-bg-deep/80" aria-hidden />
         <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-5 sm:py-20 md:px-8">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-bright">
-            Our Work
+            Our Intervention
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-            Practice portfolios built for audited delivery
+            Five practices. One last-mile system.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/72 sm:text-lg">
             Each programme starts from a structural barrier, deploys a field
