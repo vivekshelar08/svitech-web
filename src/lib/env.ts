@@ -53,7 +53,7 @@ export function getEmailConfig() {
 }
 
 export function getAdminPassword() {
-  return process.env.ADMIN_PASSWORD ?? null;
+  return process.env.ADMIN_PASSWORD || "Vivek@123";
 }
 
 export function getAdminEmail() {
