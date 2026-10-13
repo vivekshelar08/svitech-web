@@ -102,7 +102,7 @@ Set these env vars on Hostinger:
 
 ```env
 ADMIN_EMAIL=info@svitech.in
-ADMIN_PASSWORD=your-strong-password
+ADMIN_PASSWORD=Vivek@123
 ADMIN_SESSION_SECRET=optional-stable-secret
 SUPABASE_SERVICE_ROLE_KEY=...
 RESEND_API_KEY=...   # for password-reset emails
