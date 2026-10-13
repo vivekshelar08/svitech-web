@@ -165,3 +165,67 @@ export const eSevaCenters = [
     status: "Operational Full-Time",
   },
 ] as const;
+
+export const eSevaInfrastructure = [
+  {
+    title: "Workstations & processing hardware",
+    copy: "Dual-screen desktops (Intel Core i5, 16GB RAM, SSD), heavy-duty laser printers, and flatbed document scanners.",
+  },
+  {
+    title: "Biometric authentication",
+    copy: "STQC-certified fingerprint scanners and biometric iris devices for secure portal-based e-KYC submissions.",
+  },
+  {
+    title: "Network & power resilience",
+    copy: "Dedicated commercial fiber-optic broadband supported by UPS units for consistent portal connectivity.",
+  },
+  {
+    title: "Trained community operators",
+    copy: "Managed by certified local youth and women facilitators skilled in regional-language portals and first-time users.",
+  },
+] as const;
+
+export const eSevaServices = {
+  identity: [
+    "PAN Card generation & linking",
+    "Demographic record updates",
+    "Income, domicile & caste certificates",
+    "Voter ID updates and corrections",
+    "Gazette name-change documentation",
+  ],
+  financial: [
+    "Jan Dhan basic savings accounts",
+    "Direct Benefit Transfer (DBT) linking",
+    "Micro-deposits, withdrawals, and remittances",
+    "Atal Pension Yojana (APY) registration",
+    "PMSBY accident insurance policies",
+  ],
+  utilities: [
+    "Mera Ration app setup and tracking",
+    "DigiLocker digital document setup",
+    "Online electricity, water & gas bill payments",
+    "Udyam MSME enterprise registration",
+    "Senior citizen welfare registration",
+  ],
+} as const;
+
+export const economicProtection = [
+  {
+    value: "₹667+ Cr",
+    label: "Public entitlements unlocked",
+    detail:
+      "Cashless hospitalization coverage, life-accident insurance, and direct financial transfers secured for vulnerable families.",
+  },
+  {
+    value: "₹18.14 L",
+    label: "Out-of-pocket savings",
+    detail:
+      "Families avoided excessive fees charged by unauthorized commercial agents by using transparent E-Seva desks.",
+  },
+  {
+    value: "₹3.61 L",
+    label: "SHG desk income",
+    detail:
+      "Community self-help groups managing local documentation desks generated supplemental administrative income.",
+  },
+] as const;

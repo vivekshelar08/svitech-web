@@ -43,7 +43,7 @@ export const programs: PracticeProgram[] = [
         title: "Service delivery pipeline",
         bullets: [
           "Step 1 — Identification: door-to-door surveys find eligible households and document gaps",
-          "Step 2 — Verification: cross-referencing identity proofs and organizing records",
+          "Step 2 — Verification: cross-referencing identity proofs, rectifying errors, and organizing records",
           "Step 3 — Registration: biometric e-KYC via official state and central portals",
           "Step 4 — Confirmation: delivering verified cards and tracking DBT",
         ],
@@ -54,53 +54,107 @@ export const programs: PracticeProgram[] = [
           {
             label: "Ayushman Bharat (PMJAY)",
             value: "18,314 families & individuals",
-            detail: "Up to ₹5 lakh cashless hospitalization coverage per household",
+            detail:
+              "Up to ₹5 lakh cashless hospitalization · National Health Authority (MoHFW)",
           },
           {
             label: "ABHA Digital Health Accounts",
             value: "6,460 individuals",
-            detail: "Longitudinal medical history across empaneled hospitals",
+            detail:
+              "Longitudinal medical history across empaneled hospitals · Ayushman Bharat Digital Mission",
           },
           {
             label: "Mazi Ladki Bahin Yojana",
             value: "3,071 women & girls",
-            detail: "Direct monthly transfers for nutrition, education, and self-reliance",
+            detail:
+              "Direct monthly transfers for nutrition, education, and self-reliance · WCD Dept. (GoM)",
           },
           {
             label: "Maharashtra Labour Welfare Board",
             value: "4,590 construction workers",
-            detail: "Cash assistance, education stipends, and family welfare allowances",
+            detail:
+              "Cash assistance, education stipends, and family welfare allowances · Building & Construction Labor Board",
           },
           {
             label: "E-Shram National Database",
             value: "2,900 laborers",
-            detail: "UAN, accidental death cover, and social security integration",
+            detail:
+              "UAN, accidental death cover, and social security integration · Ministry of Labour & Employment",
           },
           {
             label: "PMSBY Accident Insurance",
             value: "1,844 beneficiaries",
-            detail: "₹2 lakh accidental death and disability coverage",
+            detail:
+              "₹2 lakh accidental death and disability coverage · Department of Financial Services (MoF)",
           },
           {
             label: "PAN Cards Issued",
             value: "1,200+ citizens",
-            detail: "Foundational tax ID enabling bank accounts and verified transactions",
+            detail:
+              "Foundational tax ID enabling bank accounts and verified transactions · Income Tax Department",
           },
           {
             label: "Civil Certifications",
             value: "380+ households",
-            detail: "Income and domicile certificates for education and subsidies",
+            detail:
+              "Income and domicile certificates for education and subsidies · Revenue & Tahsildar Offices (GoM)",
           },
           {
             label: "Udyam MSME Formalization",
             value: "108 women entrepreneurs",
-            detail: "Access to formal credit and government grants",
+            detail:
+              "Access to formal credit and government grants · Ministry of MSME",
+          },
+        ],
+      },
+      {
+        title: "Economic value & community sustainability",
+        rows: [
+          {
+            label: "Public entitlements unlocked",
+            value: "₹667+ Crores",
+            detail:
+              "Cashless hospitalization, accident insurance, and direct financial transfers",
+          },
+          {
+            label: "Out-of-pocket savings at E-Seva desks",
+            value: "₹18.14 Lakhs",
+            detail:
+              "Families avoided unauthorized commercial agent fees through transparent facilitation",
+          },
+          {
+            label: "SHG documentation desk income",
+            value: "₹3.61 Lakhs",
+            detail:
+              "Supplemental administrative income proving community-led service delivery can sustain itself",
           },
         ],
       },
       {
         title: "Multi-state migrant labor corridors",
-        copy: "UAN and E-Shram integration, zero-balance Jan Dhan accounts, PMSBY enrollment, and One Nation One Ration Card guidance across Maharashtra, Gujarat, Delhi NCR, and Haryana industrial belts—supporting SEBI BRSR Principles 3 and 5 for corporate partners.",
+        copy: "UAN and E-Shram integration, zero-balance Jan Dhan accounts, PMSBY enrollment, and One Nation One Ration Card guidance—supporting SEBI BRSR Principles 3 and 5 for corporate partners.",
+        rows: [
+          {
+            label: "Maharashtra Corridor",
+            value: "Mumbai, MMR, Thane, ports, thermal facilities",
+            detail: "Port logistics, construction personnel, municipal utility workers",
+          },
+          {
+            label: "Gujarat Corridor",
+            value: "Chemical, manufacturing, power generation belts",
+            detail: "Migrant factory personnel, assembly workers, industrial plant labor",
+          },
+          {
+            label: "Delhi (NCR) Corridor",
+            value: "Urban infrastructure & industrial areas",
+            detail: "Daily-wage construction, transit laborers, unorganized service workers",
+          },
+          {
+            label: "Haryana Corridor",
+            value: "Warehousing hubs, industrial estates, logistics",
+            detail: "Warehouse loaders, logistics contract staff, supply-chain workforces",
+          },
+        ],
       },
     ],
   },
@@ -123,6 +177,15 @@ export const programs: PracticeProgram[] = [
     ],
     sections: [
       {
+        title: "Inclusive social representation",
+        copy: "Beneficiary cohorts actively represent marginalized demographics across dedicated community computer centers, municipal schools, and neighborhood learning hubs.",
+        rows: [
+          { label: "Scheduled Caste", value: "37%", detail: "Structured digital courses" },
+          { label: "Other Backward Classes", value: "13%", detail: "Structured digital courses" },
+          { label: "Open / EWS categories", value: "50%", detail: "Structured digital courses" },
+        ],
+      },
+      {
         title: "Foundational curriculum (Tier 1: DLC)",
         bullets: [
           "Computer hardware & systems — OS navigation and typing independence",
@@ -142,8 +205,16 @@ export const programs: PracticeProgram[] = [
         ],
       },
       {
+        title: "Modern lab infrastructure",
+        bullets: [
+          "Workstations: Intel Core i5, 16GB DDR4 RAM, 512GB SSD, dedicated graphics, 22-inch LED displays",
+          "Software & peripherals: licensed OS and office suites, LAN networking, multi-function laser printers, UPS backups",
+          "Classroom amenities: air-conditioned, well-lit spaces with whiteboards, ergonomic seating, and instructor projection",
+        ],
+      },
+      {
         title: "Women Learning Centers & workplace English",
-        copy: "Centers in Ghatkopar, Backbay, and Kandivali reached 2,290 beneficiaries—adolescent girls, SHG women, and community residents—with applied mobile literacy and Likho-Padho-Bolo English modules for job readiness.",
+        copy: "Centers in Ghatkopar, Backbay, and Kandivali reached 2,290 beneficiaries—adolescent girls, SHG women, and community residents—with applied mobile literacy (UPI security, voice typing, school portals) and Likho-Padho-Bolo English modules for job readiness.",
         rows: [
           { label: "Adolescent girls & out-of-school youth", value: "980 (42.8%)" },
           { label: "Self-help group women", value: "680 (29.7%)" },
@@ -152,8 +223,28 @@ export const programs: PracticeProgram[] = [
         ],
       },
       {
+        title: "Likho, Padho, Bolo — workplace English",
+        rows: [
+          {
+            label: "Conversational English (Bolo)",
+            value: "Greetings, introductions, phone etiquette",
+            detail: "Confidence for customer service, retail desks, and basic interviews",
+          },
+          {
+            label: "Functional Reading (Padho)",
+            value: "Notices, labels, safety warnings, job postings",
+            detail: "Ability to interpret operational instructions and delivery manifests",
+          },
+          {
+            label: "Written Communication (Likho)",
+            value: "Applications, work emails, shift logs",
+            detail: "Independence in administrative reporting and digital applications",
+          },
+        ],
+      },
+      {
         title: "Asset stewardship — the Vashinaka model",
-        copy: "Competitive vendor procurement, supervised incubation of training batches, then formal handover of 10 Dell desktop setups, networking, and air-conditioning to Adhikaar Mahila Bachat Gat under signed deeds—so local women manage operations and session fees sustain utilities.",
+        copy: "Phase 1 competitive L1/L2/L3 procurement; Phase 2 supervised incubation of training batches; Phase 3 formal handover of 10 Dell desktop setups, networking, and air-conditioning to Adhikaar Mahila Bachat Gat under signed deeds—so local women manage operations and session fees sustain utilities.",
       },
     ],
   },
@@ -206,11 +297,34 @@ export const programs: PracticeProgram[] = [
           "4,200+ women and girls sensitized on hygiene and infection prevention",
           "18,000+ dermatologically tested sanitary napkin packs distributed",
           "35+ school and community drives to reduce stigma and absenteeism",
+          "Hygienic disposal education to protect drainage and sanitation workers",
         ],
       },
       {
         title: "Type B ambulance outfitting",
-        copy: "Transparent L1/L2/L3 procurement delivered multipara monitors, medical suction, 10L oxygen systems, and trauma kits for emergency response serving informal settlements and industrial corridors.",
+        copy: "Transparent L1/L2/L3 procurement delivered life-support equipment for emergency response serving informal settlements and industrial corridors.",
+        rows: [
+          {
+            label: "Multipara patient monitor",
+            value: "ECG, SpO2, NIBP, pulse",
+            detail: "Continuous vital sign monitoring during patient transport",
+          },
+          {
+            label: "Medical suction apparatus",
+            value: "High-vacuum electric suction",
+            detail: "Airway clearance during acute emergencies",
+          },
+          {
+            label: "10-liter medical oxygen system",
+            value: "Cylinder, regulator, flowmeter, masks",
+            detail: "Immediate oxygen delivery for respiratory distress",
+          },
+          {
+            label: "Trauma & first-aid response kit",
+            value: "Splints, dressings, resuscitator bag",
+            detail: "On-road patient stabilization and acute trauma care",
+          },
+        ],
       },
     ],
   },
@@ -238,7 +352,8 @@ export const programs: PracticeProgram[] = [
           {
             label: "50 Community Vigilance Groups",
             value: "250 active members",
-            detail: "Audits of fair-price shops, sanitation, and public utilities",
+            detail:
+              "Mukund Nagar, Shivaji Nagar, Jijamata Nagar, Mahul MHADA, Vishnu Nagar — audits of fair-price shops, sanitation, and utilities",
           },
           {
             label: "100+ Certified Adhikaar Mitras",
@@ -253,19 +368,72 @@ export const programs: PracticeProgram[] = [
         ],
       },
       {
+        title: "Food security & PDS ration shop audits",
+        bullets: [
+          "Field survey of 40+ fair-price shops: operating hours, entitlement charts, and e-PoS weigh-scale calibration",
+          "Corrective coordination with District Rationing Controllers resolved under-distribution and overcharging across 18+ shops",
+          "Secured food entitlements for over 12,500 families under the National Food Security Act",
+          "Guided ration cardholders on the Mera Ration app to track allocations and lodge digital complaints",
+        ],
+      },
+      {
         title: "Major civic infrastructure resolutions",
         bullets: [
           "Arterial roadway & pothole reconstruction — Sakinaka & Pereira Wadi (20,000+ daily commuters)",
           "Pedestrian footpath reconstruction — Sahyadri Nagar & KGN Nagar (1,500+ households)",
-          "18+ solar and electric streetlights — KGN Nagar, Bhim Nagar, Asalpha, Ashok Nagar",
+          "18+ solar and electric streetlights — KGN Nagar, Bhim Nagar, Asalpha, Ashok Nagar (15,000+ homes)",
           "Solid waste remediation — Mukund Nagar & Bharat Nagar (1,700+ families)",
           "Sanitation plant reactivation — KGN Nagar (2,500 households)",
           "Drinking water main pipeline repairs — Vishnu Nagar chawl settlement",
         ],
       },
       {
+        title: "Public safety & police collaboration",
+        bullets: [
+          "Safety audits mapping unlit pathways, isolated alleys, and transit points near sanitation blocks",
+          "Community policing sessions with local police on evening van patrols and chawl-cluster concerns",
+        ],
+      },
+      {
+        title: "Frontline capacity building & national exposure",
+        rows: [
+          {
+            label: "National Leadership Program",
+            value: "Jaipur, Rajasthan",
+            detail: "Digital inclusion models, NFSA governance, community leadership",
+          },
+          {
+            label: "National AI & Governance Summit",
+            value: "New Delhi",
+            detail: "Digital tools in public service delivery and citizen data management",
+          },
+          {
+            label: "Institutional police station exposure",
+            value: "Local zonal stations",
+            detail: "Grievance redressal, formal complaints, and citizen protection systems",
+          },
+        ],
+      },
+      {
         title: "Anganwadi modernization & BALA art",
-        copy: "At Prabuddha Nagar SRA, SVITECH secured ICDS formalization (January 2026), installed electrical and water infrastructure, child-safe furniture, educational materials, and Building as Learning Aid murals—then handed the facility to the Anganwadi Sevika under signed inventory.",
+        copy: "At Prabuddha Nagar SRA (1,000+ vulnerable families), SVITECH secured ICDS formalization (January 2026), installed electrical and water infrastructure, child-safe furniture, educational materials, and Building as Learning Aid murals—then handed the facility to the Anganwadi Sevika under signed inventory.",
+        rows: [
+          {
+            label: "Interactive wall charts",
+            value: "Height charts, animal murals, nutrition guides",
+            detail: "Visual recognition, spatial awareness, vocabulary building",
+          },
+          {
+            label: "Multilingual phonics borders",
+            value: "Marathi, Hindi, and English letter lines",
+            detail: "Early language familiarity, letter tracing, phonics practice",
+          },
+          {
+            label: "Geometric floor pathways",
+            value: "Number grids and shapes on flooring",
+            detail: "Interactive counting, color identification, motor skills",
+          },
+        ],
       },
     ],
   },
@@ -303,11 +471,24 @@ export const programs: PracticeProgram[] = [
       {
         title: "Affirmative inclusion — Bhivgad Fort trek",
         copy: "On Chhatrapati Shivaji Maharaj Jayanti, 38 visually challenged young trekkers completed the Bhivgad Fort ascent in Karjat with 26 trained corporate volunteers, trail-side medical support, and verbal navigation protocols.",
+        rows: [
+          {
+            label: "Visually challenged trekkers",
+            value: "38 participants",
+            detail: "Built self-confidence through an adaptive mountain climb",
+          },
+          {
+            label: "Trained corporate volunteers",
+            value: "26 volunteers",
+            detail: "Inclusive navigation and peer support along trails",
+          },
+        ],
       },
       {
         title: "Youth cricket (Konkan) & police digital enablement",
         bullets: [
           "Weekly cricket coaching clinics with kits and footwear for low-income players in coastal Konkan",
+          "Character skills: perseverance, constructive communication, and team leadership",
           "RCF Police Station Nirbhaya Cell: three desktops, three laser printers, and office software to accelerate case documentation for vulnerable complainants",
         ],
       },

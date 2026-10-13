@@ -3,7 +3,9 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import {
   governanceStandards,
+  growthTimeline,
   identity,
+  leadership,
   policyAlignments,
   theoryOfChange,
   values,
@@ -12,7 +14,7 @@ import {
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Vision, mission, theory of change, and governance of SVITECH Foundation — ISO 9001:2015, 12A, 80G, CSR-1.",
+    "Vision, mission, leadership, theory of change, and governance of SVITECH Foundation — ISO 9001:2015, 12A, 80G, CSR-1.",
 };
 
 export default function AboutPage() {
@@ -47,6 +49,70 @@ export default function AboutPage() {
               {identity.mission}
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-surface/70">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Governing board & executive leadership</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Multidisciplinary board. Grassroots ties.
+            </h2>
+            <p className="mt-4 max-w-2xl text-base text-ink-muted">
+              SVITECH Foundation operates under a governing board combining
+              technical proficiency, operational rigor, and deep community trust.
+            </p>
+          </Reveal>
+          <ul className="mt-10 grid gap-5 md:grid-cols-2">
+            {leadership.map((person) => (
+              <li key={person.name} className="border border-line bg-background p-6">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand">
+                  {person.role}
+                </p>
+                <h3 className="mt-2 font-display text-xl font-semibold text-ink">
+                  {person.name}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                  {person.background}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-ink">
+                  {person.responsibilities}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Strategic growth timeline</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              A decade of grassroots delivery
+            </h2>
+          </Reveal>
+          <ol className="mt-10 space-y-4">
+            {growthTimeline.map((item) => (
+              <li
+                key={item.year}
+                className="grid gap-2 border border-line bg-surface/80 p-5 sm:grid-cols-[7rem_1fr] sm:gap-6 sm:p-6"
+              >
+                <p className="text-sm font-bold uppercase tracking-wider text-accent">
+                  {item.year}
+                </p>
+                <div>
+                  <h3 className="font-display text-xl font-semibold text-ink">
+                    {item.phase}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                    {item.milestone}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

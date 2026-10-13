@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import {
+  economicProtection,
   eSevaCenters,
+  eSevaInfrastructure,
+  eSevaServices,
   headlineMetrics,
   masterDashboard,
   yearOnYear,
@@ -121,6 +124,30 @@ export default function ImpactPage() {
         </div>
       </section>
 
+      <section className="border-b border-line bg-surface/60">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Economic protection</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Value unlocked beyond enrollment counts
+            </h2>
+          </Reveal>
+          <ul className="mt-8 grid gap-5 md:grid-cols-3">
+            {economicProtection.map((item) => (
+              <li key={item.label} className="border border-line bg-background p-5">
+                <p className="stat-value font-display text-3xl font-semibold">
+                  {item.value}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-ink">{item.label}</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                  {item.detail}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section>
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
           <Reveal>
@@ -143,6 +170,48 @@ export default function ImpactPage() {
               </li>
             ))}
           </ul>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+            <div>
+              <h3 className="font-display text-2xl font-semibold text-ink">
+                Center infrastructure
+              </h3>
+              <ul className="mt-5 space-y-4">
+                {eSevaInfrastructure.map((item) => (
+                  <li key={item.title} className="border border-line bg-surface/80 p-4">
+                    <p className="text-sm font-semibold text-ink">{item.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                      {item.copy}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-display text-2xl font-semibold text-ink">
+                Walk-in service portfolio
+              </h3>
+              <div className="mt-5 grid gap-4 sm:grid-cols-1">
+                {(
+                  [
+                    ["Citizen identity & legal records", eSevaServices.identity],
+                    ["Financial inclusion & social security", eSevaServices.financial],
+                    ["Public distribution & utility services", eSevaServices.utilities],
+                  ] as const
+                ).map(([title, items]) => (
+                  <div key={title} className="border border-line bg-surface/80 p-4">
+                    <p className="text-sm font-semibold text-ink">{title}</p>
+                    <ul className="mt-3 space-y-1.5 text-sm text-ink-muted">
+                      {items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="btn-row mt-10 flex flex-wrap gap-3">
             <Link href="/work" className="btn-primary">
               Explore practices
