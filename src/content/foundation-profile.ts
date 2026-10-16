@@ -4,32 +4,32 @@
 
 export const foundationProfile = {
   eyebrow: "Foundation profile",
-  headline: "Skills, services, and a livelihood at the doorstep.",
-  lede: "SVITECH Foundation helps underprivileged women and youth in Maharashtra get job-ready digital skills, start small digital enterprises, and reach public services that already exist on paper but not yet in their homes.",
+  headline: "Right Entitlements. Lasting Change.",
+  lede: "SVITECH Foundation mobilizes citizens and connects families to their rightful entitlements—strengthening dignity, security and self-reliance through systems, partnerships and presence.",
   meaning:
-    "“Svitech” stands for a social venture initiative for technology, education, and community happiness. The Foundation was incorporated on 5 September 2023 as a Section 8 nonprofit company under the Companies Act, 2013, by Vivek G. Shelar and Rajani G. Kulaye. The computer academy that feeds it began in the slums of Mumbai in 2016.",
+    "“Svitech” stands for Social Venture Initiative for Technology Education and Community Happiness. The Foundation is a registered Section 8 not-for-profit organization (incorporated 2023) under the Companies Act, 2013, ISO 9001:2015 certified, with 12A, 80G, MCA CSR-1, and NITI Aayog NGO Darpan registration. Head office: Room No. 4, Bhaiyalal Chawl, Asalpha Village, Ghatkopar (West), Mumbai.",
 };
 
 export const headlineStats = [
   {
-    value: "11,000+",
-    label: "Youth and women trained since 2016",
-    note: "Svitech Computer Training Institute, now part of the Foundation",
+    value: "570,000+",
+    label: "Citizens mobilized",
+    note: "Awareness drives, campaigns, and community meetings",
   },
   {
-    value: "25,000+",
-    label: "Families supported on e-Shram",
-    note: "Enrolment work recognised by the Ministry of Labour & Employment",
+    value: "42,000+",
+    label: "Households linked to welfare",
+    note: "89,000+ individuals with verified scheme linkages",
   },
   {
-    value: "400",
-    label: "Women digital entrepreneurs",
-    note: "Adhikar Mitras with Tata Power Community Development Trust, Chembur",
+    value: "≈ ₹1 Cr",
+    label: "OOPE saved",
+    note: "Out-of-pocket expenditure saved for vulnerable families",
   },
   {
-    value: "25,000",
-    label: "Youth to be skilled by 2027",
-    note: "Five digital skills centres planned across Maharashtra",
+    value: "16,100+",
+    label: "Digital learners certified",
+    note: "CSC Academy / PMGDISHA-aligned labs and Women Learning Centers",
   },
 ];
 
@@ -296,34 +296,34 @@ export const stories = [
 
 export const people = [
   {
-    name: "Vivek G. Shelar",
-    role: "Founder & President",
-    bio: "A decade in private business, managing finances and IT, before founding the computer institute and then the Foundation. Bachelor of Computer Applications (IT), Tilak Maharashtra Vidyapeeth; Master of Social Work, IGNOU. Recognised as a Digital India change-maker, and for implementing e-Shram. He still sits with communities to hear what is blocked.",
+    name: "Vivek Ganpat Shelar",
+    role: "Chairman & Managing Director · Founder & President",
+    bio: "MSW, BCA. Strategic organizational vision, institutional donor partnerships, and community engagement for SVITECH Foundation.",
   },
   {
     name: "Rajani G. Kulaye",
-    role: "Secretary & Director — Operations",
-    bio: "More than ten years teaching IT in several institutions. Bachelor of Social Work, Yashwantrao Chavan Maharashtra Open University. She runs the skill centre and oversees operations and finances.",
+    role: "Director",
+    bio: "Over a decade of IT skills instruction and institutional training center management. Oversees skill centers, curriculum quality, and operations.",
   },
   {
-    name: "Vishal Ladku Jadha",
-    role: "Social Inclusion Advisor",
-    bio: "Works on the projects that open public services and citizen rights. A child- and worker-rights practitioner inside the Foundation’s social-impact programmes.",
+    name: "Vishal Ladku Jadhav",
+    role: "Director",
+    bio: "Specialist in child protection, unorganized labor rights, and public welfare access. Leads citizen entitlement and civic partnership programmes.",
   },
   {
     name: "Pramod Yashwant Gaikwad",
-    role: "Communications Lead",
-    bio: "Leads mobilisation of underserved communities, drawing on work in social inclusion through arts and cultural movements.",
+    role: "Director",
+    bio: "Cultural movement leader and grassroots mobilization pioneer. Directs community outreach and Kala-Sanvad street theatre.",
   },
 ];
 
 export const recognitions = [
-  "Empanelled and certifying through NSDC, MSCIT, MKCL, NIELIT, and Common Service Centres.",
-  "FY 2022 award from the Government of Maharashtra for digital literacy, financial inclusion, and computer education.",
-  "Ministry of Labour & Employment and e-Governance Services India Limited: recognition for e-Shram, including a note of appreciation associated with Labour Minister Bhupender Yadav, and a top-performer mark for the CSC in 2021–22.",
-  "Digital India recognition for Vivek G. Shelar as a change-maker.",
-  "Officials of the Government of Tanzania visited the Common Service Centre at Ghatkopar.",
-  "80G and 12AA registration, published with the annual reports.",
+  "Registered Section 8 Non-Profit Company under Companies Act, 2013 (incorporated 2023).",
+  "ISO 9001:2015 Quality Management System.",
+  "Section 12A and Section 80G (Income Tax Act).",
+  "MCA Form CSR-1 registration.",
+  "NITI Aayog NGO Darpan registered.",
+  "Empanelled and certifying through CSC Academy / PMGDISHA-aligned digital literacy programmes.",
 ];
 
 export const targets2030 = [

@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PartnerInquiryForm } from "@/components/PartnerInquiryForm";
 import { Reveal } from "@/components/Reveal";
-import { csrTiers, identity, publicPartners } from "@/lib/svitech";
+import {
+  csrTiers,
+  identity,
+  partnershipModels,
+  publicPartners,
+} from "@/lib/svitech";
 
 export const metadata: Metadata = {
   title: "Partner",
@@ -64,7 +69,7 @@ export default function PartnerPage() {
               Institutions we already work alongside
             </h2>
           </Reveal>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <div className="border border-line bg-background p-5">
               <h3 className="font-semibold text-ink">Civic & urban administration</h3>
               <ul className="mt-4 space-y-2 text-sm text-ink-muted">
@@ -89,7 +94,38 @@ export default function PartnerPage() {
                 ))}
               </ul>
             </div>
+            <div className="border border-line bg-background p-5">
+              <h3 className="font-semibold text-ink">Education & health posts</h3>
+              <ul className="mt-4 space-y-2 text-sm text-ink-muted">
+                {publicPartners.education.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-5 md:px-8 md:py-20">
+          <Reveal>
+            <p className="site-eyebrow">Collaborative models</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold text-ink">
+              Five partnership models and their direct impact
+            </h2>
+          </Reveal>
+          <ul className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {partnershipModels.map((model) => (
+              <li key={model.title} className="border border-line bg-surface p-5">
+                <h3 className="font-display text-lg font-semibold text-ink">
+                  {model.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                  {model.impact}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

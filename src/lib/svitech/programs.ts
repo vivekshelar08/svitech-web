@@ -1,4 +1,4 @@
-/** Five practice portfolios from SVITECH Foundation profile. */
+/** Practice portfolios from SVITECH Foundation Institutional Capability Docket (2025). */
 
 export type ProgramMetric = { value: string; label: string };
 export type ProgramSection = {
@@ -23,87 +23,69 @@ export type PracticeProgram = {
 export const programs: PracticeProgram[] = [
   {
     slug: "samriddhi",
-    name: "Project Samriddhi",
+    name: "Lok Adhikaar · Samriddhi Kendras",
     shortName: "Samriddhi",
-    focus: "Financial Inclusion, Social Security & Workforce Welfare",
+    focus: "Citizen Rights, Workforce Welfare & Permanent Community Service Hubs",
     highlight:
-      "445+ welfare camps; 4 permanent E-Seva Kendras; multi-state contractor labor outreach.",
+      "600+ field welfare campaigns; 4 permanent Samriddhi Kendras; multi-state migrant labor outreach.",
     problem:
-      "Eligible households remain outside the safety net because of documentation gaps, digital administrative barriers, and information asymmetry around eligibility, timelines, and DBT verification.",
+      "Eligible households remain outside the safety net because of documentation poverty, digital administrative exclusion, and information asymmetry around entitlements, deadlines, and documentation norms.",
     model:
-      "Neighborhood welfare enrollment camps, door-to-door enumeration, and integrated administrative coordination bring public services into settlements—from identification and verification through biometric registration and benefit confirmation.",
+      "Four-stage service delivery—household enumeration & gap mapping, document preparation & verification, digital registration & biometric processing, entitlement delivery & follow-up—plus full-time walk-in E-Seva at four permanent Kendras.",
     metrics: [
-      { value: "445+", label: "Field welfare camps" },
+      { value: "600+", label: "Field welfare campaigns" },
       { value: "42,000+", label: "Households linked" },
-      { value: "₹667+", label: "Crores unlocked" },
-      { value: "4", label: "E-Seva Kendras" },
+      { value: "89,000+", label: "Individuals linked" },
+      { value: "≈ ₹1 Cr", label: "OOPE saved" },
     ],
     sections: [
       {
-        title: "Service delivery pipeline",
+        title: "Four-stage service delivery framework",
         bullets: [
-          "Step 1 — Identification: door-to-door surveys find eligible households and document gaps",
-          "Step 2 — Verification: cross-referencing identity proofs, rectifying errors, and organizing records",
-          "Step 3 — Registration: biometric e-KYC via official state and central portals",
-          "Step 4 — Confirmation: delivering verified cards and tracking DBT",
+          "Household enumeration & gap mapping — identify households, assess documentation gaps, prioritize entitlements",
+          "Document preparation & verification — prepare, verify, and authenticate documents as per government norms",
+          "Digital registration & biometric processing — online registrations, biometric authentication, and data validation",
+          "Entitlement delivery & follow-up — ensure sanction, delivery of benefits, and continuous follow-up",
         ],
       },
       {
-        title: "Scheme linkage portfolio",
+        title: "Categorized public welfare & social protection portfolio",
         rows: [
           {
-            label: "Ayushman Bharat (PMJAY)",
-            value: "18,314 families & individuals",
-            detail:
-              "Up to ₹5 lakh cashless hospitalization · National Health Authority (MoHFW)",
+            label: "Universal Healthcare & Cashless Medical Insurance",
+            value: "24,774 families and individuals",
+            detail: "AB-PMJAY and ABHA",
           },
           {
-            label: "ABHA Digital Health Accounts",
-            value: "6,460 individuals",
+            label: "Unorganized Workforce Social Security",
+            value: "22,590+ workers",
             detail:
-              "Longitudinal medical history across empaneled hospitals · Ayushman Bharat Digital Mission",
+              "National E-Shram and Maharashtra Building and Other Construction Workers Welfare Board",
           },
           {
-            label: "Mazi Ladki Bahin Yojana",
-            value: "3,071 women & girls",
-            detail:
-              "Direct monthly transfers for nutrition, education, and self-reliance · WCD Dept. (GoM)",
+            label: "Accidental Disability & Life Safety Protection",
+            value: "17,800+ beneficiaries",
+            detail: "PMSBY",
           },
           {
-            label: "Maharashtra Labour Welfare Board",
-            value: "4,590 construction workers",
-            detail:
-              "Cash assistance, education stipends, and family welfare allowances · Building & Construction Labor Board",
+            label: "Women's Economic Security & Direct Support",
+            value: "4,100+ women and expectant mothers",
+            detail: "Mazi Ladki Bahin Yojana and PMMVY",
           },
           {
-            label: "E-Shram National Database",
-            value: "2,900 laborers",
-            detail:
-              "UAN, accidental death cover, and social security integration · Ministry of Labour & Employment",
+            label: "Civil Legal Identity & Revenue Proofs",
+            value: "1,580+ households",
+            detail: "PAN and income/domicile certificates",
           },
           {
-            label: "PMSBY Accident Insurance",
-            value: "1,844 beneficiaries",
-            detail:
-              "₹2 lakh accidental death and disability coverage · Department of Financial Services (MoF)",
-          },
-          {
-            label: "PAN Cards Issued",
-            value: "1,200+ citizens",
-            detail:
-              "Foundational tax ID enabling bank accounts and verified transactions · Income Tax Department",
-          },
-          {
-            label: "Civil Certifications",
-            value: "380+ households",
-            detail:
-              "Income and domicile certificates for education and subsidies · Revenue & Tahsildar Offices (GoM)",
-          },
-          {
-            label: "Udyam MSME Formalization",
+            label: "Micro-Enterprise Formalization & Credit",
             value: "108 women entrepreneurs",
-            detail:
-              "Access to formal credit and government grants · Ministry of MSME",
+            detail: "Udyam",
+          },
+          {
+            label: "Food Security & Subsidized Nutrition",
+            value: "12,500+ households protected",
+            detail: "NFSA, Mera Ration and PDS audits",
           },
         ],
       },
@@ -111,48 +93,73 @@ export const programs: PracticeProgram[] = [
         title: "Economic value & community sustainability",
         rows: [
           {
-            label: "Public entitlements unlocked",
-            value: "₹667+ Crores",
-            detail:
-              "Cashless hospitalization, accident insurance, and direct financial transfers",
+            label: "OOPE saved",
+            value: "Approximately ₹1 Crore",
+            detail: "Out-of-pocket expenditure saved for vulnerable families",
           },
           {
-            label: "Out-of-pocket savings at E-Seva desks",
+            label: "Direct cost savings at E-Seva desks",
             value: "₹18.14 Lakhs",
             detail:
               "Families avoided unauthorized commercial agent fees through transparent facilitation",
           },
           {
-            label: "SHG documentation desk income",
+            label: "Women-led collective income",
             value: "₹3.61 Lakhs",
             detail:
-              "Supplemental administrative income proving community-led service delivery can sustain itself",
+              "Legitimate administrative income earned by women-led collectives",
           },
         ],
       },
       {
-        title: "Multi-state migrant labor corridors",
-        copy: "UAN and E-Shram integration, zero-balance Jan Dhan accounts, PMSBY enrollment, and One Nation One Ration Card guidance—supporting SEBI BRSR Principles 3 and 5 for corporate partners.",
+        title: "Four permanent Samriddhi Kendras",
+        copy: "Full-time walk-in E-Seva open 6 days a week, run by trained local youth and women facilitators with dual-screen workstations, STQC biometrics, iris recognition, broadband, and UPS backup.",
         rows: [
           {
-            label: "Maharashtra Corridor",
-            value: "Mumbai, MMR, Thane, ports, thermal facilities",
-            detail: "Port logistics, construction personnel, municipal utility workers",
+            label: "Asalpha Kendra, Ghatkopar West",
+            value: "Asalpha & surrounding low-income settlements",
+            detail: "Priority community focus · Full-time walk-in",
           },
           {
-            label: "Gujarat Corridor",
-            value: "Chemical, manufacturing, power generation belts",
-            detail: "Migrant factory personnel, assembly workers, industrial plant labor",
+            label: "Kandivali Kendra, Western Suburbs",
+            value: "Western Suburbs slum belt",
+            detail: "Priority community focus · Full-time walk-in",
           },
           {
-            label: "Delhi (NCR) Corridor",
-            value: "Urban infrastructure & industrial areas",
-            detail: "Daily-wage construction, transit laborers, unorganized service workers",
+            label: "Vashinaka Hub, Chembur M-Ward",
+            value: "Chembur M-Ward slum belt",
+            detail: "Priority community focus · Full-time walk-in",
           },
           {
-            label: "Haryana Corridor",
-            value: "Warehousing hubs, industrial estates, logistics",
-            detail: "Warehouse loaders, logistics contract staff, supply-chain workforces",
+            label: "Vishnu Nagar Kendra, Chembur Central",
+            value: "Chembur Central slum cluster",
+            detail: "Priority community focus · Full-time walk-in",
+          },
+        ],
+      },
+      {
+        title: "Industrial workforce & multi-state migrant labor",
+        copy: "UAN and E-Shram onboarding, zero-balance Jan Dhan accounts, PMSBY accident coverage, and Mera Ration / One Nation One Ration Card portability—aligned to SEBI BRSR Principles 3 and 5.",
+        rows: [
+          {
+            label: "Maharashtra",
+            value: "Automotive, Engineering, Pharma, Textiles, Construction",
+            detail: "Contract laborers, factory workers, logistics crews, inter-state migrants",
+          },
+          {
+            label: "Gujarat",
+            value: "Textiles, Chemicals, Engineering, Ports & Logistics",
+            detail: "Contract laborers, factory workers, logistics crews, inter-state migrants",
+          },
+          {
+            label: "Haryana",
+            value: "Manufacturing, Electronics, E-commerce, Warehousing",
+            detail: "Contract laborers, factory workers, logistics crews, inter-state migrants",
+          },
+          {
+            label: "Delhi NCR",
+            value: "Automotive, Agro-processing, Logistics, Warehousing",
+            detail: "Contract laborers, factory workers, logistics crews, inter-state migrants",
           },
         ],
       },
@@ -160,169 +167,180 @@ export const programs: PracticeProgram[] = [
   },
   {
     slug: "techshala",
-    name: "Project TechShala",
-    shortName: "TechShala",
-    focus: "Digital Competency, Future Skills & Employability",
+    name: "Svitech Shiksha Kendra",
+    shortName: "Shiksha Kendra",
+    focus: "Foundational Digital Skills, Workplace Computing & Women Learning Centers",
     highlight:
-      "16,100+ learners certified; 78% female enrollment; CSC Academy & PMGDISHA labs.",
+      "16,100+ learners certified; 78% female enrollment; 86% verified placement among active job seekers.",
     problem:
-      "First-generation learners in low-income settlements face a digital divide: no computers at home and limited structured technical instruction in vernacular-medium schools.",
+      "The digital divide continues to affect first-generation learners, underserved youth, and women—limiting access to skills, opportunities, and economic independence.",
     model:
-      "Neighborhood-based, accredited digital training labs deliver foundational DLC courses and advanced 60-hour workplace computing tracks, with community asset handover to women’s SHGs.",
+      "Inclusive, practical, job-oriented digital education aligned with CSC Academy and PMGDISHA guidelines, plus Women Learning Centers and community-owned computer labs.",
     metrics: [
       { value: "16,100+", label: "Learners certified" },
       { value: "78%", label: "Female enrollment" },
-      { value: "40%", label: "Progress to advanced track" },
+      { value: "86%", label: "Verified placement rate" },
       { value: "2,290", label: "Women Learning Center reach" },
     ],
     sections: [
       {
-        title: "Inclusive social representation",
-        copy: "Beneficiary cohorts actively represent marginalized demographics across dedicated community computer centers, municipal schools, and neighborhood learning hubs.",
-        rows: [
-          { label: "Scheduled Caste", value: "37%", detail: "Structured digital courses" },
-          { label: "Other Backward Classes", value: "13%", detail: "Structured digital courses" },
-          { label: "Open / EWS categories", value: "50%", detail: "Structured digital courses" },
-        ],
-      },
-      {
-        title: "Foundational curriculum (Tier 1: DLC)",
+        title: "Program highlights",
         bullets: [
-          "Computer hardware & systems — OS navigation and typing independence",
-          "Digital communications & web — email, search, and information retrieval",
-          "E-governance tools — DigiLocker, UMANG, Mera Ration, certificate verification",
-          "Cyber safety & digital ethics — phishing recognition and safe mobile internet",
-          "Outcome: CSC Academy Certificate of Completion after a 20-hour practical course",
+          "16,100+ total learners certified",
+          "78% female enrollment",
+          "Alignment with CSC Academy and PMGDISHA guidelines",
+          "Prioritization of SC, OBC, and EWS communities",
+          "25 certified technical trainers",
         ],
       },
       {
-        title: "Advanced workplace computing (Tier 2)",
+        title: "Tier 1 — Practical curriculum",
         bullets: [
-          "Microsoft Word — business letters, tabulated reporting, formal formatting",
-          "Advanced Excel — formulas, filters, VLOOKUP, pivot tables, financial logs",
-          "PowerPoint — structured layouts, charts, and presentation skills",
-          "Digital workflows — cloud collaboration, PDF editing, scanning, backups",
+          "Computer systems & architecture",
+          "Internet & digital communications",
+          "E-governance & citizen applications",
+          "Cyber safety & digital awareness",
+          "Outcome: verified Certificate of Completion after practical curriculum and weekly topic assessments",
         ],
       },
       {
-        title: "Modern lab infrastructure",
+        title: "Tier 2 — 60-hour career track",
         bullets: [
-          "Workstations: Intel Core i5, 16GB DDR4 RAM, 512GB SSD, dedicated graphics, 22-inch LED displays",
-          "Software & peripherals: licensed OS and office suites, LAN networking, multi-function laser printers, UPS backups",
-          "Classroom amenities: air-conditioned, well-lit spaces with whiteboards, ergonomic seating, and instructor projection",
+          "Microsoft Word for office drafting — professional documents, formatting, templates",
+          "Advanced Microsoft Excel — formulas, filtering, VLOOKUP, pivot tables, MIS reporting",
+          "Microsoft PowerPoint — presentations, data, and visual communication",
+          "Digital workflow systems — cloud collaboration, PDF workflows, scanning, secure backups",
         ],
       },
       {
-        title: "Women Learning Centers & workplace English",
-        copy: "Centers in Ghatkopar, Backbay, and Kandivali reached 2,290 beneficiaries—adolescent girls, SHG women, and community residents—with applied mobile literacy (UPI security, voice typing, school portals) and Likho-Padho-Bolo English modules for job readiness.",
-        rows: [
-          { label: "Adolescent girls & out-of-school youth", value: "980 (42.8%)" },
-          { label: "Self-help group women", value: "680 (29.7%)" },
-          { label: "Community residents", value: "408 (17.8%)" },
-          { label: "Specialized workshop attendees", value: "222 (9.7%)" },
-        ],
-      },
-      {
-        title: "Likho, Padho, Bolo — workplace English",
+        title: "Employment outcomes",
         rows: [
           {
-            label: "Conversational English (Bolo)",
-            value: "Greetings, introductions, phone etiquette",
-            detail: "Confidence for customer service, retail desks, and basic interviews",
+            label: "Verified placement rate",
+            value: "86%",
+            detail: "Among active job seekers",
           },
           {
-            label: "Functional Reading (Padho)",
-            value: "Notices, labels, safety warnings, job postings",
-            detail: "Ability to interpret operational instructions and delivery manifests",
+            label: "Hiring partnerships",
+            value: "250+ SMEs across Mumbai",
+            detail: "Small and medium-sized businesses",
           },
           {
-            label: "Written Communication (Likho)",
-            value: "Applications, work emails, shift logs",
-            detail: "Independence in administrative reporting and digital applications",
+            label: "Female candidates placed",
+            value: "53%",
+            detail: "Creating dignified work and economic independence",
           },
         ],
       },
       {
-        title: "Asset stewardship — the Vashinaka model",
-        copy: "Phase 1 competitive L1/L2/L3 procurement; Phase 2 supervised incubation of training batches; Phase 3 formal handover of 10 Dell desktop setups, networking, and air-conditioning to Adhikaar Mahila Bachat Gat under signed deeds—so local women manage operations and session fees sustain utilities.",
+        title: "Case spotlight — Shubham Vidhate",
+        copy: "Shubham Vidhate began working in a small office earning ₹2,000 per month. After completing Advanced Excel training, he secured a formal back-office role with stable income, benefits, and career growth. Skills open doors. We walk with him through them.",
+      },
+      {
+        title: "Women Learning Centers & Padho, Likho, Bolo",
+        copy: "Network across Ghatkopar, Kandivali, and community clusters — 2,290 beneficiaries building digital confidence for everyday life.",
+        rows: [
+          { label: "Adolescent girls & out-of-school youth", value: "980" },
+          { label: "Self-help group women", value: "680" },
+          { label: "Community residents", value: "408" },
+          { label: "Specialized workshop attendees", value: "222" },
+        ],
+      },
+      {
+        title: "Padho · Likho · Bolo curriculum",
+        rows: [
+          {
+            label: "Padho — Functional Workplace Reading",
+            value: "Notices, instructions, forms, digital content",
+            detail: "Understand workplace materials with confidence",
+          },
+          {
+            label: "Likho — Written Professional Communication",
+            value: "Messages, reports, emails, applications",
+            detail: "Write clearly for work and daily needs",
+          },
+          {
+            label: "Bolo — Conversational Workplace Speaking",
+            value: "Meetings, calls, presentations, client interactions",
+            detail: "Speak clearly and confidently",
+          },
+        ],
+      },
+      {
+        title: "The Vashinaka model — community ownership",
+        copy: "Transparent setup → supervised incubation → handover to Adhikaar Mahila Bachat Gat → long-term community operation of a 10-workstation center run by the community, for the community.",
+      },
+      {
+        title: "Academic coaching & youth self-defense",
+        bullets: [
+          "Foundational primary support (Classes 1–5) — literacy, numeracy, learning habits",
+          "Middle school conceptual tutoring — key subjects",
+          "10th grade board exam preparation — guidance, practice, mentoring",
+          "Monthly parent-teacher meetings for attendance and continuity",
+          "2,000+ students trained in self-defense: situational awareness, verbal assertiveness, basic physical tactics, emergency protocols (100, 103, 112)",
+        ],
       },
     ],
   },
   {
     slug: "swasthya-setu",
-    name: "Project Swasthya-Setu",
-    shortName: "Swasthya-Setu",
-    focus: "Preventive Healthcare, Hygiene & Diagnostics",
+    name: "Swasthya Setu",
+    shortName: "Swasthya Setu",
+    focus: "Preventive Healthcare, Diagnostics, Menstrual Hygiene & Institutional Public Health",
     highlight:
-      "Multi-specialty diagnostic drives; 18,000+ sanitary kits; Type B emergency ambulance outfitting.",
+      "5,800+ community members evaluated; 4,200+ women and girls reached on menstrual hygiene; 7,100+ citizens sensitized.",
     problem:
-      "Families in informal settlements delay routine care because of daily wage demands and private clinic costs, so treatable conditions escalate into emergencies.",
+      "Informal settlements and industrial worker colonies face a heavier burden of illness and poorer access to care—delayed care, undiagnosed chronic conditions, lost livelihoods, and medical debt.",
     model:
-      "Mobile diagnostic clinics and health education enter community halls and worker colonies; menstrual dignity drives and emergency medical outfitting close the last-mile gap.",
+      "Multi-specialty screenings, vision care, menstrual hygiene workshops, and institutional health awareness through peer-led dialogue, confidential counseling helpdesks, and institutional coordination.",
     metrics: [
-      { value: "5,800+", label: "Diagnostic evaluations" },
+      { value: "5,800+", label: "Community members evaluated" },
       { value: "7,100+", label: "Health sensitized" },
-      { value: "18,000+", label: "Sanitary kits distributed" },
-      { value: "4,200+", label: "Women & girls reached on MHM" },
+      { value: "4,200+", label: "MHM reach" },
+      { value: "4,382", label: "HIV/AIDS session participants" },
     ],
     sections: [
       {
-        title: "Community screening camps",
+        title: "Multi-specialty screenings",
         bullets: [
-          "Hypertension screening for adults and senior citizens",
-          "Blood glucose testing for unorganized laborers",
-          "Hemoglobin assessments for adolescent girls and expectant mothers",
-          "Refractive eye examinations with free corrective glasses",
-          "General physician checkups and generic medicine distribution",
+          "Blood pressure and cardiovascular screening — early detection of heart and BP-related risks",
+          "Diabetes and random blood glucose testing — screen for diabetes and pre-diabetes",
+          "Hemoglobin and nutritional evaluation — identify anemia and nutritional gaps",
+          "General physician consultation — clinical review, basic treatment guidance, preventive advice",
+          "Medical referral networks — linkages to trusted hospitals and specialists",
+        ],
+      },
+      {
+        title: "Vision care for all",
+        bullets: [
+          "Optometrist consultations — comprehensive eye examinations and vision assessment",
+          "Free prescription spectacles — corrective glasses to improve daily functioning",
+          "Cataract and surgical screening — early identification of eye conditions",
+          "Links to charitable eye hospitals — referrals for surgery and advanced treatment",
+        ],
+      },
+      {
+        title: "Menstrual hygiene & reproductive wellness",
+        copy: "Over 4,200 adolescent girls and women across 35+ structured school and community workshops.",
+        bullets: [
+          "Biological awareness and puberty education",
+          "Hygiene practices and infection prevention",
+          "Safe and eco-friendly disposal practices",
+          "Peer support and school retention",
         ],
       },
       {
         title: "Institutional health awareness",
         rows: [
           {
-            label: "HIV/AIDS & STD awareness",
+            label: "HIV/AIDS and STD awareness",
             value: "4,382 participants",
-            detail: "50+ sessions across colleges, ITIs, police trainees, and youth",
+            detail: "Across 50+ sessions",
           },
           {
-            label: "Anti-tobacco education",
+            label: "Anti-tobacco education and addiction control",
             value: "2,780 participants",
-            detail: "22 sessions for labourers, youth, and secondary students",
-          },
-        ],
-      },
-      {
-        title: "Menstrual health & dignity",
-        bullets: [
-          "4,200+ women and girls sensitized on hygiene and infection prevention",
-          "18,000+ dermatologically tested sanitary napkin packs distributed",
-          "35+ school and community drives to reduce stigma and absenteeism",
-          "Hygienic disposal education to protect drainage and sanitation workers",
-        ],
-      },
-      {
-        title: "Type B ambulance outfitting",
-        copy: "Transparent L1/L2/L3 procurement delivered life-support equipment for emergency response serving informal settlements and industrial corridors.",
-        rows: [
-          {
-            label: "Multipara patient monitor",
-            value: "ECG, SpO2, NIBP, pulse",
-            detail: "Continuous vital sign monitoring during patient transport",
-          },
-          {
-            label: "Medical suction apparatus",
-            value: "High-vacuum electric suction",
-            detail: "Airway clearance during acute emergencies",
-          },
-          {
-            label: "10-liter medical oxygen system",
-            value: "Cylinder, regulator, flowmeter, masks",
-            detail: "Immediate oxygen delivery for respiratory distress",
-          },
-          {
-            label: "Trauma & first-aid response kit",
-            value: "Splints, dressings, resuscitator bag",
-            detail: "On-road patient stabilization and acute trauma care",
+            detail: "Across 22 sessions",
           },
         ],
       },
@@ -330,19 +348,19 @@ export const programs: PracticeProgram[] = [
   },
   {
     slug: "lok-adhikar",
-    name: "Project Lok-Adhikar",
-    shortName: "Lok-Adhikar",
-    focus: "Grassroots Civic Leadership & Public Infrastructure",
+    name: "Lok Adhikaar · Civic Leadership & Kala-Sanvad",
+    shortName: "Lok Adhikaar",
+    focus: "Grassroots Leadership, Food Security Audits, Civic Infrastructure & Participatory Theatre",
     highlight:
-      "50 Community Vigilance Groups; 40+ civic wins; 40+ ration shop audits; Anganwadi upgrades.",
+      "50 Community Vigilance Groups; 40+ civic victories; 980 cultural performances; Anganwadi modernization.",
     problem:
-      "Vulnerable communities often lack organized platforms to communicate service breakdowns and infrastructure deficits to local administrative bodies.",
+      "Vulnerable communities often lack organized platforms to monitor public services and communicate infrastructure deficits to local administrative bodies.",
     model:
-      "Community Vigilance Groups, Adhikaar Mitras, and ABHA Sakhis create constructive channels with civic bodies—auditing PDS shops, petitioning BMC, and modernizing Anganwadis.",
+      "Community Vigilance Groups, Adhikaar Mitras, and ABHA Sakhis audit PDS shops and petition civic bodies; Kala-Sanvad uses street theatre to turn awareness into action; Anganwadis are modernized with BALA murals and child-friendly amenities.",
     metrics: [
       { value: "50", label: "Community Vigilance Groups" },
-      { value: "40+", label: "Civic infrastructure wins" },
-      { value: "40+", label: "PDS ration shop audits" },
+      { value: "40+", label: "Civic infrastructure victories" },
+      { value: "980", label: "Cultural performances" },
       { value: "12,500+", label: "Families with food entitlements secured" },
     ],
     sections: [
@@ -352,144 +370,136 @@ export const programs: PracticeProgram[] = [
           {
             label: "50 Community Vigilance Groups",
             value: "250 active members",
-            detail:
-              "Mukund Nagar, Shivaji Nagar, Jijamata Nagar, Mahul MHADA, Vishnu Nagar — audits of fair-price shops, sanitation, and utilities",
+            detail: "Across 24 slum settlements — audits of fair-price shops, sanitation, and utilities",
           },
           {
-            label: "100+ Certified Adhikaar Mitras",
-            value: "Urban chawls & rehab colonies",
+            label: "100+ trained Adhikaar Mitras",
+            value: "Active community leaders",
             detail: "Grievance submissions, paperwork, and institutional follow-ups",
           },
           {
-            label: "100 Certified ABHA Sakhis",
-            value: "Eastern Mumbai clusters",
+            label: "100 certified ABHA Sakhis",
+            value: "Health & welfare guides",
             detail: "Health cards, maternal schemes, digital welfare guidance",
           },
         ],
       },
       {
-        title: "Food security & PDS ration shop audits",
+        title: "PDS audit process for 40+ fair-price ration shops",
         bullets: [
-          "Field survey of 40+ fair-price shops: operating hours, entitlement charts, and e-PoS weigh-scale calibration",
-          "Corrective coordination with District Rationing Controllers resolved under-distribution and overcharging across 18+ shops",
-          "Secured food entitlements for over 12,500 families under the National Food Security Act",
-          "Guided ration cardholders on the Mera Ration app to track allocations and lodge digital complaints",
+          "Verifying stock availability, distribution records, and actual grain issued",
+          "Checking shop operating hours against notified timings",
+          "Verifying accuracy of e-PoS devices and weigh-scales",
+          "Ensuring statutory information boards are clearly displayed and up to date",
+          "Corrective action across 18+ non-compliant shops",
+          "Full food-grain entitlements secured for over 12,500 families",
         ],
       },
       {
-        title: "Major civic infrastructure resolutions",
+        title: "Field vignette — Mukund Nagar & Shivaji Nagar",
+        copy: "Residents faced irregular access to monthly food grains. CBOs documented issues and submitted written representation. Authorities conducted inspections and ensured display of statutory boards. Regular monthly food-grain access was restored for all entitled families.",
+      },
+      {
+        title: "Key civic infrastructure victories",
         bullets: [
-          "Arterial roadway & pothole reconstruction — Sakinaka & Pereira Wadi (20,000+ daily commuters)",
-          "Pedestrian footpath reconstruction — Sahyadri Nagar & KGN Nagar (1,500+ households)",
-          "18+ solar and electric streetlights — KGN Nagar, Bhim Nagar, Asalpha, Ashok Nagar (15,000+ homes)",
-          "Solid waste remediation — Mukund Nagar & Bharat Nagar (1,700+ families)",
-          "Sanitation plant reactivation — KGN Nagar (2,500 households)",
-          "Drinking water main pipeline repairs — Vishnu Nagar chawl settlement",
+          "Arterial roadway reconstruction in Sakinaka and Pereira Wadi — benefiting 20,000+ residents, factory workers, and schoolchildren",
+          "Pedestrian footpath reconstruction in Sahyadri Nagar and KGN Nagar — 1,500+ households",
+          "18+ solar and electric streetlights installed for women's safety",
+          "Solid waste remediation near schools in Mukund Nagar and Bharat Nagar",
+          "Sanitation processing plant reactivation in KGN Nagar — 2,500+ families",
+          "Drinking water pipeline repairs in Vishnu Nagar — restoring safe water access",
+          "Overall: 40+ major civic infrastructure victories",
         ],
       },
       {
-        title: "Public safety & police collaboration",
-        bullets: [
-          "Safety audits mapping unlit pathways, isolated alleys, and transit points near sanitation blocks",
-          "Community policing sessions with local police on evening van patrols and chawl-cluster concerns",
-        ],
+        title: "Anganwadi building, renovation & modernization",
+        copy: "At Prabuddha Nagar SRA (serving 1,000+ low-income families): dampness treatment, anti-skid flooring, LED lighting, clean drinking water storage, child-friendly furniture, BALA murals, phonics lines, height charts, developmental toys — formally handed to Anganwadi Sevika & CDPO with continuing maternal health and immunization support.",
       },
       {
-        title: "Frontline capacity building & national exposure",
+        title: "Kala-Sanvad — grassroots theatre for social change",
+        copy: "Interactive street-play, music, puppetry and storytelling help audiences remember, reflect, and act. Consolidated total: 980 cultural performances and 230,000+ citizens mobilized; 230 performers trained.",
         rows: [
-          {
-            label: "National Leadership Program",
-            value: "Jaipur, Rajasthan",
-            detail: "Digital inclusion models, NFSA governance, community leadership",
-          },
-          {
-            label: "National AI & Governance Summit",
-            value: "New Delhi",
-            detail: "Digital tools in public service delivery and citizen data management",
-          },
-          {
-            label: "Institutional police station exposure",
-            value: "Local zonal stations",
-            detail: "Grievance redressal, formal complaints, and citizen protection systems",
-          },
+          { label: "2024", value: "134 performances · ~32,000 citizens" },
+          { label: "2025", value: "348 performances · ~85,000 citizens" },
+          { label: "2026", value: "498 performances · 120,000+ citizens" },
         ],
       },
       {
-        title: "Anganwadi modernization & BALA art",
-        copy: "At Prabuddha Nagar SRA (1,000+ vulnerable families), SVITECH secured ICDS formalization (January 2026), installed electrical and water infrastructure, child-safe furniture, educational materials, and Building as Learning Aid murals—then handed the facility to the Anganwadi Sevika under signed inventory.",
-        rows: [
-          {
-            label: "Interactive wall charts",
-            value: "Height charts, animal murals, nutrition guides",
-            detail: "Visual recognition, spatial awareness, vocabulary building",
-          },
-          {
-            label: "Multilingual phonics borders",
-            value: "Marathi, Hindi, and English letter lines",
-            detail: "Early language familiarity, letter tracing, phonics practice",
-          },
-          {
-            label: "Geometric floor pathways",
-            value: "Number grids and shapes on flooring",
-            detail: "Interactive counting, color identification, motor skills",
-          },
+        title: "Thematic campaign portfolio",
+        bullets: [
+          "Right to Food and Fair-Price Shop Transparency — Mera Ration verification",
+          "Cyber Safety and Digital Banking Awareness — OTP phishing prevention",
+          "Democratic Participation and Voting Rights — voter registration",
+          "Women's Legal Rights and Child Protection — domestic violence and POCSO awareness",
+          "Preventive Health, Clean Water and Menstrual Hygiene Awareness",
+        ],
+      },
+      {
+        title: "Affirmative inclusion, youth sports & Nirbhaya Pathak",
+        bullets: [
+          "Bhivgad Fort inclusive trek — 38 visually challenged young individuals with 26 trained corporate employee volunteers",
+          "Konkan grassroots youth sports mentorship — weekly cricket coaching, athletic conditioning, life-skills",
+          "Nirbhaya Pathak workshops — 520+ women, adolescent girls, and youth sensitized on legal protections, emergency response (100, 103, 112), and free institutional legal aid",
         ],
       },
     ],
   },
   {
     slug: "urja-prayas",
-    name: "Project Urja-Prayas",
-    shortName: "Urja-Prayas",
-    focus: "Environmental Sustainability, STEM & Road Safety",
+    name: "Mission Ankur",
+    shortName: "Mission Ankur",
+    focus: "Environmental Stewardship, Green Schools, Tree Plantation & Road Safety",
     highlight:
-      "2,400 students across 20 schools; National Urja Quiz winner; 1,650 DIY road safety kits.",
+      "2,400 students across 20 partner schools; 60 practical workshops; 1,650 DIY road safety toolkits.",
     problem:
-      "Primary and secondary students need applied STEM, energy literacy, and early pedestrian safety habits—especially in dense urban corridors.",
+      "Primary and secondary students need applied STEM, energy literacy, community greening, and early pedestrian safety habits—especially in dense urban corridors.",
     model:
-      "School co-curricular modules, student conservation clubs, science fairs, traffic-police toolkit drives, plus affirmative inclusion through adaptive adventure, youth sports, and police digital enablement.",
+      "Green School Initiative with student conservation teams, monthly energy audits, water-leak monitoring, interactive technical sessions, science fairs, native tree plantations, and Traffic Police–partnered road safety toolkits.",
     metrics: [
-      { value: "2,400+", label: "STEM energy champions" },
+      { value: "2,400+", label: "Conservation champions" },
       { value: "20", label: "Partner schools" },
+      { value: "60", label: "Practical workshops" },
       { value: "1,650", label: "Road safety toolkits" },
-      { value: "38", label: "Visually challenged trekkers" },
     ],
     sections: [
       {
-        title: "Sustainability & STEM education",
-        bullets: [
-          "2,400 students trained across 20 Mumbai schools",
-          "5 student-led mini conservation clubs for campus energy and water audits",
-          "60 hands-on STEM workshops on solar energy and resource efficiency",
-          "National Urja Mela Quiz Competition — first prize for a partner school student",
-        ],
-      },
-      {
-        title: "Experiential road safety",
-        copy: "In partnership with traffic authorities, 1,650 DIY safety toolkits—five hands-on models and three illustrated workbooks—teach zebra crossings, vehicle blind spots, bicycle safety, and alert commuting habits.",
-      },
-      {
-        title: "Affirmative inclusion — Bhivgad Fort trek",
-        copy: "On Chhatrapati Shivaji Maharaj Jayanti, 38 visually challenged young trekkers completed the Bhivgad Fort ascent in Karjat with 26 trained corporate volunteers, trail-side medical support, and verbal navigation protocols.",
+        title: "Mission Ankur dashboard",
         rows: [
-          {
-            label: "Visually challenged trekkers",
-            value: "38 participants",
-            detail: "Built self-confidence through an adaptive mountain climb",
-          },
-          {
-            label: "Trained corporate volunteers",
-            value: "26 volunteers",
-            detail: "Inclusive navigation and peer support along trails",
-          },
+          { label: "Partner schools", value: "20" },
+          { label: "Conservation champions", value: "2,400" },
+          { label: "Practical workshops", value: "60" },
+          { label: "Active school conservation units", value: "5" },
+          { label: "Annual science fairs", value: "5" },
         ],
       },
       {
-        title: "Youth cricket (Konkan) & police digital enablement",
+        title: "The Green School Initiative",
         bullets: [
-          "Weekly cricket coaching clinics with kits and footwear for low-income players in coastal Konkan",
-          "Character skills: perseverance, constructive communication, and team leadership",
-          "RCF Police Station Nirbhaya Cell: three desktops, three laser printers, and office software to accelerate case documentation for vulnerable complainants",
+          "Student Conservation Teams — students lead conservation as active change-makers",
+          "Monthly Classroom Energy Audits — track and reduce energy consumption",
+          "Water-Leak Monitoring — students monitor and report leaks",
+          "Interactive Technical Sessions — 60 sessions on solar power, clean energy, and electricity conservation",
+          "Svitech Science Fair — students showcase working environmental prototypes",
+          "National Science Quiz Competition — 1st prize winner received national recognition",
+        ],
+      },
+      {
+        title: "Community greening & tree plantations",
+        bullets: [
+          "Native air-purifying trees including Neem, Peepal, Jamun, and Karanj",
+          "Student and community sapling adoption",
+          "Urban chawl greening with Tulsi, Aloe Vera, and Lemongrass",
+          "Localized cleanliness and greening campaigns",
+        ],
+      },
+      {
+        title: "Road safety initiative",
+        copy: "1,650 DIY road safety toolkits teach core habits with Traffic Police demonstrations.",
+        bullets: [
+          "Zebra crossing and signal discipline",
+          "Blind-spot awareness",
+          "Protective gear and bicycle safety",
+          "Safe walking habits",
         ],
       },
     ],

@@ -310,10 +310,10 @@ export function DonateForm({
               </a>{" "}
               or{" "}
               <a
-                href="mailto:info@svitech.in"
+                href="mailto:info@svitechfoundation.org"
                 className="font-semibold text-brand underline-offset-2 hover:underline"
               >
-                email info@svitech.in
+                email info@svitechfoundation.org
               </a>
               .
             </p>

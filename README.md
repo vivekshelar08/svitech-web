@@ -103,7 +103,7 @@ Copy from `.env.example`. At minimum set:
 Set these env vars on Hostinger:
 
 ```env
-ADMIN_EMAIL=info@svitech.in
+ADMIN_EMAIL=info@svitechfoundation.org
 ADMIN_PASSWORD=Vivek@123
 ADMIN_SESSION_SECRET=optional-stable-secret
 SUPABASE_SERVICE_ROLE_KEY=...
