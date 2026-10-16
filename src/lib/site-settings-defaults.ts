@@ -382,32 +382,32 @@ const defaultNav: NavLink[] = [
 
 const defaultProgramsMenu: NavLink[] = [
   { label: "Our Intervention", href: "/work" },
-  { label: "Project Samriddhi", href: "/work/samriddhi" },
-  { label: "Project TechShala", href: "/work/techshala" },
-  { label: "Project Swasthya-Setu", href: "/work/swasthya-setu" },
-  { label: "Project Lok-Adhikar", href: "/work/lok-adhikar" },
-  { label: "Project Urja-Prayas", href: "/work/urja-prayas" },
+  { label: "Lok Adhikaar · Samriddhi Kendras", href: "/work/samriddhi" },
+  { label: "Svitech Shiksha Kendra", href: "/work/techshala" },
+  { label: "Swasthya Setu", href: "/work/swasthya-setu" },
+  { label: "Lok Adhikaar · Civic & Kala-Sanvad", href: "/work/lok-adhikar" },
+  { label: "Mission Ankur", href: "/work/urja-prayas" },
 ];
 
 export const defaultSiteSettings: SiteSettings = {
   general: {
     siteName: "SVITECH Foundation",
-    tagline: "Technology · Education · Community Happiness",
+    tagline: "Right Entitlements. Lasting Change.",
     logoUrl: "/svitech-logo.png",
-    logoAlt: "SVITECH Foundation — Education, Technology, Community",
+    logoAlt: "SVITECH Foundation — Social Venture Initiative for Technology Education and Community Happiness",
     logoAriaLabel: "SVITECH Foundation home",
-    contactEmail: "info@svitech.in",
+    contactEmail: "info@svitechfoundation.org",
     contactPhone: "+91 82684 59392",
     officeAddress:
-      "4, Bhaiyalal Chawl, N.S.S. Road, Asalpha Village, Ghatkopar (West), Mumbai, Maharashtra – 400084, India",
+      "Room No. 4, Bhaiyalal Chawl, N.S.S. Road, Asalpha Village, Ghatkopar (West), Mumbai, Maharashtra – 400084, India",
     responseTime: "Usually within 2–3 business days",
     footerBlurb:
-      "Process-driven non-profit implementation agency translating CSR and government programmes into verified community progress across MMR and industrial corridors.",
-    copyrightNote: "ISO 9001:2015 · 12A · 80G · CSR-1",
+      "Social Venture Initiative for Technology Education and Community Happiness — connecting families to rightful entitlements through systems, partnerships and presence across Mumbai and industrial corridors.",
+    copyrightNote: "ISO 9001:2015 · 12A · 80G · CSR-1 · NGO Darpan",
     newsletterBlurb: "Programme updates and impact notes—rarely, and never spam.",
-    seoTitle: "SVITECH Foundation — Verified Grassroots Implementation",
+    seoTitle: "SVITECH Foundation — Right Entitlements. Lasting Change.",
     seoDescription:
-      "SVITECH Foundation: Mumbai-based nodal implementation agency. 570,000+ citizens mobilized, ₹667+ crores in entitlements unlocked. 12A, 80G, CSR-1, ISO 9001:2015.",
+      "SVITECH Foundation: Mumbai Section 8 NGO. 570,000+ citizens mobilized, 42,000+ households linked to welfare, ≈ ₹1 Crore OOPE saved. ISO 9001:2015 · 12A · 80G · CSR-1 · NGO Darpan.",
   },
   theme: {
     bg: "#F4EFE6",
@@ -433,7 +433,7 @@ export const defaultSiteSettings: SiteSettings = {
       ctaHref: "/donate",
     },
     showTopBar: false,
-    trustBadge: "12A · 80G · CSR-1 · ISO 9001:2015",
+    trustBadge: "12A · 80G · CSR-1 · ISO 9001:2015 · NGO Darpan",
     showMemberLogin: false,
     memberLoginLabel: "Member login",
     memberLoginHref: "/member-login",
@@ -466,13 +466,13 @@ export const defaultSiteSettings: SiteSettings = {
     newsletterHeading: "Keep helping. Stay updated.",
     donateLabel: "DONATE NOW",
     donateHref: "/donate",
-    tagline: "Verified grassroots implementation",
+    tagline: "People. Entitlements. Dignity. Delivered.",
   },
   home: {
     heroEyebrow: "SVITECH Foundation",
-    heroHeadline: "Institutionalize self-reliance at the last mile.",
+    heroHeadline: "Right Entitlements. Lasting Change.",
     heroSubhead:
-      "A process-driven implementation agency connecting vulnerable families to public entitlements, digital skills, preventive health, and civic voice across Mumbai and industrial corridors.",
+      "We mobilize citizens and connect families to their rightful entitlements—strengthening dignity, security and self-reliance through systems, partnerships and presence.",
     heroImage:
       "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=2400&q=80",
     heroImageAlt: "Community members gathered for a SVITECH outreach programme",
@@ -484,11 +484,11 @@ export const defaultSiteSettings: SiteSettings = {
     heroCtaSecondary: "Partner with us",
     heroCtaSecondaryHref: "/partner",
     heroTrustChecks: [
-      "12A · 80G · CSR-1",
+      "Section 8 · 12A · 80G · CSR-1",
       "ISO 9001:2015 certified",
-      "Geo-tagged field verification",
+      "NITI Aayog NGO Darpan",
     ],
-    heroImpactBadge: "570,000+ citizens mobilized",
+    heroImpactBadge: "570,000+ citizens mobilized · ≈ ₹1 Cr OOPE saved",
     marqueeItems: [
       "Digital Literacy",
       "डिजिटल साक्षरता",
@@ -570,15 +570,14 @@ export const defaultSiteSettings: SiteSettings = {
     approachLinkLabel: "Learn about SVITECH Foundation",
     approachLinkHref: "/about",
     reachEyebrow: "Where we work",
-    reachHeadline: "Five-state reach with Maharashtra at the centre",
+    reachHeadline: "Mumbai Metropolitan Region and industrial corridors",
     reachIntro:
-      "Maharashtra hosts the full activity suite. Pune adds dedicated Digital Literacy. Delhi, Gujarat, Haryana, and Uttar Pradesh focus on Financial Inclusion projects.",
+      "Four permanent Samriddhi Kendras across Mumbai, plus multi-state migrant workforce outreach in Maharashtra, Gujarat, Haryana, and Delhi NCR.",
     reachStates: [
-      { name: "Maharashtra", note: "Full programme suite" },
-      { name: "Delhi", note: "Financial Inclusion" },
-      { name: "Gujarat", note: "Financial Inclusion" },
-      { name: "Haryana", note: "Financial Inclusion" },
-      { name: "Uttar Pradesh", note: "Financial Inclusion" },
+      { name: "Maharashtra", note: "MMR · full programme suite" },
+      { name: "Gujarat", note: "Industrial workforce corridor" },
+      { name: "Haryana", note: "Industrial workforce corridor" },
+      { name: "Delhi NCR", note: "Industrial workforce corridor" },
     ],
     reachCtaLabel: "Explore the impact map",
     reachCtaHref: "/impact",
@@ -600,9 +599,9 @@ export const defaultSiteSettings: SiteSettings = {
     impactStatsHeadline: "Numbers from the field ledger",
     impactStats: [
       { value: "570,000+", label: "Citizens mobilized" },
-      { value: "₹667+", label: "Crores in entitlements unlocked" },
+      { value: "≈ ₹1 Cr", label: "OOPE saved" },
       { value: "42,000+", label: "Households linked to welfare" },
-      { value: "16,100+", label: "Learners digitally certified" },
+      { value: "16,100+", label: "Digital learners certified" },
     ],
     missionBandEnabled: true,
     missionEyebrow: "Mission",
@@ -610,9 +609,9 @@ export const defaultSiteSettings: SiteSettings = {
     programsItemCtaLabel: "Explore practice",
     donateStripEyebrow: "Give today",
     programsEyebrow: "Practice portfolios",
-    programsHeadline: "Five practices. One last-mile system.",
+    programsHeadline: "People. Entitlements. Dignity. Delivered.",
     programsIntro:
-      "Samriddhi, TechShala, Swasthya-Setu, Lok-Adhikar, and Urja-Prayas turn CSR and government programmes into audited community progress.",
+      "Lok Adhikaar & Samriddhi Kendras, Svitech Shiksha Kendra, Swasthya Setu, civic leadership & Kala-Sanvad, and Mission Ankur — scalable community delivery systems.",
     programsCtaLabel: "View our work →",
     programsCtaHref: "/work",
     spotlightEyebrow: "Field systems",
@@ -621,9 +620,9 @@ export const defaultSiteSettings: SiteSettings = {
     spotlightViewAllHref: "/impact",
     quoteEyebrow: "Director’s perspective",
     quote: {
-      text: "When corporate investments are paired with verifiable field systems, grassroots transformation becomes permanent.",
+      text: "Lasting community development cannot be evaluated by the volume of temporary relief handed out... It can only be measured by how effectively people are connected to their rightful entitlements.",
       attribution: "Vivek Ganpat Shelar",
-      role: "Director, SVITECH Foundation",
+      role: "Founder & President, SVITECH Foundation",
     },
     donateStripHeadline: "Fund verified last-mile delivery",
     donateStripCopy:
@@ -634,26 +633,26 @@ export const defaultSiteSettings: SiteSettings = {
     campaignsHeadline: "Turnkey programmes ready for partnership",
     campaigns: [
       {
-        title: "Project Samriddhi",
-        copy: "Financial inclusion camps and E-Seva desks linking households to statutory welfare.",
+        title: "Lok Adhikaar · Samriddhi Kendras",
+        copy: "600+ welfare campaigns and 4 permanent E-Seva hubs linking households to statutory entitlements.",
         href: "/work/samriddhi",
         cta: "Explore →",
       },
       {
-        title: "Project TechShala",
-        copy: "Accredited digital labs and Women Learning Centers with community asset handover.",
+        title: "Svitech Shiksha Kendra",
+        copy: "16,100+ digital learners certified; Women Learning Centers with community asset handover.",
         href: "/work/techshala",
         cta: "Explore →",
       },
       {
-        title: "Project Swasthya-Setu",
-        copy: "Preventive diagnostics, menstrual dignity kits, and emergency medical enablement.",
+        title: "Swasthya Setu",
+        copy: "Preventive diagnostics, vision care, and menstrual hygiene awareness across MMR.",
         href: "/work/swasthya-setu",
         cta: "Explore →",
       },
       {
-        title: "Project Lok-Adhikar",
-        copy: "Community vigilance, PDS audits, and civic infrastructure resolutions.",
+        title: "Lok Adhikaar · Civic & Kala-Sanvad",
+        copy: "Community vigilance, PDS audits, civic victories, and 980 cultural performances.",
         href: "/work/lok-adhikar",
         cta: "Explore →",
       },
@@ -666,70 +665,69 @@ export const defaultSiteSettings: SiteSettings = {
         description: "Certified quality management system for process-driven delivery.",
       },
       {
-        name: "80G & 12AA",
-        description: "Income-tax exemptions enabling tax-efficient giving for eligible donors.",
+        name: "Section 12A & 80G",
+        description: "Income Tax Act registrations enabling tax-efficient giving for eligible donors.",
       },
       {
-        name: "Published annual reports",
-        description: "Financial notes and board information available for public review.",
+        name: "MCA CSR-1 · NGO Darpan",
+        description: "Registered with MCA Form CSR-1 and NITI Aayog NGO Darpan.",
       },
       {
         name: "Secure online giving",
         description: "Donations processed through Razorpay with emailed receipts after successful payment.",
       },
     ],
-    partnersEyebrow: "States we serve",
+    partnersEyebrow: "Corridors we serve",
     partners: [
       { name: "Maharashtra" },
-      { name: "Delhi" },
       { name: "Gujarat" },
       { name: "Haryana" },
-      { name: "Uttar Pradesh" },
+      { name: "Delhi NCR" },
     ],
   },
   about: {
     eyebrow: "About",
-    headline: "Social venture for technology, education, and community happiness.",
+    headline: "Social Venture Initiative for Technology Education and Community Happiness.",
     intro:
-      "SVITECH Foundation was established in 2023 by Vivek G. Shelar and Rajani G. Kulaye in Ghatkopar West, Mumbai. ‘Svitech’ means social venture initiative for technology, education, and community happiness. We empower underprivileged women, youth, children, and senior citizens across Maharashtra through digital innovation and inclusive development.",
+      "SVITECH Foundation is a registered Section 8 not-for-profit organization (incorporated 2023) headquartered in Asalpha, Ghatkopar West, Mumbai. We mobilize citizens and connect families to their rightful entitlements—strengthening dignity, security and self-reliance.",
     heroImage:
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=2000&q=80",
     heroImageAlt: "Team collaborating around a shared workspace",
     missionTitle: "Our mission",
     missionCopy:
-      "Provide digital skills that make beneficiaries job-ready, connect communities to essential government services, and build capacity for long-term socio-economic growth—so every person can realize their potential with dignity.",
+      "To build scalable, community-rooted delivery systems that eliminate documentation poverty, provide quality education, safeguard preventive health and menstrual awareness, and foster civic participation—empowering individuals and communities to thrive with dignity, equity, and self-reliance.",
     howTitle: "Our vision",
     howCopy:
-      "A society where every underprivileged woman and youth can lead a life of dignity and purpose through digital innovation, quality education, healthcare access, and sustainable employment.",
+      "An inclusive, equitable, and self-reliant society where vulnerable families, unorganized workforces, and emerging youth exercise full legal, economic, and digital agency to lead lives of dignity.",
     valuesTitle: "Values we hold",
     values: [
       {
-        title: "Inclusivity",
-        copy: "Opportunities for all—regardless of socio-economic background.",
+        title: "Integrity & Transparency",
+        copy: "Board-led stewardship, audit-ready evidence, and accountable use of resources.",
       },
       {
-        title: "Integrity",
-        copy: "The highest ethical standards in programmes, partnerships, and stewardship.",
+        title: "Participatory Governance",
+        copy: "Inclusive decision-making with communities, civic partners, and frontline leaders.",
       },
       {
-        title: "Innovation",
-        copy: "Digital tools and practical methods to solve complex community challenges.",
+        title: "Last-Mile Delivery",
+        copy: "Documentation support, digital registration, and follow-up until entitlements are delivered.",
       },
       {
-        title: "Collaboration",
-        copy: "Partnerships with schools, agencies, CSR teams, and communities to multiply impact.",
+        title: "Local Ownership",
+        copy: "Trained youth and women facilitators, SHG-run centers, and sustainable neighborhood access.",
       },
     ],
     governanceTitle: "Governance",
     governanceCopy:
-      "Registered as a Section 8 company under the Companies Act, 2013, with 80G and 12AA exemptions. An Executive Board provides strategic oversight; community stakeholders inform participatory decision-making. Leadership bios and annual reports are published for public review.",
+      "Guided by integrity, transparency and participatory governance. Board of Directors: Vivek Ganpat Shelar (Chairman & Managing Director), Rajani G. Kulaye, Vishal Ladku Jadhav, and Pramod Yashwant Gaikwad. Registered Section 8 · 12A · 80G · CSR-1 · ISO 9001:2015 · NGO Darpan.",
     governanceLinkLabel: "View reports & board",
     programsLinkLabel: "Explore our programmes",
     governanceLinkHref: "/reports",
-    programsLinkHref: "/programs",
+    programsLinkHref: "/work",
     seoTitle: "About",
     seoDescription:
-      "SVITECH Foundation—founded 2023 in Mumbai—delivers digital skills, welfare access, education, and community development. Section 8 · 80G · 12AA.",
+      "SVITECH Foundation—Section 8 NGO in Mumbai—connects families to entitlements through Samriddhi Kendras, digital skills, health, and civic leadership. ISO 9001:2015 · 12A · 80G.",
   },
   getInvolved: {
     eyebrow: "Get involved",
@@ -785,20 +783,20 @@ export const defaultSiteSettings: SiteSettings = {
     formTopics: ["Partnership", "Donation", "Media", "Field visit", "Other"],
     seoTitle: "Contact",
     seoDescription:
-      "Contact SVITECH Foundation in Asalpha, Ghatkopar West, Mumbai — +91 82684 59392 · info@svitech.in.",
+      "Contact SVITECH Foundation in Asalpha, Ghatkopar West, Mumbai — +91 82684 59392 · info@svitechfoundation.org.",
   },
   donate: {
     eyebrow: "Donate",
     headline: "Give under 80G to verified last-mile work.",
     intro:
-      "Individual gifts support welfare camps, digital labs, health drives, and civic leadership. SVITECH Foundation is registered under Section 12A and 80G of the Income Tax Act.",
+      "Individual gifts support welfare campaigns, digital labs, health drives, and civic leadership. SVITECH Foundation is registered under Section 12A and 80G of the Income Tax Act.",
     bullets: [
-      "80G and 12A registered · MCA CSR-1 · ISO 9001:2015",
+      "80G and 12A registered · MCA CSR-1 · ISO 9001:2015 · NGO Darpan",
       "Online checkout via Razorpay when payment keys are configured",
-      "For bank transfer or CSR gifts, write to info@svitech.in — we do not publish unverified account details here",
+      "For bank transfer or CSR gifts, write to info@svitechfoundation.org — we do not publish unverified account details here",
     ],
     footerNote:
-      "Prefer a corporate package? See the Partner page for Schedule VII investment tiers. For individual giving questions, email info@svitech.in or call +91 82684 59392.",
+      "Prefer a corporate package? See the Partner page for investment tiers. For individual giving questions, email info@svitechfoundation.org or call +91 82684 59392.",
     presetAmounts: [500, 1000, 2500, 5000],
     seoTitle: "Donate",
     seoDescription:
@@ -867,14 +865,14 @@ export const defaultSiteSettings: SiteSettings = {
     eyebrow: "Impact",
     headline: "Outcomes you can measure.",
     intro:
-      "Maharashtra hosts the full activity suite. Pune adds dedicated Digital Literacy. Delhi, Gujarat, Haryana, and Uttar Pradesh focus on the Financial Inclusion project.",
+      "Verified cumulative impact: 570,000+ citizens mobilized, 42,000+ households linked to welfare, approximately ₹1 Crore OOPE saved, and 4 permanent Samriddhi Kendras across Mumbai.",
     mapEyebrow: "Where we work",
-    mapHeadline: "Maharashtra full suite · Financial Inclusion elsewhere",
+    mapHeadline: "MMR Samriddhi Kendras · multi-state industrial corridors",
     storyCtaLabel: "Support work like this",
     storyCtaHref: "/donate",
     seoTitle: "Impact",
     seoDescription:
-      "SVITECH Foundation: all activities in Maharashtra, Digital Literacy in Pune, and Financial Inclusion projects in Delhi, Gujarat, Haryana, and Uttar Pradesh.",
+      "SVITECH Foundation impact: 570,000+ citizens, 42,000+ households, ≈ ₹1 Crore OOPE saved, 16,100+ digital learners, 980 cultural performances.",
   },
   gallery: {
     eyebrow: "Gallery",
@@ -889,12 +887,12 @@ export const defaultSiteSettings: SiteSettings = {
     eyebrow: "Transparency",
     headline: "Reports, board, and how we steward gifts.",
     intro:
-      "Section 8 governance, 80G & 12AA status, leadership bios, and annual reports—findable in two clicks.",
-    boardTitle: "Leadership",
+      "Section 8 governance, 12A & 80G status, Board of Directors, and annual reports—findable in two clicks.",
+    boardTitle: "Board of Directors",
     annualReportsTitle: "Annual reports",
     downloadLabel: "Download PDF",
     adminNote:
-      "Replace placeholder PDFs in public/reports/ with filed annual reports. Keep 80G / 12AA certificates available here when sharing with donors.",
+      "Replace placeholder PDFs in public/reports/ with filed annual reports. Keep 80G / 12A certificates available here when sharing with donors.",
     contactPrompt: "Questions about finances or partnerships?",
     contactLinkLabel: "Contact us",
     emailAutomation: {
@@ -909,7 +907,7 @@ export const defaultSiteSettings: SiteSettings = {
     },
     seoTitle: "Reports & governance",
     seoDescription:
-      "Annual reports, leadership, and transparency notes from SVITECH Foundation (Section 8 · 80G · 12AA).",
+      "Annual reports, Board of Directors, and transparency notes from SVITECH Foundation (Section 8 · 12A · 80G · ISO 9001:2015).",
   },
   detailPages: {
     programsBack: "← All programmes",

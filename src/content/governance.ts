@@ -8,16 +8,16 @@ export type Report = {
 export const reports: Report[] = [
   {
     year: 2025,
-    title: "Annual report 2025",
+    title: "Institutional Capability Docket 2025",
     description:
-      "Programme outcomes, financial overview, and governance notes for the year.",
+      "Cumulative impact dashboard, programme portfolios, Samriddhi Kendras, and governance credentials.",
     fileUrl: "/reports/annual-report-2025.pdf",
   },
   {
     year: 2024,
     title: "Annual report 2024",
     description:
-      "Founding year: access-to-services camps across 30 locations, basic computer training with 30 placements from 100 trainees, and a cricket camp in Ratnagiri. Published 14 June 2024.",
+      "Founding-year programme outcomes, financial overview, and governance notes. Published 14 June 2024.",
     fileUrl: "/reports/annual-report-2024.pdf",
   },
 ];
@@ -30,13 +30,23 @@ export type BoardMember = {
 
 export const board: BoardMember[] = [
   {
-    name: "Vivek G. Shelar",
-    role: "Founder & President",
-    bio: "Founded Svitech Computer Training Institute in 2016 and incorporated SVITECH Foundation on 5 September 2023. Bachelor of Computer Applications (IT), Tilak Maharashtra Vidyapeeth, and Master of Social Work, IGNOU. Recognised under Digital India and for implementing e-Shram.",
+    name: "Vivek Ganpat Shelar",
+    role: "Chairman & Managing Director · Founder & President",
+    bio: "MSW, BCA. Strategic vision, institutional partnerships, and community engagement. Guides SVITECH Foundation as a registered Section 8 not-for-profit organization.",
   },
   {
     name: "Rajani G. Kulaye",
-    role: "Secretary & Director — Operations",
-    bio: "More than a decade teaching IT. Bachelor of Social Work, Yashwantrao Chavan Maharashtra Open University. Runs the Ghatkopar West skill centre and oversees operations and finances.",
+    role: "Director",
+    bio: "Over a decade of IT skills instruction and institutional training center management. Oversees skill centers, curriculum quality, and operations.",
+  },
+  {
+    name: "Vishal Ladku Jadhav",
+    role: "Director",
+    bio: "Specialist in child protection, unorganized labor rights, and public welfare access. Leads citizen entitlement and civic partnership programmes.",
+  },
+  {
+    name: "Pramod Yashwant Gaikwad",
+    role: "Director",
+    bio: "Cultural movement leader and grassroots mobilization pioneer. Directs community outreach and women-led street theatre (Kala-Sanvad).",
   },
 ];

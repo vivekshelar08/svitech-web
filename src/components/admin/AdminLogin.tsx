@@ -137,7 +137,7 @@ export function AdminLogin({
                   autoComplete="username"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="info@svitech.in"
+                  placeholder="info@svitechfoundation.org"
                   className={adminInputClass}
                 />
               </label>

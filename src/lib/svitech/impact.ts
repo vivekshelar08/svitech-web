@@ -1,4 +1,4 @@
-/** Multi-year impact dashboard from SVITECH Foundation profile. */
+/** Multi-year impact dashboard from SVITECH Foundation Institutional Capability Docket (2025). */
 
 export const headlineMetrics = [
   {
@@ -7,19 +7,19 @@ export const headlineMetrics = [
     note: "Awareness drives, campaigns, and community meetings",
   },
   {
-    value: "₹667+",
-    label: "Crores in entitlements unlocked",
-    note: "Health coverage, insurance, and direct cash benefits",
+    value: "≈ ₹1 Cr",
+    label: "OOPE saved",
+    note: "Out-of-pocket expenditure saved for vulnerable families",
   },
   {
     value: "42,000+",
     label: "Households linked to welfare",
-    note: "89,000+ individuals with verified scheme cards",
+    note: "89,000+ individuals with verified scheme linkages",
   },
   {
     value: "16,100+",
-    label: "Learners digitally certified",
-    note: "CSC Academy, DLC courses, and Women Learning Centers",
+    label: "Digital learners certified",
+    note: "CSC Academy / PMGDISHA-aligned labs and Women Learning Centers",
   },
 ] as const;
 
@@ -30,109 +30,129 @@ export const masterDashboard = [
     detail: "Reached through awareness drives, campaigns, and community meetings",
   },
   {
-    dimension: "Public Entitlement Value Unlocked",
-    output: "₹667+ Crores",
-    detail: "Statutory health coverage, insurance policies, and direct cash benefits",
+    dimension: "Out-of-Pocket Expenditure Saved",
+    output: "Approximately ₹1 Crore",
+    detail: "Families avoided unauthorized commercial agent fees and related OOPE",
+  },
+  {
+    dimension: "Public Resource Multiplier",
+    output: "₹1 → ₹15 to ₹25+",
+    detail: "Every rupee invested unlocks approximately ₹15–₹25+ in direct statutory public welfare value",
   },
   {
     dimension: "Direct Welfare Scheme Linkages",
     output: "42,000+ Households",
-    detail: "89,000+ individuals issued verified cards (PMJAY, ABHA, E-Shram, Ladki Bahin)",
+    detail: "89,000+ individuals linked across PMJAY/ABHA, E-Shram, PMSBY, Ladki Bahin, PDS and more",
   },
   {
-    dimension: "Welfare & Financial Inclusion Camps",
-    output: "445+ Field Camps",
-    detail: "Multi-desk camps across 30+ slum clusters in Mumbai & industrial corridors",
+    dimension: "Field Welfare Campaigns",
+    output: "600+ Field Campaigns",
+    detail: "Multi-desk camps across 30+ settlements in Mumbai and industrial corridors",
   },
   {
-    dimension: "Women-Led Street Plays (Nukkad Nataks)",
-    output: "187 Performances",
-    detail: "Community performances on food security, voting rights, and cyber safety",
+    dimension: "Cultural Performances (Kala-Sanvad)",
+    output: "980 Performances",
+    detail: "Street plays, music, puppetry and storytelling mobilizing 230,000+ citizens",
+  },
+  {
+    dimension: "Grassroots Artists Trained",
+    output: "230 Performers",
+    detail: "Women from SHGs, first-generation college students, out-of-school youth, Anganwadi workers",
   },
   {
     dimension: "Public Infrastructure & Civic Resolutions",
     output: "40+ Major Victories",
-    detail: "Restored roadways, streetlights, waste clearance, upgraded Anganwadis",
+    detail: "Restored roadways, streetlights, waste clearance, water pipelines, upgraded Anganwadis",
   },
   {
     dimension: "Community Vigilance Groups (CVGs)",
     output: "50 Active Groups",
-    detail: "250 trained grassroots monitors overseeing public distribution services",
+    detail: "250 trained grassroots monitors overseeing public distribution services across 24 slum settlements",
   },
   {
     dimension: "Food Security & Ration Shop Audits",
     output: "40+ PDS Centers",
-    detail: "Compliance and grain distribution audits across Mumbai suburbs",
+    detail: "Compliance audits securing full food-grain entitlements for 12,500+ families",
   },
   {
     dimension: "Digital & Technical Certifications",
     output: "16,100+ Students",
-    detail: "Certified across CSC Academy, DLC courses, and Women Learning Centers",
+    detail: "Certified across CSC Academy / PMGDISHA-aligned courses and Women Learning Centers",
   },
   {
-    dimension: "Preventive Health & Diagnostics",
-    output: "7,100+ Individuals",
-    detail: "Sensitized on HIV/AIDS, tobacco risks, and multi-specialty screenings",
+    dimension: "Self-Defense Training",
+    output: "2,000+ Students",
+    detail: "Situational awareness, verbal assertiveness, basic physical defense, and legal helplines",
   },
   {
-    dimension: "STEM Energy Champions Trained",
+    dimension: "Menstrual Hygiene Education",
+    output: "4,200+ Women & Girls",
+    detail: "35+ structured school and community workshops",
+  },
+  {
+    dimension: "Preventive Health Sensitization",
+    output: "7,100+ Citizens",
+    detail: "HIV/AIDS, anti-tobacco, and multi-specialty screening outreach",
+  },
+  {
+    dimension: "Green School Students (Mission Ankur)",
     output: "2,400+ Students",
-    detail: "Trained across 20 partner schools; 1 National Quiz Winner",
+    detail: "Across 20 partner schools; 60 practical workshops; 5 annual science fairs",
   },
   {
     dimension: "Pedestrian Road Safety Toolkits",
     output: "1,650 Toolkits",
-    detail: "Interactive kits distributed in partnership with Traffic Police",
+    detail: "DIY kits distributed in partnership with Traffic Police",
   },
   {
-    dimension: "Permanent E-Seva Touchpoints",
+    dimension: "Permanent Samriddhi Kendras",
     output: "4 Dedicated Centers",
-    detail: "Walk-in centers in Asalpha, Backbay, Vashinaka, and Vishnu Nagar",
+    detail: "Walk-in E-Seva hubs in Asalpha, Kandivali, Vashinaka, and Vishnu Nagar",
   },
 ] as const;
 
 export const yearOnYear = {
   columns: [
-    "FY 2023–24 (Inception & Scale)",
-    "FY 2024–25 (Consolidation & Expansion)",
-    "FY 2025–26 (Pan-MMR & Inter-State)",
+    "FY 2023–24",
+    "FY 2024–25",
+    "FY 2025–26",
     "Cumulative Footprint",
   ],
   rows: [
     {
       indicator: "Total Citizen Outreach",
-      values: ["241,243 citizens", "152,538 citizens", "164,350 citizens", "570,000+ Citizens"],
+      values: ["1,72,000+", "2,05,000+", "1,93,000+", "570,000+ Citizens"],
     },
     {
-      indicator: "Financial Inclusion Camps",
-      values: ["112+ camps", "150 camps", "183 camps", "445+ Field Camps"],
-    },
-    {
-      indicator: "Direct Scheme Linkages",
-      values: ["12,000+ families", "11,200 individuals", "18,742 individuals", "42,000+ Households"],
-    },
-    {
-      indicator: "Public Resources Mobilized",
-      values: ["₹600+ Crores", "₹62.8+ Crores", "₹5.12+ Crores", "₹667+ Crores"],
-    },
-    {
-      indicator: "Street Plays (Nukkad Natak)",
-      values: ["100 performances", "70 performances", "17 performances", "187 Performances"],
-    },
-    {
-      indicator: "Civic Infrastructure Wins",
-      values: ["8 resolutions", "27 resolutions", "7 resolutions", "40+ Major Victories"],
+      indicator: "Cultural Performances (Street Plays)",
+      values: ["320+", "300+", "360+", "980 Performances"],
     },
     {
       indicator: "Digital Learners Certified",
-      values: ["1,025 students", "778 learners", "2,447 learners", "16,100+ Learners"],
+      values: ["4,300+", "5,700+", "6,100+", "16,100+ Learners"],
+    },
+    {
+      indicator: "OOPE Saved (Approximate)",
+      values: ["₹30 Lakhs+", "₹40 Lakhs+", "₹30 Lakhs+", "≈ ₹1 Crore"],
+    },
+    {
+      indicator: "Field Welfare Campaigns",
+      values: ["180+", "240+", "180+", "600+ Campaigns"],
+    },
+    {
+      indicator: "Households Linked to Welfare",
+      values: ["—", "—", "—", "42,000+ Households"],
+    },
+    {
+      indicator: "Individuals Linked to Welfare",
+      values: ["—", "—", "—", "89,000+ Individuals"],
     },
     {
       indicator: "Geographic Footprint",
       values: [
         "Chembur & Ghatkopar",
-        "Asalpha, Backbay, Vishnu Nagar",
-        "Pan-MMR, Gujarat, Delhi, Haryana",
+        "Asalpha, Kandivali, Vishnu Nagar",
+        "Pan-MMR, Gujarat, Delhi NCR, Haryana",
         "4 States / Multi-Corridor",
       ],
     },
@@ -142,90 +162,90 @@ export const yearOnYear = {
 export const eSevaCenters = [
   {
     name: "Asalpha Kendra",
-    catchment: "Ghatkopar West, Mumbai Suburban",
-    needs: "Central suburban chawl settlements, transit workers, domestic labor",
+    catchment: "Ghatkopar West — Asalpha & surrounding low-income settlements",
+    needs: "Full-time walk-in E-Seva · Open 6 days a week",
     status: "Operational Full-Time",
   },
   {
-    name: "Backbay Center",
-    catchment: "South Mumbai Coastal Belt",
-    needs: "Informal coastal communities, port laborers, and migrant families",
+    name: "Kandivali Kendra",
+    catchment: "Western Suburbs slum belt communities",
+    needs: "Full-time walk-in E-Seva · Open 6 days a week",
     status: "Operational Full-Time",
   },
   {
     name: "Vashinaka Hub",
-    catchment: "Chembur, M-Ward Slum Belt",
-    needs: "High-density resettlement colonies and industrial contract workers",
+    catchment: "Chembur M-Ward slum belt communities",
+    needs: "Full-time walk-in E-Seva · Open 6 days a week",
     status: "Operational Full-Time",
   },
   {
     name: "Vishnu Nagar Kendra",
-    catchment: "Chembur Central Slum Cluster",
-    needs: "Dense informal settlements, food rights, senior citizen welfare",
+    catchment: "Chembur Central slum cluster communities",
+    needs: "Full-time walk-in E-Seva · Open 6 days a week",
     status: "Operational Full-Time",
   },
 ] as const;
 
 export const eSevaInfrastructure = [
   {
-    title: "Workstations & processing hardware",
-    copy: "Dual-screen desktops (Intel Core i5, 16GB RAM, SSD), heavy-duty laser printers, and flatbed document scanners.",
+    title: "Dual-screen workstations",
+    copy: "Dual-screen desktops with laser printers and document scanners for walk-in citizen assistance.",
   },
   {
-    title: "Biometric authentication",
-    copy: "STQC-certified fingerprint scanners and biometric iris devices for secure portal-based e-KYC submissions.",
+    title: "STQC biometric & iris recognition",
+    copy: "STQC-certified fingerprint scanners and iris recognition devices for secure portal-based authentication.",
   },
   {
     title: "Network & power resilience",
-    copy: "Dedicated commercial fiber-optic broadband supported by UPS units for consistent portal connectivity.",
+    copy: "Broadband connectivity supported by UPS backup for consistent portal connectivity.",
   },
   {
-    title: "Trained community operators",
-    copy: "Managed by certified local youth and women facilitators skilled in regional-language portals and first-time users.",
+    title: "Trained local facilitators",
+    copy: "Managed by trained local youth and women facilitators skilled in regional-language portals and first-time users.",
   },
 ] as const;
 
 export const eSevaServices = {
   identity: [
-    "PAN Card generation & linking",
-    "Demographic record updates",
-    "Income, domicile & caste certificates",
-    "Voter ID updates and corrections",
-    "Gazette name-change documentation",
+    "Aadhaar enrollment & updates",
+    "PAN card services",
+    "Voter ID registration",
+    "Address & domicile certificates",
+    "Income & caste certificates",
   ],
   financial: [
-    "Jan Dhan basic savings accounts",
-    "Direct Benefit Transfer (DBT) linking",
-    "Micro-deposits, withdrawals, and remittances",
-    "Atal Pension Yojana (APY) registration",
-    "PMSBY accident insurance policies",
+    "Bank account opening",
+    "PMJJBY / PMSBY enrollment",
+    "Pension & PF services",
+    "Micro-insurance support",
+    "DBT enablement",
   ],
   utilities: [
-    "Mera Ration app setup and tracking",
-    "DigiLocker digital document setup",
-    "Online electricity, water & gas bill payments",
-    "Udyam MSME enterprise registration",
-    "Senior citizen welfare registration",
+    "Ration card services",
+    "Health scheme enrollment",
+    "Electricity & water connections",
+    "Property tax assistance",
+    "Online grievance redressal",
   ],
 } as const;
 
 export const economicProtection = [
   {
-    value: "₹667+ Cr",
-    label: "Public entitlements unlocked",
+    value: "≈ ₹1 Cr",
+    label: "OOPE saved",
     detail:
-      "Cashless hospitalization coverage, life-accident insurance, and direct financial transfers secured for vulnerable families.",
+      "Approximate out-of-pocket expenditure saved for vulnerable households through transparent facilitation.",
   },
   {
     value: "₹18.14 L",
-    label: "Out-of-pocket savings",
+    label: "Direct cost savings at E-Seva desks",
     detail:
-      "Families avoided excessive fees charged by unauthorized commercial agents by using transparent E-Seva desks.",
+      "Families avoided excessive fees charged by unauthorized commercial agents at E-Seva desks.",
   },
   {
     value: "₹3.61 L",
-    label: "SHG desk income",
+    label: "Women-led collective income",
     detail:
-      "Community self-help groups managing local documentation desks generated supplemental administrative income.",
+      "Legitimate administrative income earned by women-led collectives managing local documentation desks.",
   },
 ] as const;

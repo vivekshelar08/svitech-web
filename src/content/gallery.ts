@@ -32,7 +32,7 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     slug: "techshala-digital-lab",
-    title: "TechShala community digital lab",
+    title: "Shiksha Kendra community digital lab",
     category: "Digital Literacy",
     summary:
       "CSC Academy / PMGDISHA practical sessions for youth and women learners.",
@@ -68,7 +68,7 @@ export const galleryItems: GalleryItem[] = [
   },
   {
     slug: "urja-stem-school",
-    title: "Urja-Prayas STEM school session",
+    title: "Mission Ankur STEM school session",
     category: "Education",
     summary:
       "Energy champions and hands-on sustainability workshops across partner schools.",

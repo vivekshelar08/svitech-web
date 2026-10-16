@@ -7,7 +7,7 @@ import { media, programImages, programs } from "@/lib/svitech";
 export const metadata: Metadata = {
   title: "Our Intervention",
   description:
-    "Five SVITECH practice portfolios: Samriddhi, TechShala, Swasthya-Setu, Lok-Adhikar, and Urja-Prayas.",
+    "Five SVITECH practice portfolios: Lok Adhikaar & Samriddhi Kendras, Svitech Shiksha Kendra, Swasthya Setu, civic leadership & Kala-Sanvad, and Mission Ankur.",
 };
 
 export default function WorkPage() {

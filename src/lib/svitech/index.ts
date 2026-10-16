@@ -14,9 +14,9 @@ export const navPrimary = [
 
 export const workMenu = [
   { label: "All practices", href: "/work" },
-  { label: "Samriddhi", href: "/work/samriddhi" },
-  { label: "TechShala", href: "/work/techshala" },
-  { label: "Swasthya-Setu", href: "/work/swasthya-setu" },
-  { label: "Lok-Adhikar", href: "/work/lok-adhikar" },
-  { label: "Urja-Prayas", href: "/work/urja-prayas" },
+  { label: "Samriddhi Kendras", href: "/work/samriddhi" },
+  { label: "Shiksha Kendra", href: "/work/techshala" },
+  { label: "Swasthya Setu", href: "/work/swasthya-setu" },
+  { label: "Lok Adhikaar", href: "/work/lok-adhikar" },
+  { label: "Mission Ankur", href: "/work/urja-prayas" },
 ] as const;
